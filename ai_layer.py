@@ -599,7 +599,6 @@ def ask(question, history=None):
         _log_usage(question, zero, cached=True)
         return cached
 
-    client = _get_client()
     messages = list(history or []) + [{"role": "user", "content": question}]
     charts = []
     usage = {"input_tokens": 0, "output_tokens": 0, "cache_read_tokens": 0, "cache_write_tokens": 0}
@@ -611,8 +610,9 @@ def ask(question, history=None):
         for message in (history or []) if isinstance(message.get("content"), list)
         for block in message["content"] if isinstance(block, dict)
     )
-    if profile and talent_context:
-        args = {"profile_id": "demo-" + profile.group(1).lower()}
+    role_request = re.search(r"\bai[ -]?auditor\b", question, re.IGNORECASE)
+    if role_request or (profile and talent_context):
+        args = {"profile_id": "demo-" + profile.group(1).lower()} if profile else {}
         output = _run_tool("find_internal_talent", args, charts)
         if "error" not in output:
             tool_id = "talent_" + uuid.uuid4().hex
@@ -624,6 +624,7 @@ def ask(question, history=None):
             ])
             _log_usage(question, usage, cached=False)
             return {"answer": answer, "charts": charts, "usage": usage, "messages": messages}
+    client = _get_client()
     system = [{"type": "text", "text": SYSTEM_PROMPT, "cache_control": {"type": "ephemeral"}}]
     tools = _cached_tools()
     answer = ""
