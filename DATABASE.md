@@ -2,6 +2,10 @@
 
 De werkende database heet `data/skillmarket.duckdb`. De applicatie leest tabellen in het schema **`skillmarket_app`**. Er is geen databaseserver of wachtwoord nodig.
 
+## Centrale database gebruiken
+
+De DB draait ook op de teamserver. Via een SSH-tunnel en de Python-client kun je meteen query’s uitvoeren zonder het bestand te downloaden. Zie [docs/database-server.md](docs/database-server.md) voor de verbinding en voorbeelden.
+
 ## Aanmaken na een clone
 
 Python 3.11+ is vereist. Voer dit uit vanuit de root van de repo:
