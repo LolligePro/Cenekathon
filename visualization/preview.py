@@ -45,7 +45,7 @@ HTML = """<!doctype html>
 
 
 def build_gallery() -> list[tuple[str, str, dict]]:
-    job = "Software Engineer"
+    job = "technology"
     return [
         (
             "Skill share over time",

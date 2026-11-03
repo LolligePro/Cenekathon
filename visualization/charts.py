@@ -119,7 +119,7 @@ def skill_trend_chart(shares: pd.DataFrame, job_type: str, metric: str = "share"
     }
     end_labels = {
         "transform": last_only,
-        "mark": {"type": "text", "align": "left", "dx": 10, "fontSize": 12, "fontWeight": 500},
+        "mark": {"type": "text", "align": "left", "dx": 10, "fontSize": 12, "fontWeight": 500, "baseline": "middle"},
         "encoding": {
             "x": x,
             "y": y,
@@ -127,6 +127,13 @@ def skill_trend_chart(shares: pd.DataFrame, job_type: str, metric: str = "share"
             "text": {"field": "skill", "type": "nominal"},
         },
     }
+    # Labels for skills that finish at nearly the same value would overlap; spread them
+    # by rank so each stays readable without changing the plotted data.
+    end_labels["mark"]["dy"] = {"expr": "datum.label_dy"}
+    end_labels["transform"] = last_only + [
+        {"window": [{"op": "rank", "as": "label_rank"}], "sort": [{"field": metric, "order": "descending"}]},
+        {"calculate": "(datum.label_rank - 1) * 13 - 13", "as": "label_dy"},
+    ]
     return {
         "$schema": VEGA_LITE_SCHEMA,
         "title": _title(f"{job_type}: skill demand over time", subtitle),
