@@ -140,8 +140,9 @@ class TalentTests(unittest.TestCase):
             response=client.post('/api/ask',json={'question':'En Profiel D?', 'session_id':data['session_id']})
             self.assertEqual(response.status_code,200,response.text)
             self.assertIn('Profiel D',response.json()['answer'])
-            self.assertGreater(len(calls[1]['messages']),1)
-            self.assertEqual(len(calls),2)
+            self.assertEqual(len(calls),1)
+            self.assertEqual(response.json()['usage']['output_tokens'],0)
+            self.assertIn('Geen cursus gekoppeld in onze huidige catalogus voor: regulatory compliance.',response.json()['answer'])
             self.assertIn('find_internal_talent',{t['name'] for t in calls[0]['tools']})
             self.assertIn('AI-auditor',client.get('/').text)
 

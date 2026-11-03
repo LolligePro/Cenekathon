@@ -10,6 +10,7 @@ import json
 import os
 import re
 import sys
+import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -602,6 +603,27 @@ def ask(question, history=None):
     messages = list(history or []) + [{"role": "user", "content": question}]
     charts = []
     usage = {"input_tokens": 0, "output_tokens": 0, "cache_read_tokens": 0, "cache_write_tokens": 0}
+    # Explicit profile follow-ups in this demo need fresh data, not a model guess
+    # based on a previous candidate's courses.
+    profile = re.search(r"\b(?:profiel|profile)\s+([a-e])\b", question, re.IGNORECASE)
+    talent_context = any(
+        block.get("type") == "tool_use" and block.get("name") == "find_internal_talent"
+        for message in (history or []) if isinstance(message.get("content"), list)
+        for block in message["content"] if isinstance(block, dict)
+    )
+    if profile and talent_context:
+        args = {"profile_id": "demo-" + profile.group(1).lower()}
+        output = _run_tool("find_internal_talent", args, charts)
+        if "error" not in output:
+            tool_id = "talent_" + uuid.uuid4().hex
+            answer = format_internal_talent(output)
+            messages.extend([
+                {"role": "assistant", "content": [{"type": "tool_use", "id": tool_id, "name": "find_internal_talent", "input": args}]},
+                {"role": "user", "content": [{"type": "tool_result", "tool_use_id": tool_id, "content": json.dumps(output)}]},
+                {"role": "assistant", "content": [{"type": "text", "text": answer}]},
+            ])
+            _log_usage(question, usage, cached=False)
+            return {"answer": answer, "charts": charts, "usage": usage, "messages": messages}
     system = [{"type": "text", "text": SYSTEM_PROMPT, "cache_control": {"type": "ephemeral"}}]
     tools = _cached_tools()
     answer = ""
