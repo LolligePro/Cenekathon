@@ -142,7 +142,7 @@ class TalentTests(unittest.TestCase):
             self.assertIn('Profiel D',response.json()['answer'])
             self.assertEqual(len(calls),1)
             self.assertEqual(response.json()['usage']['output_tokens'],0)
-            self.assertIn('Geen cursus gekoppeld in onze huidige catalogus voor: regulatory compliance.',response.json()['answer'])
+            self.assertIn('Geen cursus gekoppeld in onze huidige catalogus voor: regulatory compliance, data governance.',response.json()['answer'])
             self.assertIn('find_internal_talent',{t['name'] for t in calls[0]['tools']})
             self.assertIn('AI-auditor',client.get('/').text)
 
