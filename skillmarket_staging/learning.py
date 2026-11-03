@@ -227,7 +227,9 @@ def course_request(question,history=None):
             if block.get('type')!='tool_result' or block.get('is_error'): continue
             try: result=json.loads(block['content'])
             except (ValueError,TypeError): continue
-            if result.get('candidates'):
+            if result.get('plans'):
+                values=[s['skill_id'] for s in result['plans'][0]['skills']]
+            elif result.get('candidates'):
                 values=[s['skill_id'] for s in result['candidates'][0]['missing_skills']]
             elif result.get('suggested_skills'):
                 values=[s['skill_id'] for s in result['suggested_skills']]

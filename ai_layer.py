@@ -21,7 +21,7 @@ import pandas as pd
 
 from skillmarket_staging.talent import find_internal_talent, format_internal_talent
 
-from skillmarket_staging import learning
+from skillmarket_staging import learning, learning_budget
 from skillmarket_staging.access import read_queries
 
 from visualization import analysis, api as viz, charts as viz_charts
@@ -47,6 +47,7 @@ JOB_TYPES = [
 SYSTEM_PROMPT = """You are the Skill Market assistant. You help HR teams, jobseekers and students in finance decide which skills to learn, based on job postings in Belgium, the Netherlands, Luxembourg and the UK.
 
 Rules:
+- For learning-hour budgets or comparing skill bundles, call plan_learning_budget with the known skills and hours_budget. Reuse the preceding profile for follow-ups. It compares up to two new skills and returns real, deduplicated extra full skill matches, courses and explicit demo learning-hour assumptions. Money-only budgets require a learning-hour budget first.
 - Only state numbers that came from tool results. Never invent or estimate numbers.
 - For internal talent, employee reskilling, or who could become an AI auditor, call find_internal_talent directly. This is a synthetic HR demo with the fixed ai-auditor role. Use profile_id for follow-up questions about one candidate; do not call profile_advice for this use case.
 - For internal talent answers, explicitly say the profiles and target role are fictional. Show the best candidate's matched_count/required_count and match_percentage as skill overlap, never suitability or hiring probability. Explain missing skills, include actual recommended course titles and URLs, and explicitly mention skills_without_courses. Do not claim a course covers a skill absent from its covered_skills. Suggest HR review and training as the next action.
@@ -321,6 +322,18 @@ def make_chart(spec, charts):
 # ---------- tool definitions for the API ----------
 
 TOOLS = [
+    {'name': 'plan_learning_budget',
+     'description': 'Compare learning packages of one or two skills within an hour budget. Pass skills already known, '
+                    'or an empty list for a beginner. Counts actual extra fully matched vacancies once per package; '
+                    'returns a combination bonus, course links and demo learning hours. Defaults to 20 hours per new skill; '
+                    'skill_hours can override hours per skill. Reuse known skills and country/job_type from prior results.',
+     'input_schema': {'type': 'object', 'properties': {
+         'skills': {'type': 'array', 'items': {'type': 'string'}, 'maxItems': 20},
+         'hours_budget': {'type': 'number', 'exclusiveMinimum': 0, 'maximum': 10000},
+         'country': {'type': 'string', 'enum': ['ALL', 'BE', 'NL', 'LU', 'GB']},
+         'job_type': {'type': 'string', 'enum': ['ALL', *JOB_TYPES]},
+         'skill_hours': {'type': 'object', 'additionalProperties': {'type': 'number', 'exclusiveMinimum': 0}}},
+         'required': ['skills', 'hours_budget'], 'additionalProperties': False}},
     {'name': 'significant_risers',
      'description': 'Draw skills rising beyond usual month-to-month noise in a job group. A '
                     'descriptive ranking, not statistical proof.',
@@ -571,6 +584,12 @@ def _cached_tools():
 
 def _run_tool(name, args, charts):
     try:
+        if name == "plan_learning_budget":
+            output = learning_budget.plan_learning_budget(**args)
+            chart = learning_budget.budget_chart(output)
+            if chart:
+                charts.append(chart)
+            return output
         if name == "make_chart":
             return make_chart(args.get("spec"), charts)
         if name in VIZ_FUNCTIONS:
@@ -618,7 +637,7 @@ def _get_client():
 
 
 def _has_learning_tools(messages):
-    names = {"recommend_courses", "profile_advice", "career_path", "find_internal_talent"}
+    names = {"recommend_courses", "profile_advice", "career_path", "find_internal_talent", "plan_learning_budget"}
     return any(block.get("type") == "tool_use" and block.get("name") in names
                for message in messages if isinstance(message.get("content"), list)
                for block in message["content"] if isinstance(block, dict))
@@ -627,7 +646,7 @@ def _has_learning_tools(messages):
 def ask(question, history=None):
     """Answer one question. Returns {"answer", "charts", "usage", "messages"}."""
     cache_key = question.strip().lower()
-    learning_question = re.search(learning.COURSE_INTENT, question, re.I) or re.search(r"\b(learn|leren|profiel|profile)\b", question, re.I)
+    learning_question = re.search(learning.COURSE_INTENT, question, re.I) or re.search(r"\b(learn|leren|profiel|profile|leerbudget|opleidingsbudget|budget|uren|uur|hours?)\b", question, re.I)
     if (not history and cache_key in _ANSWER_CACHE and not learning_question
             and not _has_learning_tools(_ANSWER_CACHE[cache_key].get("messages", []))):
         cached = copy.deepcopy(_ANSWER_CACHE[cache_key])
@@ -648,7 +667,8 @@ def ask(question, history=None):
         for block in message["content"] if isinstance(block, dict)
     )
     role_request = re.search(r"\bai[ -]?auditor\b", question, re.IGNORECASE)
-    if role_request or (profile and talent_context):
+    budget_args = learning_budget.budget_request(question, history)
+    if not budget_args and (role_request or (profile and talent_context)):
         args = {"profile_id": "demo-" + profile.group(1).lower()} if profile else {}
         output = _run_tool("find_internal_talent", args, charts)
         if "error" not in output:
@@ -661,20 +681,25 @@ def ask(question, history=None):
             ])
             _log_usage(question, usage, cached=False)
             return {"answer": answer, "charts": charts, "usage": usage, "messages": messages}
-    profile_args = learning.profile_request(question)
-    course_args = None if profile_args else learning.course_request(question, history)
-    learning_tool = "profile_advice" if profile_args else "recommend_courses"
-    if profile_args or course_args:
-        course_args = profile_args or course_args
+    profile_args = None if budget_args else learning.profile_request(question)
+    course_args = None if budget_args or profile_args else learning.course_request(question, history)
+    learning_tool = "plan_learning_budget" if budget_args else "profile_advice" if profile_args else "recommend_courses"
+    if budget_args or profile_args or course_args:
+        course_args = budget_args or profile_args or course_args
         output = _run_tool(learning_tool, course_args, charts)
         if "error" not in output:
             tool_id = "courses_" + uuid.uuid4().hex
-            answer = learning.format_courses(output)
+            answer = learning_budget.format_budget(output) if budget_args else learning.format_courses(output)
             messages.extend([
                 {"role": "assistant", "content": [{"type": "tool_use", "id": tool_id, "name": learning_tool, "input": course_args}]},
                 {"role": "user", "content": [{"type": "tool_result", "tool_use_id": tool_id, "content": json.dumps(output)}]},
                 {"role": "assistant", "content": [{"type": "text", "text": answer}]},
             ])
+            _log_usage(question, usage, cached=False)
+            return {"answer": answer, "charts": charts, "usage": usage, "messages": messages}
+        if budget_args:
+            answer = "Het leerbudget kon niet worden verwerkt: " + output["error"]
+            messages.append({"role": "assistant", "content": [{"type": "text", "text": answer}]})
             _log_usage(question, usage, cached=False)
             return {"answer": answer, "charts": charts, "usage": usage, "messages": messages}
     client = _get_client()
@@ -717,7 +742,7 @@ def ask(question, history=None):
                 output = _run_tool(block.name, block.input, charts)
                 if block.name == "find_internal_talent" and isinstance(output, dict) and "error" not in output:
                     talent_result = output
-                if block.name in {"recommend_courses", "profile_advice", "career_path"} and isinstance(output, dict) and "error" not in output:
+                if block.name in {"recommend_courses", "profile_advice", "career_path", "plan_learning_budget"} and isinstance(output, dict) and "error" not in output:
                     course_result = (block.name, output)
                 results.append({
                     "type": "tool_result",
@@ -734,7 +759,7 @@ def ask(question, history=None):
                           "courses": [{"title": c["title"], "url": c["url"], "site": "catalogus",
                                        "covered_skills": [{"name": v} for v in c["skills"]]} for c in data["courses"]],
                           "skills_without_courses": [{"name": v} for v in data["skills_without_courses"]]}
-            answer = learning.format_courses(output)
+            answer = learning_budget.format_budget(output) if name == "plan_learning_budget" else learning.format_courses(output)
             messages.append({"role": "assistant", "content": [{"type": "text", "text": answer}]})
             break
         if talent_result is not None:
