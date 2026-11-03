@@ -8,6 +8,7 @@ data/skill_prices.parquet.
 import copy
 import json
 import os
+import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -18,7 +19,7 @@ import anthropic
 DATA_DIR = Path(os.environ.get("SKILLMARKET_DATA", "data"))
 MODEL = os.environ.get("SKILLMARKET_MODEL", "claude-haiku-5-5-20251001")
 USAGE_LOG = Path("usage_log.jsonl")
-MAX_TOKENS = 800
+MAX_TOKENS = int(os.environ.get("SKILLMARKET_MAX_TOKENS", "4000"))  # Qwen3 thinking uses many tokens
 MAX_TOOL_ROUNDS = 6
 MAX_ROWS = 60
 COUNTRIES = ["ALL", "BE", "NL", "LU", "GB"]
@@ -94,12 +95,21 @@ def _check_country(country):
         raise ValueError(f"country must be one of {COUNTRIES}")
 
 
+def _period(value, default):
+    if value in (None, "", "latest"):
+        return default
+    if not re.fullmatch(r"\d{4}-Q[1-4]", str(value)):
+        raise ValueError("period must look like YYYY-Qn, e.g. 2026-Q1")
+    return value
+
+
 def get_skill_prices(skill_ids, role_family="ALL", country="ALL", from_period="2021-Q1", to_period=None):
     """Time series of share, index and momentum_yoy for up to 5 skills."""
     if not isinstance(skill_ids, list) or not 1 <= len(skill_ids) <= 5:
         return _tool_error("skill_ids must be a list of 1 to 5 skill ids")
     _check_country(country)
-    to_period = to_period or _data().latest_period
+    from_period = _period(from_period, "2021-Q1")
+    to_period = _period(to_period, _data().latest_period)
     placeholders = ", ".join("?" for _ in skill_ids)
     rows = _data().query(
         f"""
@@ -124,7 +134,7 @@ def top_movers(direction, period=None, role_family="ALL", country="ALL", categor
     _check_country(country)
     if not isinstance(n, int) or not 1 <= n <= 20:
         return _tool_error("n must be an integer from 1 to 20")
-    period = period or _data().latest_period
+    period = _period(period, _data().latest_period)
     order = "DESC" if direction == "up" else "ASC"
     rows = _data().query(
         f"""
@@ -311,7 +321,9 @@ def _run_tool(name, args, charts):
 def _to_api_content(block):
     if block.type == "text":
         return {"type": "text", "text": block.text}
-    return {"type": "tool_use", "id": block.id, "name": block.name, "input": block.input}
+    if block.type == "tool_use":
+        return {"type": "tool_use", "id": block.id, "name": block.name, "input": block.input}
+    return None  # thinking blocks from local models are not replayed
 
 
 def _log_usage(question, usage, cached):
@@ -371,7 +383,8 @@ def ask(question, history=None):
         usage["cache_read_tokens"] += response.usage.cache_read_input_tokens or 0
         usage["cache_write_tokens"] += response.usage.cache_creation_input_tokens or 0
 
-        messages.append({"role": "assistant", "content": [_to_api_content(b) for b in response.content]})
+        assistant_content = [c for c in (_to_api_content(b) for b in response.content) if c is not None]
+        messages.append({"role": "assistant", "content": assistant_content})
         if response.stop_reason != "tool_use":
             answer = "".join(b.text for b in response.content if b.type == "text").strip()
             break
@@ -392,7 +405,7 @@ def ask(question, history=None):
 
     result = {"answer": answer, "charts": charts, "usage": usage, "messages": messages}
     _log_usage(question, usage, cached=False)
-    if not history:
+    if not history and answer:
         _ANSWER_CACHE[cache_key] = copy.deepcopy({k: v for k, v in result.items() if k != "usage"})
     return result
 
