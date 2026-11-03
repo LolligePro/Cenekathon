@@ -1,0 +1,3 @@
+{"posting_id":"DEMO-001","parse_status":"ok","normalized_title":"Credit Risk Analyst","skill_ids":["S001","S042"],"error":null}
+{"posting_id":"DEMO-002","parse_status":"ok","normalized_title":"Cashier","skill_ids":[],"error":null}
+{"posting_id":"DEMO-003","parse_status":"failed","normalized_title":null,"skill_ids":[],"error":{"code":"MODEL_TIMEOUT","message":"Verwerking overschreed de tijdslimiet."}}

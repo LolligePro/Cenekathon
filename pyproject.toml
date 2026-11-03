@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cenekathon-staging"
+version = "0.1.0"
+description = "DuckDB staging and import audit log for Skill Market parser output"
+requires-python = ">=3.11"
+dependencies = ["duckdb>=2.0,<3", "pytz>=2024.1"]
+
+[project.scripts]
+skillmarket-staging = "skillmarket_staging.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["skillmarket_staging*"]
+
+[tool.setuptools.package-data]
+skillmarket_staging = ["sql/*.sql"]

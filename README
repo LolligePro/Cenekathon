@@ -12,3 +12,12 @@ Visualize demand for skills in the job market and provide advice for job seekers
 
 extra: use competences from studies to create list of gathered skills
 use this to match with the skills extracted from job postings and provide advice for job seekers on which skills to learn or improve, or on which jobs apply to them, or on what study to pursue to improve their chances of getting a job in the future.
+
+## Database preparation (DuckDB staging)
+
+The parser receipt layer stores complete JSON records and an import audit log, without a final application schema. See [docs/staging.md](docs/staging.md) for setup, the example batch, validation and inspection commands. The wire format is specified in [parser-db-contract.md](parser-db-contract.md).
+
+```bash
+python -m pip install -e .
+python -m skillmarket_staging init
+```
