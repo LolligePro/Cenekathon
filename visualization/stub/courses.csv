@@ -1,0 +1,13 @@
+posting_id,title,url,skill
+coursera-stub-1,Python for Everybody,https://www.coursera.org/specializations/python,Python
+coursera-stub-1,Python for Everybody,https://www.coursera.org/specializations/python,SQL
+coursera-stub-2,Machine Learning Specialization,https://www.coursera.org/specializations/machine-learning-introduction,Machine Learning
+coursera-stub-2,Machine Learning Specialization,https://www.coursera.org/specializations/machine-learning-introduction,Python
+coursera-stub-3,Data Science with SQL and Excel,https://www.coursera.org/specializations/data-science-sql-excel,SQL
+coursera-stub-3,Data Science with SQL and Excel,https://www.coursera.org/specializations/data-science-sql-excel,Excel
+coursera-stub-4,Cloud Native with Kubernetes,https://www.coursera.org/specializations/kubernetes,Kubernetes
+coursera-stub-4,Cloud Native with Kubernetes,https://www.coursera.org/specializations/kubernetes,Java
+coursera-stub-5,Anti-Money Laundering Essentials,https://www.coursera.org/learn/aml-essentials,AML
+coursera-stub-5,Anti-Money Laundering Essentials,https://www.coursera.org/learn/aml-essentials,KYC
+coursera-stub-6,Business Analytics with Power BI,https://www.coursera.org/learn/power-bi,Power BI
+coursera-stub-6,Business Analytics with Power BI,https://www.coursera.org/learn/power-bi,Excel

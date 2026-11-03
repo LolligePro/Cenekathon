@@ -46,6 +46,7 @@ HTML = """<!doctype html>
 
 def build_gallery() -> list[tuple[str, str, dict]]:
     job = "technology"
+    career = api.career_path("customer service and support", job)
     return [
         (
             "Skill share over time",
@@ -76,6 +77,16 @@ def build_gallery() -> list[tuple[str, str, dict]]:
             "Rising and falling skills",
             "Biggest share movers in the last 6 months. Skills under 2% share are ignored.",
             api.rising_and_falling_skills(job, n=4)["chart"],
+        ),
+        (
+            "Career path: skills to learn",
+            "Skills technology postings ask for more often than customer service ones.",
+            career["chart"],
+        ),
+        (
+            "Career path: courses to take",
+            "Courses that together cover most of that gap, in recommended order.",
+            career["courses_chart"],
         ),
     ]
 

@@ -63,6 +63,13 @@ Every function returns:
 | `skill_trend(job_type, skill, window_months=6)` | Direction and size of change for one skill | | no chart |
 | `rising_and_falling_skills(job_type, window_months=6, n=5, min_share=0.02)` | Biggest share movers | `min_share`: ignore skills below this share | `n` in 1..25; `data` = `{"rising": [...], "falling": [...]}` |
 
+| `career_path(from_job, to_job, n_skills=8, max_courses=5)` | Skills the target job needs more than the current one, and the courses that cover them | both jobs from `list_job_types()` and different | `n_skills` in 1..25; `max_courses` in 1..10; `data` = `{"skills_to_learn": [...], "courses": [...]}`; `chart` = skill gap, extra key `courses_chart` = course plan |
+
+`career_path` uses the Coursera courses in the database (`posting_id` like `coursera-%`, loaded
+from `courses/batches/`), titled and linked via `courses/courses.jsonl`. The gap is the
+difference in average share over the latest 12 months; courses are picked greedily by the
+gap they newly cover.
+
 Out-of-range `n` or too many explicit skills raise `ValueError` with a message. Callers
 should catch it and pass the message back to the user rather than retrying blindly.
 
@@ -94,6 +101,7 @@ Every `DataSource` must return these shapes (see `data_source.py`):
 - `monthly_totals()`: `DataFrame[job_type, month (datetime64), total_postings (int)]`,
   one row per (job_type, month).
 - `job_types()`: sorted list of job type names.
+- `courses()`: `DataFrame[posting_id, title, url, skill]`, one row per (course, skill).
 
 Analysis assumes months are contiguous and complete for each job type. Missing months
 will distort the window averages. Check this when the database source is added.

@@ -1,6 +1,6 @@
 # Database: opbouw, velden en gebruik
 
-De toepassing gebruikt DuckDB. De database staat standaard in `data/skillmarket.duckdb`. Gebruik het schema `skillmarket_app` voor applicatiequeries; `skillmarket_staging` bewaart ontvangen JSON en bedrijfsnormalisatie en `skillmarket_ingest` bewaart ontvangsthistorie. SQL-migraties staan in `skillmarket_staging/sql/` (versies 1–4).
+De toepassing gebruikt DuckDB. De database staat standaard in `data/skillmarket.duckdb`. Gebruik het schema `skillmarket_app` voor applicatiequeries; `skillmarket_staging` bewaart ontvangen JSON en bedrijfsnormalisatie en `skillmarket_ingest` bewaart ontvangsthistorie. SQL-migraties staan in `skillmarket_staging/sql/` (versies 1–5).
 
 ## Opbouwen en controleren
 
@@ -104,6 +104,10 @@ Een view over de originele Parquet-bestanden, met de zeven originele kolommen. `
 ### `skillmarket_app.parser_imports`
 
 Succesvolle publicaties: `import_id UUID` (primary key), `format VARCHAR`, `parser_version VARCHAR`, `files JSON` (bronpaden voor Parquet), `row_count BIGINT`, `imported_at TIMESTAMPTZ`. Bij JSONL zijn `parser_version='from-batch-manifests'` en `files=[]`; de concrete versies staan per posting en in `skillmarket_ingest.batches`.
+
+## Cursussen en dezelfde skillcatalogus
+
+`skillmarket_app.courses`, `course_skills` en `course_imports` vormen een afzonderlijke aanvulling. Course-IDs tellen nooit mee als vacatures. Zie [courses.md](courses.md) voor alle velden, aanbevelingsqueries en import.
 
 ## SQL voor het team
 

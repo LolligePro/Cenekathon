@@ -67,6 +67,10 @@ trends = db.dataframe("""
 
 Dezelfde SQL voor profieladvies uit [database.md](database.md) werkt via `db.query()` of `db.dataframe()`.
 
+## Cursussen aanbevelen
+
+Dezelfde verbinding geeft toegang tot `skillmarket_app.courses` en `skillmarket_app.course_skills`. Join de bestaande `skillmarket_app.skills` op `skill_id` om cursussen te vinden die ontbrekende profielskills afdekken. Zie [courses.md](courses.md) voor een direct bruikbaar Python-voorbeeld en alle velden.
+
 ## HTTP-contract
 
 | Methode en pad | Resultaat |

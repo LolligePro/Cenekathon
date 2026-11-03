@@ -26,6 +26,13 @@ A jobseeker or student uses Skill Market to decide **which skills to learn or wh
 
 
 
+### 5. Internal talent demo (implemented)
+- Five anonymous synthetic profiles and a hand-curated AI-auditor role in `skillmarket_staging/demo/internal_talent.json`.
+- `find_internal_talent(target_role_id="ai-auditor", n=3, profile_id=None)` ranks fixed-ID skill overlap and joins actual course-skill mappings for the gaps.
+- Registered in the existing AI/chat tool loop, with follow-up support and clickable course URLs.
+- Always identifies the scenario as fictional; unavailable course mappings are explicit.
+- Setup, exact fields, scoring and limitations: [docs/internal-talent.md](docs/internal-talent.md).
+
 ## Who pays
 Universities (curriculum planning) and public employment services like VDAB (reskilling advice).
 

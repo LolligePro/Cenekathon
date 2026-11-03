@@ -29,3 +29,9 @@ python3 -m venv .venv
 This creates `data/skillmarket.duckdb` and five Parquet exports. Generated databases and Parquet files remain local and are excluded from Git. The visualization API automatically uses the database.
 
 For the parser wire format see [parser-db-contract.md](parser-db-contract.md). Lower-level receipt commands are documented in [docs/staging.md](docs/staging.md), and company normalization in [docs/companies.md](docs/companies.md).
+
+## Internal talent demo
+
+The existing chat can rank five fictional internal profiles for an AI-auditor role and recommend real courses for their missing skill IDs. Try: **Wie kan binnen onze fictieve bank doorgroeien naar AI-auditor, en welke courses helpen?**
+
+See [docs/internal-talent.md](docs/internal-talent.md) for setup, synthetic profiles, the role definition, matching, tool output, course gaps and tests. Install chat dependencies with `pip install -e '.[chat,test]'`.
