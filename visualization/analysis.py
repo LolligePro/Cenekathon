@@ -61,6 +61,8 @@ def trend(
         raise ValueError("Not enough history for the requested window")
     before = float(earlier["share"].mean())
     after = float(recent["share"].mean())
+    if pd.isna(before) or pd.isna(after):
+        raise ValueError("No observed vacancies in one of the trend windows")
     rel = None if before == 0 else (after - before) / before
     if rel is None or abs(rel) < FLAT_BAND:
         direction = "flat"

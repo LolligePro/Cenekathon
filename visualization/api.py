@@ -47,9 +47,7 @@ def skill_trends(
     names = ", ".join(selected)
     return {
         "summary": f"Monthly {metric} for {names} in {job_type} postings.",
-        "data": shares.assign(month=shares["month"].dt.strftime("%Y-%m-%d")).to_dict(
-            "records"
-        ),
+        "data": charts._records(shares),
         "chart": chart,
     }
 
@@ -61,7 +59,7 @@ def top_skills(
     top = analysis.top_skills(get_source(), job_type, n=n, start=start, end=end)
     return {
         "summary": f"Top {n} skills for {job_type} by average share of postings.",
-        "data": top.to_dict("records"),
+        "data": charts._records(top),
         "chart": charts.top_skills_chart(top, job_type),
     }
 

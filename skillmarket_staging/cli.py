@@ -9,6 +9,7 @@ import duckdb
 
 from .contracts import ContractError
 from .companies import normalize_companies
+from .database import database_status, export_database, import_parser, load_vacancies, publish_staged
 from .db import initialize, inspect_database
 from .ingest import ImportFailure, load_skills, receive_batch
 
@@ -22,6 +23,15 @@ def main(argv=None) -> int:
     companies.add_argument("sources", nargs="+")
     companies.add_argument("--output", default="data/company_map.parquet")
     companies.add_argument("--write-postings", help="Also write a compact posting_id -> company mapping")
+    vacancies = commands.add_parser("load-vacancies", help="Load the seven-column original dataset")
+    vacancies.add_argument("sources", nargs="+")
+    publish = commands.add_parser("publish", help="Publish staged JSONL results and refresh monthly tables")
+    sync = commands.add_parser("import-parser", help="Import a received JSONL or labeled-Parquet folder")
+    sync.add_argument("directory")
+    sync.add_argument("--parser-version", default="matching-v1")
+    export = commands.add_parser("export-database", help="Write application tables as Parquet")
+    export.add_argument("--directory", default="data")
+    commands.add_parser("status", help="Show source, pending and parsed record counts")
     skills = commands.add_parser("load-skills", help="Register the shared fixed skill IDs")
     skills.add_argument("path")
     skills.add_argument("--taxonomy-version", required=True)
@@ -40,6 +50,16 @@ def main(argv=None) -> int:
             result = initialize(database)
         elif command == "normalize-companies":
             result = normalize_companies(database, **args)
+        elif command == "load-vacancies":
+            result = load_vacancies(database, **args)
+        elif command == "publish":
+            result = publish_staged(database)
+        elif command == "import-parser":
+            result = import_parser(database, **args)
+        elif command == "export-database":
+            result = export_database(database, **args)
+        elif command == "status":
+            result = database_status(database)
         elif command == "load-skills":
             result = load_skills(database, **args)
         elif command == "receive":
