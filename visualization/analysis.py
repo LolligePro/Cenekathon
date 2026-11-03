@@ -139,6 +139,12 @@ def significant_risers(
     window are considered.
     """
     shares = skill_share_over_time(source, job_type).sort_values(["skill", "month"])
+    months = shares["month"].nunique()
+    if months < 2 * window_months:
+        raise ValueError(
+            f"Need at least {2 * window_months} months of history for a "
+            f"{window_months}-month window; {job_type!r} has {months}"
+        )
     rows = []
     for skill, g in shares.groupby("skill"):
         values = g["share"].to_numpy()
