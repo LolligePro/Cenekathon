@@ -20,7 +20,7 @@ import pandas as pd
 
 from skillmarket_staging.talent import find_internal_talent, format_internal_talent
 
-from visualization import analysis
+from visualization import api as viz
 from visualization.data_source import get_source
 
 DB_PATH = Path(os.environ.get("SKILLMARKET_DB", str(Path(__file__).resolve().parent / "data" / "skillmarket.duckdb")))
@@ -47,8 +47,8 @@ Rules:
 - For internal talent, employee reskilling, or who could become an AI auditor, call find_internal_talent directly. This is a synthetic HR demo with the fixed ai-auditor role. Use profile_id for follow-up questions about one candidate; do not call profile_advice for this use case.
 - For internal talent answers, explicitly say the profiles and target role are fictional. Show the best candidate's matched_count/required_count and match_percentage as skill overlap, never suitability or hiring probability. Explain missing skills, include actual recommended course titles and URLs, and explicitly mention skills_without_courses. Do not claim a course covers a skill absent from its covered_skills. Suggest HR review and training as the next action.
 - Resolve skill names with find_skills first for other market questions, then use the returned skill names in other tools.
-- Use top_skills for the most demanded skills in a job type, skill_trend for one skill's direction, and rising_and_falling_skills for the biggest movers.
-- Call make_chart for trends or comparisons over time.
+- Use top_skills for the most demanded skills in a job type, skill_trends for skills over time (also draws a chart), skill_trend for one skill's direction, rising_and_falling_skills for the biggest movers, and career_path for moving from one job type to another. These tools draw their own charts.
+- Call make_chart only when no other tool draws the chart you need.
 - Show shares as percentages (0.12 -> 12%). Share is the fraction of a job type's postings in that month that mention the skill.
 - For market questions, mention the limits in your answer: postings are not hires; the data covers finance only; data collection was incomplete from January to April 2026, so drops in those months reflect collection, not hiring.
 - Keep market answers to at most 5 sentences, plus one concrete piece of advice that includes a number. For internal talent, use a short ranking and explain the best candidate with course links and uncovered skills. End with a concrete next action.
@@ -221,11 +221,11 @@ def profile_advice(skills, country):
 
 
 class _CappedSource:
-    """Wraps the data source so analysis functions ignore months after end_month."""
+    """Hides months after DEFAULT_END_MONTH (incomplete collection) from the visualization package."""
 
-    def __init__(self, source, end_month):
+    def __init__(self, source):
         self._source = source
-        self._end = pd.Timestamp(end_month)
+        self._end = pd.Timestamp(f"{DEFAULT_END_MONTH}-01")
 
     def skill_demand(self):
         df = self._source.skill_demand()
@@ -238,15 +238,21 @@ class _CappedSource:
     def job_types(self):
         return self._source.job_types()
 
+    def courses(self):
+        return self._source.courses()
 
-def _viz_source(end_month):
-    return _CappedSource(get_source(), _check_month(end_month, f"{DEFAULT_END_MONTH}-01"))
+
+_CAPPED = None
 
 
-def _require_job_type(job_type):
-    if job_type not in JOB_TYPES:
-        raise ValueError(f"job_type must be one of {JOB_TYPES}")
-    return job_type
+def _capped_source():
+    global _CAPPED
+    if _CAPPED is None:
+        _CAPPED = _CappedSource(get_source())
+    return _CAPPED
+
+
+viz.get_source = _capped_source  # the visualization functions read their data through this name
 
 
 def _native(value):
@@ -258,41 +264,44 @@ def _plain(obj):
     return json.loads(json.dumps(obj, default=_native))
 
 
-def top_skills(job_type, n=10, end_month=None):
-    """Most demanded skills in one job type, by average monthly share."""
-    _require_job_type(job_type)
-    if not isinstance(n, int) or not 1 <= n <= 20:
-        raise ValueError("n must be an integer from 1 to 20")
-    top = analysis.top_skills(_viz_source(end_month), job_type, n=n)
-    return _plain({"job_type": job_type, "skills": top.round(4).to_dict("records")})
+def _compact_trends(rows):
+    """Reduces monthly rows to first, last and peak share per skill, so the model gets few tokens."""
+    by_skill = {}
+    for r in rows:
+        if r["share"] is not None:
+            by_skill.setdefault(r["skill"], []).append(r)
+    out = []
+    for skill, rs in by_skill.items():
+        peak = max(rs, key=lambda r: r["share"])
+        out.append({
+            "skill": skill,
+            "first_month": rs[0]["month"][:7], "first_share": round(rs[0]["share"], 4),
+            "last_month": rs[-1]["month"][:7], "last_share": round(rs[-1]["share"], 4),
+            "peak_month": peak["month"][:7], "peak_share": round(peak["share"], 4),
+        })
+    return out
 
 
-def skill_trend(job_type, skill, window_months=6, end_month=None):
-    """Whether one skill's share is rising, falling or flat in one job type."""
-    _require_job_type(job_type)
-    if not isinstance(window_months, int) or not 1 <= window_months <= 12:
-        raise ValueError("window_months must be an integer from 1 to 12")
-    source = _viz_source(end_month)
-    result = analysis.trend(source, job_type, skill, window_months)
-    shares = analysis.skill_share_over_time(source, job_type, [skill])
-    result["monthly"] = [
-        {"month": m.strftime("%Y-%m"), "share": round(float(s), 4)}
-        for m, s in zip(shares["month"], shares["share"])
-    ]
-    return _plain(result)
+VIZ_FUNCTIONS = {
+    "skill_trends": viz.skill_trends,
+    "top_skills": viz.top_skills,
+    "skill_trend": viz.skill_trend,
+    "rising_and_falling_skills": viz.rising_and_falling_skills,
+    "career_path": viz.career_path,
+}
 
 
-def rising_and_falling_skills(job_type, window_months=6, n=5, end_month=None):
-    """Biggest share movers in one job type over the latest window."""
-    _require_job_type(job_type)
-    if not isinstance(window_months, int) or not 1 <= window_months <= 12:
-        raise ValueError("window_months must be an integer from 1 to 12")
-    if not isinstance(n, int) or not 1 <= n <= 20:
-        raise ValueError("n must be an integer from 1 to 20")
-    result = analysis.rising_and_falling(
-        _viz_source(end_month), job_type, window_months, n, MOVER_MIN_SHARE
-    )
-    return _plain(result)
+def _run_viz_tool(name, args, charts):
+    """Runs a visualization.api function: its chart goes to the user, its summary and data to the model."""
+    try:
+        result = VIZ_FUNCTIONS[name](**args)
+    except Exception as exc:  # bad arguments or unknown skills go back to the model
+        return _tool_error(f"{type(exc).__name__}: {exc}")
+    for key in ("chart", "courses_chart"):
+        if result.get(key):
+            charts.append(result[key])
+    data = _compact_trends(result["data"]) if name == "skill_trends" else result["data"]
+    return _plain({"summary": result["summary"], "data": data})
 
 
 def validate_chart_spec(spec):
@@ -381,44 +390,69 @@ TOOLS = [
         },
     },
     {
-        "name": "top_skills",
-        "description": "Most demanded skills in one job type, ranked by average monthly share of postings. Use for 'which skills matter for X'.",
+        "name": "skill_trends",
+        "description": "Draws a line chart of skill share (or posting counts) over time in one job type, and returns first, last and peak values. Pass skill names from find_skills, or none for the top n skills.",
         "input_schema": {
             "type": "object",
             "properties": {
                 "job_type": {"type": "string", "enum": JOB_TYPES},
-                "n": {"type": "integer", "minimum": 1, "maximum": 20, "description": "Default 10"},
-                "end_month": {"type": "string", "description": f"YYYY-MM, default {DEFAULT_END_MONTH}"},
+                "skills": {"type": "array", "items": {"type": "string"}, "maxItems": 10},
+                "metric": {"type": "string", "enum": ["share", "postings"], "description": "Default share"},
+                "n": {"type": "integer", "minimum": 1, "maximum": 10, "description": "Top skills when skills is empty, default 5"},
+            },
+            "required": ["job_type"],
+        },
+    },
+    {
+        "name": "top_skills",
+        "description": "Draws a bar chart of the most demanded skills in one job type, ranked by average monthly share. Use for 'which skills matter for X'.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "job_type": {"type": "string", "enum": JOB_TYPES},
+                "n": {"type": "integer", "minimum": 1, "maximum": 25, "description": "Default 10"},
             },
             "required": ["job_type"],
         },
     },
     {
         "name": "skill_trend",
-        "description": "Whether one skill's share of postings is rising, falling or flat in one job type, comparing the last window_months with the window before. Use the canonical skill name from find_skills.",
+        "description": "Whether one skill's share is rising, falling or flat in one job type, comparing the last window_months with the window before. No chart. Use the canonical skill name from find_skills.",
         "input_schema": {
             "type": "object",
             "properties": {
                 "job_type": {"type": "string", "enum": JOB_TYPES},
                 "skill": {"type": "string"},
                 "window_months": {"type": "integer", "minimum": 1, "maximum": 12, "description": "Default 6"},
-                "end_month": {"type": "string", "description": f"YYYY-MM, default {DEFAULT_END_MONTH}"},
             },
             "required": ["job_type", "skill"],
         },
     },
     {
         "name": "rising_and_falling_skills",
-        "description": "Biggest share movers in one job type over the latest window_months, split into rising and falling lists. Skills below 2% share are ignored.",
+        "description": "Draws a bar chart of the biggest share movers in one job type over the latest window_months, and lists rising and falling skills. Skills below 2% share are ignored.",
         "input_schema": {
             "type": "object",
             "properties": {
                 "job_type": {"type": "string", "enum": JOB_TYPES},
                 "window_months": {"type": "integer", "minimum": 1, "maximum": 12, "description": "Default 6"},
-                "n": {"type": "integer", "minimum": 1, "maximum": 20, "description": "Skills per list, default 5"},
-                "end_month": {"type": "string", "description": f"YYYY-MM, default {DEFAULT_END_MONTH}"},
+                "n": {"type": "integer", "minimum": 1, "maximum": 25, "description": "Skills per list, default 5"},
             },
             "required": ["job_type"],
+        },
+    },
+    {
+        "name": "career_path",
+        "description": "For moving from one job type to another: the skills to learn and Coursera courses that cover them, with two charts.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "from_job": {"type": "string", "enum": JOB_TYPES},
+                "to_job": {"type": "string", "enum": JOB_TYPES},
+                "n_skills": {"type": "integer", "minimum": 1, "maximum": 25, "description": "Default 8"},
+                "max_courses": {"type": "integer", "minimum": 1, "maximum": 10, "description": "Default 5"},
+            },
+            "required": ["from_job", "to_job"],
         },
     },
     {
@@ -500,9 +534,6 @@ TOOL_FUNCTIONS = {
     "get_skill_share": get_skill_share,
     "top_movers": top_movers,
     "profile_advice": profile_advice,
-    "top_skills": top_skills,
-    "skill_trend": skill_trend,
-    "rising_and_falling_skills": rising_and_falling_skills,
 }
 
 
@@ -512,47 +543,18 @@ def _cached_tools():
     return tools
 
 
-VIZ_TOOLS = {"top_skills", "skill_trend", "rising_and_falling_skills"}
-
-
-def _viz_chart(name, output):
-    """Builds a chart spec in the index.html format from a visualization tool result."""
-    if name == "top_skills":
-        points = [[r["skill"], r["avg_share"]] for r in output["skills"]]
-        return {"type": "bar", "title": f"Top skills in {output['job_type']}",
-                "y_label": "Average share of postings",
-                "series": [{"name": "Average share", "points": points}]}
-    if name == "rising_and_falling_skills":
-        rows = output["rising"] + output["falling"]
-        points = [[r["skill"], r["relative_change"]] for r in rows]
-        return {"type": "bar", "title": f"Biggest share changes in {output['job_type']}",
-                "y_label": "Relative change in share",
-                "series": [{"name": "Relative change", "points": points}]}
-    if name == "skill_trend":
-        points = [[m["month"], m["share"]] for m in output["monthly"]]
-        return {"type": "line", "title": f"{output['skill']} in {output['job_type']}",
-                "y_label": "Share of postings",
-                "series": [{"name": output["skill"], "points": points}]}
-    return None
-
-
 def _run_tool(name, args, charts):
     if name == "make_chart":
         return make_chart(args.get("spec"), charts)
+    if name in VIZ_FUNCTIONS:
+        return _run_viz_tool(name, args, charts)
     fn = TOOL_FUNCTIONS.get(name)
     if fn is None:
         return _tool_error(f"unknown tool {name}")
     try:
-        output = fn(**args)
+        return fn(**args)
     except Exception as exc:  # bad arguments or DuckDB errors go back to the model
         return _tool_error(f"{type(exc).__name__}: {exc}")
-    if name in VIZ_TOOLS:
-        output.setdefault("job_type", args.get("job_type"))
-        spec = _viz_chart(name, output)
-        if spec and validate_chart_spec(spec) is None:
-            charts.append(spec)
-        output.pop("monthly", None)
-    return output
 
 
 def _to_api_content(block):
