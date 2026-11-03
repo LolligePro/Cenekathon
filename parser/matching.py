@@ -8,6 +8,9 @@ from pathlib import Path
 PARSER_DIR = Path(__file__).resolve().parent
 DATA_DIR = PARSER_DIR.parent / "data"
 TAXONOMY_PATH = PARSER_DIR / "taxonomy.json"
+SKILLS_JSONL_PATH = PARSER_DIR / "skills.jsonl"
+PARSER_VERSION = "rules-v1"
+SKILL_TAXONOMY_VERSION = "skills-v1"
 
 TAG_RE = re.compile(r"<[^>]+>")
 WS_RE = re.compile(r"\s+")
@@ -48,14 +51,30 @@ def load_taxonomy(path=TAXONOMY_PATH):
     return aliases, data["max_tokens"], first_tokens
 
 
+NEGATORS = {"no", "not", "without", "nor", "never", "non", "don", "doesn", "isn", "aren", "won"}
+COMPANY_MARKERS = ("about us", "who we are", "about the company", "our company", "we are a", "we are an", "we're a", "we are the")
+SENTENCE_SPLIT_RE = re.compile(r"[.!?;\n]+")
+SENIORITY = {"senior", "sr", "junior", "jr", "lead", "medior", "intern", "trainee", "graduate"}
+GENDER_TAG_RE = re.compile(r"\(?\b[mfdx]\s*/\s*[mfdx](\s*/\s*[mfdx])?\b\)?")
+
+
 def find_skills(text, aliases, max_tokens, first_tokens):
-    tokens = TOKEN_RE.findall(text.lower())
     found = set()
-    for i, token in enumerate(tokens):
-        if token not in first_tokens:
+    for sentence in SENTENCE_SPLIT_RE.split(text.lower()):
+        if any(marker in sentence for marker in COMPANY_MARKERS):
             continue
-        for n in range(1, min(max_tokens, len(tokens) - i) + 1):
-            name = aliases.get(" ".join(tokens[i:i + n]))
-            if name:
-                found.add(name)
+        tokens = TOKEN_RE.findall(sentence)
+        for i, token in enumerate(tokens):
+            if token not in first_tokens or NEGATORS.intersection(tokens[max(0, i - 3):i]):
+                continue
+            for n in range(1, min(max_tokens, len(tokens) - i) + 1):
+                skill_id = aliases.get(" ".join(tokens[i:i + n]))
+                if skill_id:
+                    found.add(skill_id)
     return sorted(found)
+
+
+def normalise_title(title):
+    text = GENDER_TAG_RE.sub(" ", clean_text(title).lower())
+    text = re.sub(r"\(.*?\)|\[.*?\]", " ", text)
+    return " ".join(token for token in TOKEN_RE.findall(text) if token not in SENIORITY)

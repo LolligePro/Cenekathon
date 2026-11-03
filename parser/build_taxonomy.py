@@ -10,8 +10,9 @@ import pyarrow.parquet as pq
 
 from matching import (
     DATA_DIR,
-    JOB_TYPES,
     PARSER_DIR,
+    SKILL_TAXONOMY_VERSION,
+    SKILLS_JSONL_PATH,
     TAXONOMY_PATH,
     TOKEN_RE,
     clean_text,
@@ -45,18 +46,29 @@ def build_taxonomy(conn, min_df):
         if base != key and base in kept:
             aliases[key] = base
 
-    names = {name for name in aliases.values()}
-    skills = sorted(
-        ({"name": name, "sample_df": counts[name]} for name in names),
-        key=lambda s: -s["sample_df"],
-    )
+    canonical = sorted(set(aliases.values()), key=lambda name: (-counts[name], name))
+    skill_ids = {name: f"S{i:03d}" for i, name in enumerate(canonical, 1)}
+    synonyms = defaultdict(list)
+    for key, name in aliases.items():
+        if key != name:
+            synonyms[name].append(key)
+    skills = [
+        {
+            "skill_id": skill_ids[name],
+            "name": name,
+            "category": None,
+            "synonyms": sorted(synonyms[name]),
+            "sample_df": counts[name],
+        }
+        for name in canonical
+    ]
     return {
+        "skill_taxonomy_version": SKILL_TAXONOMY_VERSION,
         "sample_postings": total,
         "min_df": min_df,
         "max_tokens": max(len(key.split()) for key in aliases),
         "skills": skills,
-        "aliases": aliases,
-        "job_types": JOB_TYPES,
+        "aliases": {key: skill_ids[name] for key, name in aliases.items()},
     }
 
 
@@ -102,7 +114,11 @@ def main():
     conn = sqlite3.connect(DB_PATH)
     taxonomy = build_taxonomy(conn, args.min_df)
     TAXONOMY_PATH.write_text(json.dumps(taxonomy, indent=2))
-    print(f"wrote {len(taxonomy['skills'])} skills to {TAXONOMY_PATH.name}")
+    with open(SKILLS_JSONL_PATH, "w", encoding="utf-8") as f:
+        for skill in taxonomy["skills"]:
+            record = {k: skill[k] for k in ("skill_id", "name", "category", "synonyms")}
+            f.write(json.dumps(record, ensure_ascii=False) + "\n")
+    print(f"wrote {len(taxonomy['skills'])} skills to {TAXONOMY_PATH.name} and {SKILLS_JSONL_PATH.name}")
 
     aliases, max_tokens, first_tokens = load_taxonomy()
     validate(conn, aliases, max_tokens, first_tokens)
