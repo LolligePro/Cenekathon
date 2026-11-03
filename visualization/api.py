@@ -64,6 +64,29 @@ def top_skills(
     }
 
 
+def job_type_skills(job_type: str, n: int = 15) -> dict:
+    """Skill profile of one job type: the n most demanded skills and their share.
+
+    Use this when the user asks which skills a job type needs. `job_type` must be
+    one of `list_job_types()`.
+    """
+    _check_n(n, MAX_TOP_N)
+    if job_type not in list_job_types():
+        raise ValueError(f"Unknown job type {job_type!r}; see list_job_types()")
+    source = get_source()
+    top = analysis.top_skills(source, job_type, n=n)
+    totals = source.monthly_totals()
+    total = int(totals.loc[totals["job_type"] == job_type, "total_postings"].sum())
+    return {
+        "summary": (
+            f"Top {len(top)} skills for {job_type}, out of {total:,} postings "
+            "over the full period."
+        ),
+        "data": top.to_dict("records"),
+        "chart": charts.top_skills_chart(top, job_type),
+    }
+
+
 def skill_trend(job_type: str, skill: str, window_months: int = 6) -> dict:
     result = analysis.trend(get_source(), job_type, skill, window_months)
     pct = (

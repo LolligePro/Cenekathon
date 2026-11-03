@@ -63,6 +63,11 @@ def build_gallery() -> list[tuple[str, str, dict]]:
             api.top_skills(job, n=10)["chart"],
         ),
         (
+            "Skill profile by job type",
+            "The 15 most demanded skills for one job type, as the advisor would return them.",
+            api.job_type_skills("legal", n=15)["chart"],
+        ),
+        (
             "Rising and falling skills",
             "Biggest share movers in the last 6 months. Skills under 2% share are ignored.",
             api.rising_and_falling_skills(job, n=4)["chart"],
