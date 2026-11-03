@@ -1,0 +1,1281 @@
+job_type,month,skill,postings
+Software Engineer,2024-01-01,Python,439
+Software Engineer,2024-01-01,SQL,390
+Software Engineer,2024-01-01,Java,317
+Software Engineer,2024-01-01,Kubernetes,122
+Software Engineer,2024-01-01,Machine Learning,101
+Software Engineer,2024-01-01,Excel,335
+Software Engineer,2024-01-01,Power BI,177
+Software Engineer,2024-01-01,Communication,530
+Software Engineer,2024-01-01,AML,139
+Software Engineer,2024-01-01,KYC,195
+Software Engineer,2024-02-01,Python,481
+Software Engineer,2024-02-01,SQL,413
+Software Engineer,2024-02-01,Java,318
+Software Engineer,2024-02-01,Kubernetes,150
+Software Engineer,2024-02-01,Machine Learning,136
+Software Engineer,2024-02-01,Excel,326
+Software Engineer,2024-02-01,Power BI,206
+Software Engineer,2024-02-01,Communication,552
+Software Engineer,2024-02-01,AML,154
+Software Engineer,2024-02-01,KYC,181
+Software Engineer,2024-03-01,Python,490
+Software Engineer,2024-03-01,SQL,392
+Software Engineer,2024-03-01,Java,303
+Software Engineer,2024-03-01,Kubernetes,179
+Software Engineer,2024-03-01,Machine Learning,142
+Software Engineer,2024-03-01,Excel,345
+Software Engineer,2024-03-01,Power BI,204
+Software Engineer,2024-03-01,Communication,593
+Software Engineer,2024-03-01,AML,151
+Software Engineer,2024-03-01,KYC,189
+Software Engineer,2024-04-01,Python,429
+Software Engineer,2024-04-01,SQL,351
+Software Engineer,2024-04-01,Java,254
+Software Engineer,2024-04-01,Kubernetes,137
+Software Engineer,2024-04-01,Machine Learning,107
+Software Engineer,2024-04-01,Excel,288
+Software Engineer,2024-04-01,Power BI,178
+Software Engineer,2024-04-01,Communication,478
+Software Engineer,2024-04-01,AML,122
+Software Engineer,2024-04-01,KYC,171
+Software Engineer,2024-05-01,Python,431
+Software Engineer,2024-05-01,SQL,350
+Software Engineer,2024-05-01,Java,255
+Software Engineer,2024-05-01,Kubernetes,162
+Software Engineer,2024-05-01,Machine Learning,123
+Software Engineer,2024-05-01,Excel,279
+Software Engineer,2024-05-01,Power BI,180
+Software Engineer,2024-05-01,Communication,453
+Software Engineer,2024-05-01,AML,126
+Software Engineer,2024-05-01,KYC,165
+Software Engineer,2024-06-01,Python,454
+Software Engineer,2024-06-01,SQL,378
+Software Engineer,2024-06-01,Java,249
+Software Engineer,2024-06-01,Kubernetes,180
+Software Engineer,2024-06-01,Machine Learning,108
+Software Engineer,2024-06-01,Excel,280
+Software Engineer,2024-06-01,Power BI,186
+Software Engineer,2024-06-01,Communication,508
+Software Engineer,2024-06-01,AML,147
+Software Engineer,2024-06-01,KYC,195
+Software Engineer,2024-07-01,Python,385
+Software Engineer,2024-07-01,SQL,311
+Software Engineer,2024-07-01,Java,214
+Software Engineer,2024-07-01,Kubernetes,129
+Software Engineer,2024-07-01,Machine Learning,101
+Software Engineer,2024-07-01,Excel,223
+Software Engineer,2024-07-01,Power BI,162
+Software Engineer,2024-07-01,Communication,422
+Software Engineer,2024-07-01,AML,122
+Software Engineer,2024-07-01,KYC,151
+Software Engineer,2024-08-01,Python,510
+Software Engineer,2024-08-01,SQL,375
+Software Engineer,2024-08-01,Java,275
+Software Engineer,2024-08-01,Kubernetes,177
+Software Engineer,2024-08-01,Machine Learning,143
+Software Engineer,2024-08-01,Excel,284
+Software Engineer,2024-08-01,Power BI,182
+Software Engineer,2024-08-01,Communication,539
+Software Engineer,2024-08-01,AML,136
+Software Engineer,2024-08-01,KYC,200
+Software Engineer,2024-09-01,Python,423
+Software Engineer,2024-09-01,SQL,322
+Software Engineer,2024-09-01,Java,216
+Software Engineer,2024-09-01,Kubernetes,153
+Software Engineer,2024-09-01,Machine Learning,124
+Software Engineer,2024-09-01,Excel,213
+Software Engineer,2024-09-01,Power BI,149
+Software Engineer,2024-09-01,Communication,422
+Software Engineer,2024-09-01,AML,104
+Software Engineer,2024-09-01,KYC,172
+Software Engineer,2024-10-01,Python,495
+Software Engineer,2024-10-01,SQL,390
+Software Engineer,2024-10-01,Java,247
+Software Engineer,2024-10-01,Kubernetes,204
+Software Engineer,2024-10-01,Machine Learning,138
+Software Engineer,2024-10-01,Excel,268
+Software Engineer,2024-10-01,Power BI,186
+Software Engineer,2024-10-01,Communication,514
+Software Engineer,2024-10-01,AML,150
+Software Engineer,2024-10-01,KYC,175
+Software Engineer,2024-11-01,Python,453
+Software Engineer,2024-11-01,SQL,322
+Software Engineer,2024-11-01,Java,201
+Software Engineer,2024-11-01,Kubernetes,177
+Software Engineer,2024-11-01,Machine Learning,131
+Software Engineer,2024-11-01,Excel,238
+Software Engineer,2024-11-01,Power BI,180
+Software Engineer,2024-11-01,Communication,482
+Software Engineer,2024-11-01,AML,118
+Software Engineer,2024-11-01,KYC,167
+Software Engineer,2024-12-01,Python,475
+Software Engineer,2024-12-01,SQL,360
+Software Engineer,2024-12-01,Java,234
+Software Engineer,2024-12-01,Kubernetes,191
+Software Engineer,2024-12-01,Machine Learning,167
+Software Engineer,2024-12-01,Excel,221
+Software Engineer,2024-12-01,Power BI,180
+Software Engineer,2024-12-01,Communication,465
+Software Engineer,2024-12-01,AML,119
+Software Engineer,2024-12-01,KYC,170
+Software Engineer,2025-01-01,Python,500
+Software Engineer,2025-01-01,SQL,338
+Software Engineer,2025-01-01,Java,215
+Software Engineer,2025-01-01,Kubernetes,206
+Software Engineer,2025-01-01,Machine Learning,170
+Software Engineer,2025-01-01,Excel,273
+Software Engineer,2025-01-01,Power BI,243
+Software Engineer,2025-01-01,Communication,509
+Software Engineer,2025-01-01,AML,115
+Software Engineer,2025-01-01,KYC,171
+Software Engineer,2025-02-01,Python,451
+Software Engineer,2025-02-01,SQL,320
+Software Engineer,2025-02-01,Java,196
+Software Engineer,2025-02-01,Kubernetes,185
+Software Engineer,2025-02-01,Machine Learning,160
+Software Engineer,2025-02-01,Excel,218
+Software Engineer,2025-02-01,Power BI,182
+Software Engineer,2025-02-01,Communication,442
+Software Engineer,2025-02-01,AML,94
+Software Engineer,2025-02-01,KYC,178
+Software Engineer,2025-03-01,Python,472
+Software Engineer,2025-03-01,SQL,350
+Software Engineer,2025-03-01,Java,202
+Software Engineer,2025-03-01,Kubernetes,205
+Software Engineer,2025-03-01,Machine Learning,144
+Software Engineer,2025-03-01,Excel,196
+Software Engineer,2025-03-01,Power BI,175
+Software Engineer,2025-03-01,Communication,448
+Software Engineer,2025-03-01,AML,143
+Software Engineer,2025-03-01,KYC,177
+Software Engineer,2025-04-01,Python,540
+Software Engineer,2025-04-01,SQL,396
+Software Engineer,2025-04-01,Java,235
+Software Engineer,2025-04-01,Kubernetes,227
+Software Engineer,2025-04-01,Machine Learning,179
+Software Engineer,2025-04-01,Excel,231
+Software Engineer,2025-04-01,Power BI,229
+Software Engineer,2025-04-01,Communication,528
+Software Engineer,2025-04-01,AML,115
+Software Engineer,2025-04-01,KYC,202
+Software Engineer,2025-05-01,Python,598
+Software Engineer,2025-05-01,SQL,394
+Software Engineer,2025-05-01,Java,228
+Software Engineer,2025-05-01,Kubernetes,244
+Software Engineer,2025-05-01,Machine Learning,208
+Software Engineer,2025-05-01,Excel,243
+Software Engineer,2025-05-01,Power BI,223
+Software Engineer,2025-05-01,Communication,565
+Software Engineer,2025-05-01,AML,142
+Software Engineer,2025-05-01,KYC,253
+Software Engineer,2025-06-01,Python,466
+Software Engineer,2025-06-01,SQL,307
+Software Engineer,2025-06-01,Java,208
+Software Engineer,2025-06-01,Kubernetes,226
+Software Engineer,2025-06-01,Machine Learning,157
+Software Engineer,2025-06-01,Excel,189
+Software Engineer,2025-06-01,Power BI,212
+Software Engineer,2025-06-01,Communication,441
+Software Engineer,2025-06-01,AML,100
+Software Engineer,2025-06-01,KYC,201
+Software Engineer,2025-07-01,Python,599
+Software Engineer,2025-07-01,SQL,397
+Software Engineer,2025-07-01,Java,229
+Software Engineer,2025-07-01,Kubernetes,278
+Software Engineer,2025-07-01,Machine Learning,201
+Software Engineer,2025-07-01,Excel,242
+Software Engineer,2025-07-01,Power BI,207
+Software Engineer,2025-07-01,Communication,559
+Software Engineer,2025-07-01,AML,122
+Software Engineer,2025-07-01,KYC,220
+Software Engineer,2025-08-01,Python,478
+Software Engineer,2025-08-01,SQL,330
+Software Engineer,2025-08-01,Java,157
+Software Engineer,2025-08-01,Kubernetes,208
+Software Engineer,2025-08-01,Machine Learning,156
+Software Engineer,2025-08-01,Excel,175
+Software Engineer,2025-08-01,Power BI,206
+Software Engineer,2025-08-01,Communication,452
+Software Engineer,2025-08-01,AML,124
+Software Engineer,2025-08-01,KYC,191
+Software Engineer,2025-09-01,Python,601
+Software Engineer,2025-09-01,SQL,398
+Software Engineer,2025-09-01,Java,213
+Software Engineer,2025-09-01,Kubernetes,246
+Software Engineer,2025-09-01,Machine Learning,207
+Software Engineer,2025-09-01,Excel,219
+Software Engineer,2025-09-01,Power BI,282
+Software Engineer,2025-09-01,Communication,582
+Software Engineer,2025-09-01,AML,118
+Software Engineer,2025-09-01,KYC,237
+Software Engineer,2025-10-01,Python,529
+Software Engineer,2025-10-01,SQL,351
+Software Engineer,2025-10-01,Java,197
+Software Engineer,2025-10-01,Kubernetes,226
+Software Engineer,2025-10-01,Machine Learning,175
+Software Engineer,2025-10-01,Excel,154
+Software Engineer,2025-10-01,Power BI,213
+Software Engineer,2025-10-01,Communication,470
+Software Engineer,2025-10-01,AML,107
+Software Engineer,2025-10-01,KYC,203
+Software Engineer,2025-11-01,Python,547
+Software Engineer,2025-11-01,SQL,344
+Software Engineer,2025-11-01,Java,216
+Software Engineer,2025-11-01,Kubernetes,235
+Software Engineer,2025-11-01,Machine Learning,181
+Software Engineer,2025-11-01,Excel,215
+Software Engineer,2025-11-01,Power BI,272
+Software Engineer,2025-11-01,Communication,495
+Software Engineer,2025-11-01,AML,114
+Software Engineer,2025-11-01,KYC,234
+Software Engineer,2025-12-01,Python,593
+Software Engineer,2025-12-01,SQL,380
+Software Engineer,2025-12-01,Java,201
+Software Engineer,2025-12-01,Kubernetes,278
+Software Engineer,2025-12-01,Machine Learning,205
+Software Engineer,2025-12-01,Excel,189
+Software Engineer,2025-12-01,Power BI,222
+Software Engineer,2025-12-01,Communication,534
+Software Engineer,2025-12-01,AML,120
+Software Engineer,2025-12-01,KYC,247
+Software Engineer,2026-01-01,Python,491
+Software Engineer,2026-01-01,SQL,315
+Software Engineer,2026-01-01,Java,147
+Software Engineer,2026-01-01,Kubernetes,222
+Software Engineer,2026-01-01,Machine Learning,170
+Software Engineer,2026-01-01,Excel,145
+Software Engineer,2026-01-01,Power BI,185
+Software Engineer,2026-01-01,Communication,428
+Software Engineer,2026-01-01,AML,96
+Software Engineer,2026-01-01,KYC,219
+Software Engineer,2026-02-01,Python,583
+Software Engineer,2026-02-01,SQL,346
+Software Engineer,2026-02-01,Java,151
+Software Engineer,2026-02-01,Kubernetes,279
+Software Engineer,2026-02-01,Machine Learning,207
+Software Engineer,2026-02-01,Excel,172
+Software Engineer,2026-02-01,Power BI,206
+Software Engineer,2026-02-01,Communication,513
+Software Engineer,2026-02-01,AML,120
+Software Engineer,2026-02-01,KYC,215
+Software Engineer,2026-03-01,Python,627
+Software Engineer,2026-03-01,SQL,382
+Software Engineer,2026-03-01,Java,168
+Software Engineer,2026-03-01,Kubernetes,283
+Software Engineer,2026-03-01,Machine Learning,217
+Software Engineer,2026-03-01,Excel,173
+Software Engineer,2026-03-01,Power BI,272
+Software Engineer,2026-03-01,Communication,495
+Software Engineer,2026-03-01,AML,116
+Software Engineer,2026-03-01,KYC,252
+Software Engineer,2026-04-01,Python,532
+Software Engineer,2026-04-01,SQL,302
+Software Engineer,2026-04-01,Java,147
+Software Engineer,2026-04-01,Kubernetes,270
+Software Engineer,2026-04-01,Machine Learning,172
+Software Engineer,2026-04-01,Excel,151
+Software Engineer,2026-04-01,Power BI,210
+Software Engineer,2026-04-01,Communication,455
+Software Engineer,2026-04-01,AML,87
+Software Engineer,2026-04-01,KYC,210
+Software Engineer,2026-05-01,Python,671
+Software Engineer,2026-05-01,SQL,425
+Software Engineer,2026-05-01,Java,188
+Software Engineer,2026-05-01,Kubernetes,314
+Software Engineer,2026-05-01,Machine Learning,266
+Software Engineer,2026-05-01,Excel,171
+Software Engineer,2026-05-01,Power BI,278
+Software Engineer,2026-05-01,Communication,551
+Software Engineer,2026-05-01,AML,123
+Software Engineer,2026-05-01,KYC,254
+Software Engineer,2026-06-01,Python,613
+Software Engineer,2026-06-01,SQL,386
+Software Engineer,2026-06-01,Java,152
+Software Engineer,2026-06-01,Kubernetes,312
+Software Engineer,2026-06-01,Machine Learning,240
+Software Engineer,2026-06-01,Excel,176
+Software Engineer,2026-06-01,Power BI,263
+Software Engineer,2026-06-01,Communication,501
+Software Engineer,2026-06-01,AML,113
+Software Engineer,2026-06-01,KYC,235
+Software Engineer,2026-07-01,Python,672
+Software Engineer,2026-07-01,SQL,391
+Software Engineer,2026-07-01,Java,142
+Software Engineer,2026-07-01,Kubernetes,290
+Software Engineer,2026-07-01,Machine Learning,237
+Software Engineer,2026-07-01,Excel,126
+Software Engineer,2026-07-01,Power BI,249
+Software Engineer,2026-07-01,Communication,539
+Software Engineer,2026-07-01,AML,132
+Software Engineer,2026-07-01,KYC,269
+Software Engineer,2026-08-01,Python,599
+Software Engineer,2026-08-01,SQL,347
+Software Engineer,2026-08-01,Java,140
+Software Engineer,2026-08-01,Kubernetes,304
+Software Engineer,2026-08-01,Machine Learning,190
+Software Engineer,2026-08-01,Excel,118
+Software Engineer,2026-08-01,Power BI,246
+Software Engineer,2026-08-01,Communication,463
+Software Engineer,2026-08-01,AML,123
+Software Engineer,2026-08-01,KYC,243
+Data Analyst,2024-01-01,Python,201
+Data Analyst,2024-01-01,SQL,176
+Data Analyst,2024-01-01,Java,144
+Data Analyst,2024-01-01,Kubernetes,70
+Data Analyst,2024-01-01,Machine Learning,56
+Data Analyst,2024-01-01,Excel,152
+Data Analyst,2024-01-01,Power BI,76
+Data Analyst,2024-01-01,Communication,238
+Data Analyst,2024-01-01,AML,67
+Data Analyst,2024-01-01,KYC,84
+Data Analyst,2024-02-01,Python,232
+Data Analyst,2024-02-01,SQL,197
+Data Analyst,2024-02-01,Java,167
+Data Analyst,2024-02-01,Kubernetes,76
+Data Analyst,2024-02-01,Machine Learning,59
+Data Analyst,2024-02-01,Excel,172
+Data Analyst,2024-02-01,Power BI,103
+Data Analyst,2024-02-01,Communication,277
+Data Analyst,2024-02-01,AML,89
+Data Analyst,2024-02-01,KYC,103
+Data Analyst,2024-03-01,Python,249
+Data Analyst,2024-03-01,SQL,217
+Data Analyst,2024-03-01,Java,152
+Data Analyst,2024-03-01,Kubernetes,69
+Data Analyst,2024-03-01,Machine Learning,80
+Data Analyst,2024-03-01,Excel,164
+Data Analyst,2024-03-01,Power BI,99
+Data Analyst,2024-03-01,Communication,288
+Data Analyst,2024-03-01,AML,65
+Data Analyst,2024-03-01,KYC,88
+Data Analyst,2024-04-01,Python,210
+Data Analyst,2024-04-01,SQL,176
+Data Analyst,2024-04-01,Java,135
+Data Analyst,2024-04-01,Kubernetes,78
+Data Analyst,2024-04-01,Machine Learning,51
+Data Analyst,2024-04-01,Excel,127
+Data Analyst,2024-04-01,Power BI,87
+Data Analyst,2024-04-01,Communication,239
+Data Analyst,2024-04-01,AML,71
+Data Analyst,2024-04-01,KYC,91
+Data Analyst,2024-05-01,Python,249
+Data Analyst,2024-05-01,SQL,202
+Data Analyst,2024-05-01,Java,156
+Data Analyst,2024-05-01,Kubernetes,93
+Data Analyst,2024-05-01,Machine Learning,77
+Data Analyst,2024-05-01,Excel,158
+Data Analyst,2024-05-01,Power BI,100
+Data Analyst,2024-05-01,Communication,283
+Data Analyst,2024-05-01,AML,84
+Data Analyst,2024-05-01,KYC,99
+Data Analyst,2024-06-01,Python,233
+Data Analyst,2024-06-01,SQL,182
+Data Analyst,2024-06-01,Java,140
+Data Analyst,2024-06-01,Kubernetes,71
+Data Analyst,2024-06-01,Machine Learning,58
+Data Analyst,2024-06-01,Excel,135
+Data Analyst,2024-06-01,Power BI,77
+Data Analyst,2024-06-01,Communication,251
+Data Analyst,2024-06-01,AML,76
+Data Analyst,2024-06-01,KYC,92
+Data Analyst,2024-07-01,Python,254
+Data Analyst,2024-07-01,SQL,199
+Data Analyst,2024-07-01,Java,136
+Data Analyst,2024-07-01,Kubernetes,101
+Data Analyst,2024-07-01,Machine Learning,73
+Data Analyst,2024-07-01,Excel,141
+Data Analyst,2024-07-01,Power BI,94
+Data Analyst,2024-07-01,Communication,254
+Data Analyst,2024-07-01,AML,65
+Data Analyst,2024-07-01,KYC,96
+Data Analyst,2024-08-01,Python,258
+Data Analyst,2024-08-01,SQL,176
+Data Analyst,2024-08-01,Java,134
+Data Analyst,2024-08-01,Kubernetes,84
+Data Analyst,2024-08-01,Machine Learning,76
+Data Analyst,2024-08-01,Excel,141
+Data Analyst,2024-08-01,Power BI,84
+Data Analyst,2024-08-01,Communication,267
+Data Analyst,2024-08-01,AML,66
+Data Analyst,2024-08-01,KYC,94
+Data Analyst,2024-09-01,Python,261
+Data Analyst,2024-09-01,SQL,203
+Data Analyst,2024-09-01,Java,137
+Data Analyst,2024-09-01,Kubernetes,104
+Data Analyst,2024-09-01,Machine Learning,83
+Data Analyst,2024-09-01,Excel,160
+Data Analyst,2024-09-01,Power BI,104
+Data Analyst,2024-09-01,Communication,268
+Data Analyst,2024-09-01,AML,83
+Data Analyst,2024-09-01,KYC,104
+Data Analyst,2024-10-01,Python,270
+Data Analyst,2024-10-01,SQL,197
+Data Analyst,2024-10-01,Java,137
+Data Analyst,2024-10-01,Kubernetes,118
+Data Analyst,2024-10-01,Machine Learning,98
+Data Analyst,2024-10-01,Excel,145
+Data Analyst,2024-10-01,Power BI,108
+Data Analyst,2024-10-01,Communication,286
+Data Analyst,2024-10-01,AML,67
+Data Analyst,2024-10-01,KYC,110
+Data Analyst,2024-11-01,Python,251
+Data Analyst,2024-11-01,SQL,176
+Data Analyst,2024-11-01,Java,110
+Data Analyst,2024-11-01,Kubernetes,82
+Data Analyst,2024-11-01,Machine Learning,68
+Data Analyst,2024-11-01,Excel,126
+Data Analyst,2024-11-01,Power BI,97
+Data Analyst,2024-11-01,Communication,269
+Data Analyst,2024-11-01,AML,75
+Data Analyst,2024-11-01,KYC,92
+Data Analyst,2024-12-01,Python,244
+Data Analyst,2024-12-01,SQL,176
+Data Analyst,2024-12-01,Java,118
+Data Analyst,2024-12-01,Kubernetes,102
+Data Analyst,2024-12-01,Machine Learning,74
+Data Analyst,2024-12-01,Excel,132
+Data Analyst,2024-12-01,Power BI,90
+Data Analyst,2024-12-01,Communication,250
+Data Analyst,2024-12-01,AML,83
+Data Analyst,2024-12-01,KYC,100
+Data Analyst,2025-01-01,Python,263
+Data Analyst,2025-01-01,SQL,192
+Data Analyst,2025-01-01,Java,119
+Data Analyst,2025-01-01,Kubernetes,104
+Data Analyst,2025-01-01,Machine Learning,77
+Data Analyst,2025-01-01,Excel,131
+Data Analyst,2025-01-01,Power BI,98
+Data Analyst,2025-01-01,Communication,267
+Data Analyst,2025-01-01,AML,76
+Data Analyst,2025-01-01,KYC,108
+Data Analyst,2025-02-01,Python,234
+Data Analyst,2025-02-01,SQL,161
+Data Analyst,2025-02-01,Java,108
+Data Analyst,2025-02-01,Kubernetes,82
+Data Analyst,2025-02-01,Machine Learning,71
+Data Analyst,2025-02-01,Excel,95
+Data Analyst,2025-02-01,Power BI,83
+Data Analyst,2025-02-01,Communication,237
+Data Analyst,2025-02-01,AML,64
+Data Analyst,2025-02-01,KYC,88
+Data Analyst,2025-03-01,Python,204
+Data Analyst,2025-03-01,SQL,152
+Data Analyst,2025-03-01,Java,110
+Data Analyst,2025-03-01,Kubernetes,94
+Data Analyst,2025-03-01,Machine Learning,68
+Data Analyst,2025-03-01,Excel,103
+Data Analyst,2025-03-01,Power BI,79
+Data Analyst,2025-03-01,Communication,215
+Data Analyst,2025-03-01,AML,55
+Data Analyst,2025-03-01,KYC,88
+Data Analyst,2025-04-01,Python,233
+Data Analyst,2025-04-01,SQL,164
+Data Analyst,2025-04-01,Java,91
+Data Analyst,2025-04-01,Kubernetes,101
+Data Analyst,2025-04-01,Machine Learning,85
+Data Analyst,2025-04-01,Excel,94
+Data Analyst,2025-04-01,Power BI,87
+Data Analyst,2025-04-01,Communication,232
+Data Analyst,2025-04-01,AML,55
+Data Analyst,2025-04-01,KYC,101
+Data Analyst,2025-05-01,Python,258
+Data Analyst,2025-05-01,SQL,170
+Data Analyst,2025-05-01,Java,101
+Data Analyst,2025-05-01,Kubernetes,114
+Data Analyst,2025-05-01,Machine Learning,79
+Data Analyst,2025-05-01,Excel,97
+Data Analyst,2025-05-01,Power BI,96
+Data Analyst,2025-05-01,Communication,240
+Data Analyst,2025-05-01,AML,48
+Data Analyst,2025-05-01,KYC,104
+Data Analyst,2025-06-01,Python,266
+Data Analyst,2025-06-01,SQL,158
+Data Analyst,2025-06-01,Java,94
+Data Analyst,2025-06-01,Kubernetes,97
+Data Analyst,2025-06-01,Machine Learning,80
+Data Analyst,2025-06-01,Excel,106
+Data Analyst,2025-06-01,Power BI,102
+Data Analyst,2025-06-01,Communication,242
+Data Analyst,2025-06-01,AML,59
+Data Analyst,2025-06-01,KYC,105
+Data Analyst,2025-07-01,Python,256
+Data Analyst,2025-07-01,SQL,172
+Data Analyst,2025-07-01,Java,97
+Data Analyst,2025-07-01,Kubernetes,111
+Data Analyst,2025-07-01,Machine Learning,86
+Data Analyst,2025-07-01,Excel,111
+Data Analyst,2025-07-01,Power BI,100
+Data Analyst,2025-07-01,Communication,233
+Data Analyst,2025-07-01,AML,52
+Data Analyst,2025-07-01,KYC,94
+Data Analyst,2025-08-01,Python,247
+Data Analyst,2025-08-01,SQL,166
+Data Analyst,2025-08-01,Java,93
+Data Analyst,2025-08-01,Kubernetes,109
+Data Analyst,2025-08-01,Machine Learning,80
+Data Analyst,2025-08-01,Excel,100
+Data Analyst,2025-08-01,Power BI,106
+Data Analyst,2025-08-01,Communication,232
+Data Analyst,2025-08-01,AML,52
+Data Analyst,2025-08-01,KYC,105
+Data Analyst,2025-09-01,Python,243
+Data Analyst,2025-09-01,SQL,164
+Data Analyst,2025-09-01,Java,90
+Data Analyst,2025-09-01,Kubernetes,104
+Data Analyst,2025-09-01,Machine Learning,87
+Data Analyst,2025-09-01,Excel,80
+Data Analyst,2025-09-01,Power BI,110
+Data Analyst,2025-09-01,Communication,239
+Data Analyst,2025-09-01,AML,53
+Data Analyst,2025-09-01,KYC,103
+Data Analyst,2025-10-01,Python,280
+Data Analyst,2025-10-01,SQL,184
+Data Analyst,2025-10-01,Java,89
+Data Analyst,2025-10-01,Kubernetes,132
+Data Analyst,2025-10-01,Machine Learning,114
+Data Analyst,2025-10-01,Excel,90
+Data Analyst,2025-10-01,Power BI,109
+Data Analyst,2025-10-01,Communication,263
+Data Analyst,2025-10-01,AML,74
+Data Analyst,2025-10-01,KYC,107
+Data Analyst,2025-11-01,Python,268
+Data Analyst,2025-11-01,SQL,153
+Data Analyst,2025-11-01,Java,75
+Data Analyst,2025-11-01,Kubernetes,111
+Data Analyst,2025-11-01,Machine Learning,85
+Data Analyst,2025-11-01,Excel,89
+Data Analyst,2025-11-01,Power BI,104
+Data Analyst,2025-11-01,Communication,218
+Data Analyst,2025-11-01,AML,57
+Data Analyst,2025-11-01,KYC,99
+Data Analyst,2025-12-01,Python,238
+Data Analyst,2025-12-01,SQL,149
+Data Analyst,2025-12-01,Java,79
+Data Analyst,2025-12-01,Kubernetes,113
+Data Analyst,2025-12-01,Machine Learning,87
+Data Analyst,2025-12-01,Excel,66
+Data Analyst,2025-12-01,Power BI,100
+Data Analyst,2025-12-01,Communication,208
+Data Analyst,2025-12-01,AML,51
+Data Analyst,2025-12-01,KYC,88
+Data Analyst,2026-01-01,Python,297
+Data Analyst,2026-01-01,SQL,180
+Data Analyst,2026-01-01,Java,96
+Data Analyst,2026-01-01,Kubernetes,138
+Data Analyst,2026-01-01,Machine Learning,101
+Data Analyst,2026-01-01,Excel,102
+Data Analyst,2026-01-01,Power BI,118
+Data Analyst,2026-01-01,Communication,265
+Data Analyst,2026-01-01,AML,63
+Data Analyst,2026-01-01,KYC,116
+Data Analyst,2026-02-01,Python,240
+Data Analyst,2026-02-01,SQL,148
+Data Analyst,2026-02-01,Java,78
+Data Analyst,2026-02-01,Kubernetes,104
+Data Analyst,2026-02-01,Machine Learning,71
+Data Analyst,2026-02-01,Excel,79
+Data Analyst,2026-02-01,Power BI,112
+Data Analyst,2026-02-01,Communication,208
+Data Analyst,2026-02-01,AML,36
+Data Analyst,2026-02-01,KYC,95
+Data Analyst,2026-03-01,Python,265
+Data Analyst,2026-03-01,SQL,156
+Data Analyst,2026-03-01,Java,78
+Data Analyst,2026-03-01,Kubernetes,125
+Data Analyst,2026-03-01,Machine Learning,85
+Data Analyst,2026-03-01,Excel,77
+Data Analyst,2026-03-01,Power BI,120
+Data Analyst,2026-03-01,Communication,229
+Data Analyst,2026-03-01,AML,49
+Data Analyst,2026-03-01,KYC,106
+Data Analyst,2026-04-01,Python,283
+Data Analyst,2026-04-01,SQL,180
+Data Analyst,2026-04-01,Java,76
+Data Analyst,2026-04-01,Kubernetes,149
+Data Analyst,2026-04-01,Machine Learning,104
+Data Analyst,2026-04-01,Excel,89
+Data Analyst,2026-04-01,Power BI,110
+Data Analyst,2026-04-01,Communication,254
+Data Analyst,2026-04-01,AML,58
+Data Analyst,2026-04-01,KYC,112
+Data Analyst,2026-05-01,Python,312
+Data Analyst,2026-05-01,SQL,180
+Data Analyst,2026-05-01,Java,65
+Data Analyst,2026-05-01,Kubernetes,141
+Data Analyst,2026-05-01,Machine Learning,103
+Data Analyst,2026-05-01,Excel,73
+Data Analyst,2026-05-01,Power BI,121
+Data Analyst,2026-05-01,Communication,242
+Data Analyst,2026-05-01,AML,44
+Data Analyst,2026-05-01,KYC,125
+Data Analyst,2026-06-01,Python,279
+Data Analyst,2026-06-01,SQL,182
+Data Analyst,2026-06-01,Java,75
+Data Analyst,2026-06-01,Kubernetes,134
+Data Analyst,2026-06-01,Machine Learning,98
+Data Analyst,2026-06-01,Excel,76
+Data Analyst,2026-06-01,Power BI,121
+Data Analyst,2026-06-01,Communication,264
+Data Analyst,2026-06-01,AML,57
+Data Analyst,2026-06-01,KYC,122
+Data Analyst,2026-07-01,Python,329
+Data Analyst,2026-07-01,SQL,194
+Data Analyst,2026-07-01,Java,85
+Data Analyst,2026-07-01,Kubernetes,148
+Data Analyst,2026-07-01,Machine Learning,114
+Data Analyst,2026-07-01,Excel,68
+Data Analyst,2026-07-01,Power BI,135
+Data Analyst,2026-07-01,Communication,277
+Data Analyst,2026-07-01,AML,53
+Data Analyst,2026-07-01,KYC,126
+Data Analyst,2026-08-01,Python,300
+Data Analyst,2026-08-01,SQL,182
+Data Analyst,2026-08-01,Java,52
+Data Analyst,2026-08-01,Kubernetes,137
+Data Analyst,2026-08-01,Machine Learning,105
+Data Analyst,2026-08-01,Excel,47
+Data Analyst,2026-08-01,Power BI,114
+Data Analyst,2026-08-01,Communication,239
+Data Analyst,2026-08-01,AML,51
+Data Analyst,2026-08-01,KYC,128
+Risk Manager,2024-01-01,Python,125
+Risk Manager,2024-01-01,SQL,108
+Risk Manager,2024-01-01,Java,91
+Risk Manager,2024-01-01,Kubernetes,39
+Risk Manager,2024-01-01,Machine Learning,31
+Risk Manager,2024-01-01,Excel,97
+Risk Manager,2024-01-01,Power BI,51
+Risk Manager,2024-01-01,Communication,154
+Risk Manager,2024-01-01,AML,43
+Risk Manager,2024-01-01,KYC,55
+Risk Manager,2024-02-01,Python,168
+Risk Manager,2024-02-01,SQL,137
+Risk Manager,2024-02-01,Java,102
+Risk Manager,2024-02-01,Kubernetes,49
+Risk Manager,2024-02-01,Machine Learning,50
+Risk Manager,2024-02-01,Excel,118
+Risk Manager,2024-02-01,Power BI,62
+Risk Manager,2024-02-01,Communication,193
+Risk Manager,2024-02-01,AML,61
+Risk Manager,2024-02-01,KYC,55
+Risk Manager,2024-03-01,Python,148
+Risk Manager,2024-03-01,SQL,131
+Risk Manager,2024-03-01,Java,97
+Risk Manager,2024-03-01,Kubernetes,57
+Risk Manager,2024-03-01,Machine Learning,37
+Risk Manager,2024-03-01,Excel,99
+Risk Manager,2024-03-01,Power BI,63
+Risk Manager,2024-03-01,Communication,174
+Risk Manager,2024-03-01,AML,51
+Risk Manager,2024-03-01,KYC,60
+Risk Manager,2024-04-01,Python,177
+Risk Manager,2024-04-01,SQL,145
+Risk Manager,2024-04-01,Java,111
+Risk Manager,2024-04-01,Kubernetes,53
+Risk Manager,2024-04-01,Machine Learning,37
+Risk Manager,2024-04-01,Excel,122
+Risk Manager,2024-04-01,Power BI,77
+Risk Manager,2024-04-01,Communication,191
+Risk Manager,2024-04-01,AML,44
+Risk Manager,2024-04-01,KYC,71
+Risk Manager,2024-05-01,Python,185
+Risk Manager,2024-05-01,SQL,141
+Risk Manager,2024-05-01,Java,101
+Risk Manager,2024-05-01,Kubernetes,58
+Risk Manager,2024-05-01,Machine Learning,50
+Risk Manager,2024-05-01,Excel,111
+Risk Manager,2024-05-01,Power BI,64
+Risk Manager,2024-05-01,Communication,205
+Risk Manager,2024-05-01,AML,63
+Risk Manager,2024-05-01,KYC,76
+Risk Manager,2024-06-01,Python,180
+Risk Manager,2024-06-01,SQL,140
+Risk Manager,2024-06-01,Java,103
+Risk Manager,2024-06-01,Kubernetes,71
+Risk Manager,2024-06-01,Machine Learning,54
+Risk Manager,2024-06-01,Excel,113
+Risk Manager,2024-06-01,Power BI,74
+Risk Manager,2024-06-01,Communication,193
+Risk Manager,2024-06-01,AML,43
+Risk Manager,2024-06-01,KYC,71
+Risk Manager,2024-07-01,Python,140
+Risk Manager,2024-07-01,SQL,120
+Risk Manager,2024-07-01,Java,89
+Risk Manager,2024-07-01,Kubernetes,60
+Risk Manager,2024-07-01,Machine Learning,44
+Risk Manager,2024-07-01,Excel,94
+Risk Manager,2024-07-01,Power BI,58
+Risk Manager,2024-07-01,Communication,158
+Risk Manager,2024-07-01,AML,38
+Risk Manager,2024-07-01,KYC,60
+Risk Manager,2024-08-01,Python,158
+Risk Manager,2024-08-01,SQL,125
+Risk Manager,2024-08-01,Java,88
+Risk Manager,2024-08-01,Kubernetes,71
+Risk Manager,2024-08-01,Machine Learning,53
+Risk Manager,2024-08-01,Excel,96
+Risk Manager,2024-08-01,Power BI,67
+Risk Manager,2024-08-01,Communication,176
+Risk Manager,2024-08-01,AML,46
+Risk Manager,2024-08-01,KYC,61
+Risk Manager,2024-09-01,Python,152
+Risk Manager,2024-09-01,SQL,110
+Risk Manager,2024-09-01,Java,83
+Risk Manager,2024-09-01,Kubernetes,61
+Risk Manager,2024-09-01,Machine Learning,38
+Risk Manager,2024-09-01,Excel,86
+Risk Manager,2024-09-01,Power BI,67
+Risk Manager,2024-09-01,Communication,168
+Risk Manager,2024-09-01,AML,48
+Risk Manager,2024-09-01,KYC,62
+Risk Manager,2024-10-01,Python,169
+Risk Manager,2024-10-01,SQL,131
+Risk Manager,2024-10-01,Java,90
+Risk Manager,2024-10-01,Kubernetes,74
+Risk Manager,2024-10-01,Machine Learning,59
+Risk Manager,2024-10-01,Excel,93
+Risk Manager,2024-10-01,Power BI,63
+Risk Manager,2024-10-01,Communication,179
+Risk Manager,2024-10-01,AML,49
+Risk Manager,2024-10-01,KYC,69
+Risk Manager,2024-11-01,Python,187
+Risk Manager,2024-11-01,SQL,133
+Risk Manager,2024-11-01,Java,87
+Risk Manager,2024-11-01,Kubernetes,74
+Risk Manager,2024-11-01,Machine Learning,55
+Risk Manager,2024-11-01,Excel,98
+Risk Manager,2024-11-01,Power BI,76
+Risk Manager,2024-11-01,Communication,184
+Risk Manager,2024-11-01,AML,47
+Risk Manager,2024-11-01,KYC,82
+Risk Manager,2024-12-01,Python,193
+Risk Manager,2024-12-01,SQL,132
+Risk Manager,2024-12-01,Java,79
+Risk Manager,2024-12-01,Kubernetes,65
+Risk Manager,2024-12-01,Machine Learning,60
+Risk Manager,2024-12-01,Excel,96
+Risk Manager,2024-12-01,Power BI,76
+Risk Manager,2024-12-01,Communication,200
+Risk Manager,2024-12-01,AML,35
+Risk Manager,2024-12-01,KYC,79
+Risk Manager,2025-01-01,Python,173
+Risk Manager,2025-01-01,SQL,126
+Risk Manager,2025-01-01,Java,78
+Risk Manager,2025-01-01,Kubernetes,67
+Risk Manager,2025-01-01,Machine Learning,54
+Risk Manager,2025-01-01,Excel,94
+Risk Manager,2025-01-01,Power BI,81
+Risk Manager,2025-01-01,Communication,177
+Risk Manager,2025-01-01,AML,56
+Risk Manager,2025-01-01,KYC,72
+Risk Manager,2025-02-01,Python,188
+Risk Manager,2025-02-01,SQL,134
+Risk Manager,2025-02-01,Java,85
+Risk Manager,2025-02-01,Kubernetes,93
+Risk Manager,2025-02-01,Machine Learning,64
+Risk Manager,2025-02-01,Excel,84
+Risk Manager,2025-02-01,Power BI,81
+Risk Manager,2025-02-01,Communication,184
+Risk Manager,2025-02-01,AML,45
+Risk Manager,2025-02-01,KYC,80
+Risk Manager,2025-03-01,Python,174
+Risk Manager,2025-03-01,SQL,120
+Risk Manager,2025-03-01,Java,75
+Risk Manager,2025-03-01,Kubernetes,73
+Risk Manager,2025-03-01,Machine Learning,46
+Risk Manager,2025-03-01,Excel,81
+Risk Manager,2025-03-01,Power BI,64
+Risk Manager,2025-03-01,Communication,161
+Risk Manager,2025-03-01,AML,42
+Risk Manager,2025-03-01,KYC,69
+Risk Manager,2025-04-01,Python,173
+Risk Manager,2025-04-01,SQL,110
+Risk Manager,2025-04-01,Java,68
+Risk Manager,2025-04-01,Kubernetes,67
+Risk Manager,2025-04-01,Machine Learning,55
+Risk Manager,2025-04-01,Excel,75
+Risk Manager,2025-04-01,Power BI,63
+Risk Manager,2025-04-01,Communication,166
+Risk Manager,2025-04-01,AML,41
+Risk Manager,2025-04-01,KYC,59
+Risk Manager,2025-05-01,Python,162
+Risk Manager,2025-05-01,SQL,109
+Risk Manager,2025-05-01,Java,64
+Risk Manager,2025-05-01,Kubernetes,67
+Risk Manager,2025-05-01,Machine Learning,54
+Risk Manager,2025-05-01,Excel,72
+Risk Manager,2025-05-01,Power BI,60
+Risk Manager,2025-05-01,Communication,149
+Risk Manager,2025-05-01,AML,33
+Risk Manager,2025-05-01,KYC,66
+Risk Manager,2025-06-01,Python,172
+Risk Manager,2025-06-01,SQL,106
+Risk Manager,2025-06-01,Java,59
+Risk Manager,2025-06-01,Kubernetes,70
+Risk Manager,2025-06-01,Machine Learning,55
+Risk Manager,2025-06-01,Excel,68
+Risk Manager,2025-06-01,Power BI,70
+Risk Manager,2025-06-01,Communication,163
+Risk Manager,2025-06-01,AML,45
+Risk Manager,2025-06-01,KYC,67
+Risk Manager,2025-07-01,Python,203
+Risk Manager,2025-07-01,SQL,126
+Risk Manager,2025-07-01,Java,77
+Risk Manager,2025-07-01,Kubernetes,86
+Risk Manager,2025-07-01,Machine Learning,66
+Risk Manager,2025-07-01,Excel,86
+Risk Manager,2025-07-01,Power BI,77
+Risk Manager,2025-07-01,Communication,198
+Risk Manager,2025-07-01,AML,44
+Risk Manager,2025-07-01,KYC,73
+Risk Manager,2025-08-01,Python,171
+Risk Manager,2025-08-01,SQL,113
+Risk Manager,2025-08-01,Java,65
+Risk Manager,2025-08-01,Kubernetes,78
+Risk Manager,2025-08-01,Machine Learning,56
+Risk Manager,2025-08-01,Excel,70
+Risk Manager,2025-08-01,Power BI,76
+Risk Manager,2025-08-01,Communication,169
+Risk Manager,2025-08-01,AML,42
+Risk Manager,2025-08-01,KYC,77
+Risk Manager,2025-09-01,Python,175
+Risk Manager,2025-09-01,SQL,111
+Risk Manager,2025-09-01,Java,62
+Risk Manager,2025-09-01,Kubernetes,74
+Risk Manager,2025-09-01,Machine Learning,59
+Risk Manager,2025-09-01,Excel,72
+Risk Manager,2025-09-01,Power BI,70
+Risk Manager,2025-09-01,Communication,163
+Risk Manager,2025-09-01,AML,37
+Risk Manager,2025-09-01,KYC,71
+Risk Manager,2025-10-01,Python,174
+Risk Manager,2025-10-01,SQL,116
+Risk Manager,2025-10-01,Java,65
+Risk Manager,2025-10-01,Kubernetes,77
+Risk Manager,2025-10-01,Machine Learning,61
+Risk Manager,2025-10-01,Excel,54
+Risk Manager,2025-10-01,Power BI,68
+Risk Manager,2025-10-01,Communication,159
+Risk Manager,2025-10-01,AML,40
+Risk Manager,2025-10-01,KYC,70
+Risk Manager,2025-11-01,Python,188
+Risk Manager,2025-11-01,SQL,124
+Risk Manager,2025-11-01,Java,61
+Risk Manager,2025-11-01,Kubernetes,80
+Risk Manager,2025-11-01,Machine Learning,65
+Risk Manager,2025-11-01,Excel,47
+Risk Manager,2025-11-01,Power BI,76
+Risk Manager,2025-11-01,Communication,148
+Risk Manager,2025-11-01,AML,30
+Risk Manager,2025-11-01,KYC,76
+Risk Manager,2025-12-01,Python,216
+Risk Manager,2025-12-01,SQL,137
+Risk Manager,2025-12-01,Java,77
+Risk Manager,2025-12-01,Kubernetes,97
+Risk Manager,2025-12-01,Machine Learning,90
+Risk Manager,2025-12-01,Excel,70
+Risk Manager,2025-12-01,Power BI,91
+Risk Manager,2025-12-01,Communication,206
+Risk Manager,2025-12-01,AML,46
+Risk Manager,2025-12-01,KYC,83
+Risk Manager,2026-01-01,Python,208
+Risk Manager,2026-01-01,SQL,123
+Risk Manager,2026-01-01,Java,61
+Risk Manager,2026-01-01,Kubernetes,90
+Risk Manager,2026-01-01,Machine Learning,78
+Risk Manager,2026-01-01,Excel,63
+Risk Manager,2026-01-01,Power BI,82
+Risk Manager,2026-01-01,Communication,181
+Risk Manager,2026-01-01,AML,43
+Risk Manager,2026-01-01,KYC,86
+Risk Manager,2026-02-01,Python,186
+Risk Manager,2026-02-01,SQL,123
+Risk Manager,2026-02-01,Java,53
+Risk Manager,2026-02-01,Kubernetes,80
+Risk Manager,2026-02-01,Machine Learning,69
+Risk Manager,2026-02-01,Excel,57
+Risk Manager,2026-02-01,Power BI,69
+Risk Manager,2026-02-01,Communication,166
+Risk Manager,2026-02-01,AML,41
+Risk Manager,2026-02-01,KYC,78
+Risk Manager,2026-03-01,Python,170
+Risk Manager,2026-03-01,SQL,109
+Risk Manager,2026-03-01,Java,48
+Risk Manager,2026-03-01,Kubernetes,78
+Risk Manager,2026-03-01,Machine Learning,66
+Risk Manager,2026-03-01,Excel,55
+Risk Manager,2026-03-01,Power BI,78
+Risk Manager,2026-03-01,Communication,157
+Risk Manager,2026-03-01,AML,33
+Risk Manager,2026-03-01,KYC,72
+Risk Manager,2026-04-01,Python,220
+Risk Manager,2026-04-01,SQL,134
+Risk Manager,2026-04-01,Java,63
+Risk Manager,2026-04-01,Kubernetes,101
+Risk Manager,2026-04-01,Machine Learning,75
+Risk Manager,2026-04-01,Excel,55
+Risk Manager,2026-04-01,Power BI,91
+Risk Manager,2026-04-01,Communication,186
+Risk Manager,2026-04-01,AML,43
+Risk Manager,2026-04-01,KYC,91
+Risk Manager,2026-05-01,Python,222
+Risk Manager,2026-05-01,SQL,133
+Risk Manager,2026-05-01,Java,49
+Risk Manager,2026-05-01,Kubernetes,109
+Risk Manager,2026-05-01,Machine Learning,76
+Risk Manager,2026-05-01,Excel,45
+Risk Manager,2026-05-01,Power BI,82
+Risk Manager,2026-05-01,Communication,178
+Risk Manager,2026-05-01,AML,40
+Risk Manager,2026-05-01,KYC,86
+Risk Manager,2026-06-01,Python,190
+Risk Manager,2026-06-01,SQL,113
+Risk Manager,2026-06-01,Java,47
+Risk Manager,2026-06-01,Kubernetes,89
+Risk Manager,2026-06-01,Machine Learning,71
+Risk Manager,2026-06-01,Excel,35
+Risk Manager,2026-06-01,Power BI,73
+Risk Manager,2026-06-01,Communication,146
+Risk Manager,2026-06-01,AML,34
+Risk Manager,2026-06-01,KYC,75
+Risk Manager,2026-07-01,Python,207
+Risk Manager,2026-07-01,SQL,119
+Risk Manager,2026-07-01,Java,45
+Risk Manager,2026-07-01,Kubernetes,97
+Risk Manager,2026-07-01,Machine Learning,71
+Risk Manager,2026-07-01,Excel,45
+Risk Manager,2026-07-01,Power BI,85
+Risk Manager,2026-07-01,Communication,163
+Risk Manager,2026-07-01,AML,39
+Risk Manager,2026-07-01,KYC,84
+Risk Manager,2026-08-01,Python,208
+Risk Manager,2026-08-01,SQL,122
+Risk Manager,2026-08-01,Java,46
+Risk Manager,2026-08-01,Kubernetes,93
+Risk Manager,2026-08-01,Machine Learning,70
+Risk Manager,2026-08-01,Excel,40
+Risk Manager,2026-08-01,Power BI,84
+Risk Manager,2026-08-01,Communication,161
+Risk Manager,2026-08-01,AML,37
+Risk Manager,2026-08-01,KYC,75
+Compliance Officer,2024-01-01,Python,146
+Compliance Officer,2024-01-01,SQL,133
+Compliance Officer,2024-01-01,Java,90
+Compliance Officer,2024-01-01,Kubernetes,56
+Compliance Officer,2024-01-01,Machine Learning,40
+Compliance Officer,2024-01-01,Excel,109
+Compliance Officer,2024-01-01,Power BI,59
+Compliance Officer,2024-01-01,Communication,172
+Compliance Officer,2024-01-01,AML,48
+Compliance Officer,2024-01-01,KYC,65
+Compliance Officer,2024-02-01,Python,155
+Compliance Officer,2024-02-01,SQL,120
+Compliance Officer,2024-02-01,Java,96
+Compliance Officer,2024-02-01,Kubernetes,46
+Compliance Officer,2024-02-01,Machine Learning,43
+Compliance Officer,2024-02-01,Excel,113
+Compliance Officer,2024-02-01,Power BI,59
+Compliance Officer,2024-02-01,Communication,171
+Compliance Officer,2024-02-01,AML,43
+Compliance Officer,2024-02-01,KYC,59
+Compliance Officer,2024-03-01,Python,155
+Compliance Officer,2024-03-01,SQL,130
+Compliance Officer,2024-03-01,Java,107
+Compliance Officer,2024-03-01,Kubernetes,70
+Compliance Officer,2024-03-01,Machine Learning,41
+Compliance Officer,2024-03-01,Excel,117
+Compliance Officer,2024-03-01,Power BI,65
+Compliance Officer,2024-03-01,Communication,180
+Compliance Officer,2024-03-01,AML,53
+Compliance Officer,2024-03-01,KYC,64
+Compliance Officer,2024-04-01,Python,155
+Compliance Officer,2024-04-01,SQL,118
+Compliance Officer,2024-04-01,Java,87
+Compliance Officer,2024-04-01,Kubernetes,58
+Compliance Officer,2024-04-01,Machine Learning,42
+Compliance Officer,2024-04-01,Excel,101
+Compliance Officer,2024-04-01,Power BI,63
+Compliance Officer,2024-04-01,Communication,179
+Compliance Officer,2024-04-01,AML,50
+Compliance Officer,2024-04-01,KYC,59
+Compliance Officer,2024-05-01,Python,163
+Compliance Officer,2024-05-01,SQL,137
+Compliance Officer,2024-05-01,Java,99
+Compliance Officer,2024-05-01,Kubernetes,64
+Compliance Officer,2024-05-01,Machine Learning,53
+Compliance Officer,2024-05-01,Excel,111
+Compliance Officer,2024-05-01,Power BI,69
+Compliance Officer,2024-05-01,Communication,184
+Compliance Officer,2024-05-01,AML,53
+Compliance Officer,2024-05-01,KYC,60
+Compliance Officer,2024-06-01,Python,150
+Compliance Officer,2024-06-01,SQL,118
+Compliance Officer,2024-06-01,Java,96
+Compliance Officer,2024-06-01,Kubernetes,61
+Compliance Officer,2024-06-01,Machine Learning,52
+Compliance Officer,2024-06-01,Excel,96
+Compliance Officer,2024-06-01,Power BI,57
+Compliance Officer,2024-06-01,Communication,170
+Compliance Officer,2024-06-01,AML,47
+Compliance Officer,2024-06-01,KYC,63
+Compliance Officer,2024-07-01,Python,127
+Compliance Officer,2024-07-01,SQL,100
+Compliance Officer,2024-07-01,Java,67
+Compliance Officer,2024-07-01,Kubernetes,49
+Compliance Officer,2024-07-01,Machine Learning,38
+Compliance Officer,2024-07-01,Excel,74
+Compliance Officer,2024-07-01,Power BI,50
+Compliance Officer,2024-07-01,Communication,138
+Compliance Officer,2024-07-01,AML,36
+Compliance Officer,2024-07-01,KYC,58
+Compliance Officer,2024-08-01,Python,132
+Compliance Officer,2024-08-01,SQL,93
+Compliance Officer,2024-08-01,Java,68
+Compliance Officer,2024-08-01,Kubernetes,49
+Compliance Officer,2024-08-01,Machine Learning,37
+Compliance Officer,2024-08-01,Excel,83
+Compliance Officer,2024-08-01,Power BI,53
+Compliance Officer,2024-08-01,Communication,147
+Compliance Officer,2024-08-01,AML,38
+Compliance Officer,2024-08-01,KYC,53
+Compliance Officer,2024-09-01,Python,150
+Compliance Officer,2024-09-01,SQL,120
+Compliance Officer,2024-09-01,Java,68
+Compliance Officer,2024-09-01,Kubernetes,48
+Compliance Officer,2024-09-01,Machine Learning,43
+Compliance Officer,2024-09-01,Excel,84
+Compliance Officer,2024-09-01,Power BI,63
+Compliance Officer,2024-09-01,Communication,160
+Compliance Officer,2024-09-01,AML,40
+Compliance Officer,2024-09-01,KYC,65
+Compliance Officer,2024-10-01,Python,167
+Compliance Officer,2024-10-01,SQL,128
+Compliance Officer,2024-10-01,Java,85
+Compliance Officer,2024-10-01,Kubernetes,61
+Compliance Officer,2024-10-01,Machine Learning,54
+Compliance Officer,2024-10-01,Excel,91
+Compliance Officer,2024-10-01,Power BI,67
+Compliance Officer,2024-10-01,Communication,180
+Compliance Officer,2024-10-01,AML,34
+Compliance Officer,2024-10-01,KYC,60
+Compliance Officer,2024-11-01,Python,139
+Compliance Officer,2024-11-01,SQL,102
+Compliance Officer,2024-11-01,Java,62
+Compliance Officer,2024-11-01,Kubernetes,51
+Compliance Officer,2024-11-01,Machine Learning,40
+Compliance Officer,2024-11-01,Excel,84
+Compliance Officer,2024-11-01,Power BI,64
+Compliance Officer,2024-11-01,Communication,143
+Compliance Officer,2024-11-01,AML,36
+Compliance Officer,2024-11-01,KYC,52
+Compliance Officer,2024-12-01,Python,154
+Compliance Officer,2024-12-01,SQL,108
+Compliance Officer,2024-12-01,Java,73
+Compliance Officer,2024-12-01,Kubernetes,54
+Compliance Officer,2024-12-01,Machine Learning,45
+Compliance Officer,2024-12-01,Excel,79
+Compliance Officer,2024-12-01,Power BI,64
+Compliance Officer,2024-12-01,Communication,159
+Compliance Officer,2024-12-01,AML,35
+Compliance Officer,2024-12-01,KYC,66
+Compliance Officer,2025-01-01,Python,169
+Compliance Officer,2025-01-01,SQL,118
+Compliance Officer,2025-01-01,Java,69
+Compliance Officer,2025-01-01,Kubernetes,65
+Compliance Officer,2025-01-01,Machine Learning,54
+Compliance Officer,2025-01-01,Excel,83
+Compliance Officer,2025-01-01,Power BI,66
+Compliance Officer,2025-01-01,Communication,173
+Compliance Officer,2025-01-01,AML,47
+Compliance Officer,2025-01-01,KYC,65
+Compliance Officer,2025-02-01,Python,146
+Compliance Officer,2025-02-01,SQL,105
+Compliance Officer,2025-02-01,Java,56
+Compliance Officer,2025-02-01,Kubernetes,52
+Compliance Officer,2025-02-01,Machine Learning,50
+Compliance Officer,2025-02-01,Excel,61
+Compliance Officer,2025-02-01,Power BI,50
+Compliance Officer,2025-02-01,Communication,135
+Compliance Officer,2025-02-01,AML,36
+Compliance Officer,2025-02-01,KYC,55
+Compliance Officer,2025-03-01,Python,175
+Compliance Officer,2025-03-01,SQL,121
+Compliance Officer,2025-03-01,Java,72
+Compliance Officer,2025-03-01,Kubernetes,84
+Compliance Officer,2025-03-01,Machine Learning,59
+Compliance Officer,2025-03-01,Excel,85
+Compliance Officer,2025-03-01,Power BI,69
+Compliance Officer,2025-03-01,Communication,173
+Compliance Officer,2025-03-01,AML,40
+Compliance Officer,2025-03-01,KYC,58
+Compliance Officer,2025-04-01,Python,136
+Compliance Officer,2025-04-01,SQL,90
+Compliance Officer,2025-04-01,Java,55
+Compliance Officer,2025-04-01,Kubernetes,65
+Compliance Officer,2025-04-01,Machine Learning,46
+Compliance Officer,2025-04-01,Excel,67
+Compliance Officer,2025-04-01,Power BI,59
+Compliance Officer,2025-04-01,Communication,142
+Compliance Officer,2025-04-01,AML,31
+Compliance Officer,2025-04-01,KYC,59
+Compliance Officer,2025-05-01,Python,154
+Compliance Officer,2025-05-01,SQL,109
+Compliance Officer,2025-05-01,Java,65
+Compliance Officer,2025-05-01,Kubernetes,63
+Compliance Officer,2025-05-01,Machine Learning,46
+Compliance Officer,2025-05-01,Excel,60
+Compliance Officer,2025-05-01,Power BI,63
+Compliance Officer,2025-05-01,Communication,150
+Compliance Officer,2025-05-01,AML,34
+Compliance Officer,2025-05-01,KYC,63
+Compliance Officer,2025-06-01,Python,160
+Compliance Officer,2025-06-01,SQL,113
+Compliance Officer,2025-06-01,Java,66
+Compliance Officer,2025-06-01,Kubernetes,62
+Compliance Officer,2025-06-01,Machine Learning,59
+Compliance Officer,2025-06-01,Excel,61
+Compliance Officer,2025-06-01,Power BI,67
+Compliance Officer,2025-06-01,Communication,149
+Compliance Officer,2025-06-01,AML,35
+Compliance Officer,2025-06-01,KYC,55
+Compliance Officer,2025-07-01,Python,156
+Compliance Officer,2025-07-01,SQL,113
+Compliance Officer,2025-07-01,Java,67
+Compliance Officer,2025-07-01,Kubernetes,66
+Compliance Officer,2025-07-01,Machine Learning,56
+Compliance Officer,2025-07-01,Excel,60
+Compliance Officer,2025-07-01,Power BI,63
+Compliance Officer,2025-07-01,Communication,156
+Compliance Officer,2025-07-01,AML,37
+Compliance Officer,2025-07-01,KYC,73
+Compliance Officer,2025-08-01,Python,157
+Compliance Officer,2025-08-01,SQL,101
+Compliance Officer,2025-08-01,Java,58
+Compliance Officer,2025-08-01,Kubernetes,64
+Compliance Officer,2025-08-01,Machine Learning,51
+Compliance Officer,2025-08-01,Excel,56
+Compliance Officer,2025-08-01,Power BI,58
+Compliance Officer,2025-08-01,Communication,144
+Compliance Officer,2025-08-01,AML,37
+Compliance Officer,2025-08-01,KYC,64
+Compliance Officer,2025-09-01,Python,155
+Compliance Officer,2025-09-01,SQL,96
+Compliance Officer,2025-09-01,Java,53
+Compliance Officer,2025-09-01,Kubernetes,62
+Compliance Officer,2025-09-01,Machine Learning,51
+Compliance Officer,2025-09-01,Excel,51
+Compliance Officer,2025-09-01,Power BI,66
+Compliance Officer,2025-09-01,Communication,138
+Compliance Officer,2025-09-01,AML,32
+Compliance Officer,2025-09-01,KYC,64
+Compliance Officer,2025-10-01,Python,183
+Compliance Officer,2025-10-01,SQL,128
+Compliance Officer,2025-10-01,Java,65
+Compliance Officer,2025-10-01,Kubernetes,86
+Compliance Officer,2025-10-01,Machine Learning,59
+Compliance Officer,2025-10-01,Excel,66
+Compliance Officer,2025-10-01,Power BI,87
+Compliance Officer,2025-10-01,Communication,178
+Compliance Officer,2025-10-01,AML,42
+Compliance Officer,2025-10-01,KYC,75
+Compliance Officer,2025-11-01,Python,180
+Compliance Officer,2025-11-01,SQL,123
+Compliance Officer,2025-11-01,Java,66
+Compliance Officer,2025-11-01,Kubernetes,77
+Compliance Officer,2025-11-01,Machine Learning,63
+Compliance Officer,2025-11-01,Excel,57
+Compliance Officer,2025-11-01,Power BI,72
+Compliance Officer,2025-11-01,Communication,171
+Compliance Officer,2025-11-01,AML,30
+Compliance Officer,2025-11-01,KYC,79
+Compliance Officer,2025-12-01,Python,176
+Compliance Officer,2025-12-01,SQL,101
+Compliance Officer,2025-12-01,Java,51
+Compliance Officer,2025-12-01,Kubernetes,84
+Compliance Officer,2025-12-01,Machine Learning,49
+Compliance Officer,2025-12-01,Excel,54
+Compliance Officer,2025-12-01,Power BI,66
+Compliance Officer,2025-12-01,Communication,160
+Compliance Officer,2025-12-01,AML,33
+Compliance Officer,2025-12-01,KYC,73
+Compliance Officer,2026-01-01,Python,177
+Compliance Officer,2026-01-01,SQL,105
+Compliance Officer,2026-01-01,Java,52
+Compliance Officer,2026-01-01,Kubernetes,70
+Compliance Officer,2026-01-01,Machine Learning,64
+Compliance Officer,2026-01-01,Excel,48
+Compliance Officer,2026-01-01,Power BI,65
+Compliance Officer,2026-01-01,Communication,148
+Compliance Officer,2026-01-01,AML,27
+Compliance Officer,2026-01-01,KYC,69
+Compliance Officer,2026-02-01,Python,181
+Compliance Officer,2026-02-01,SQL,104
+Compliance Officer,2026-02-01,Java,51
+Compliance Officer,2026-02-01,Kubernetes,85
+Compliance Officer,2026-02-01,Machine Learning,55
+Compliance Officer,2026-02-01,Excel,47
+Compliance Officer,2026-02-01,Power BI,76
+Compliance Officer,2026-02-01,Communication,157
+Compliance Officer,2026-02-01,AML,37
+Compliance Officer,2026-02-01,KYC,80
+Compliance Officer,2026-03-01,Python,163
+Compliance Officer,2026-03-01,SQL,109
+Compliance Officer,2026-03-01,Java,44
+Compliance Officer,2026-03-01,Kubernetes,70
+Compliance Officer,2026-03-01,Machine Learning,59
+Compliance Officer,2026-03-01,Excel,46
+Compliance Officer,2026-03-01,Power BI,62
+Compliance Officer,2026-03-01,Communication,133
+Compliance Officer,2026-03-01,AML,40
+Compliance Officer,2026-03-01,KYC,65
+Compliance Officer,2026-04-01,Python,201
+Compliance Officer,2026-04-01,SQL,119
+Compliance Officer,2026-04-01,Java,51
+Compliance Officer,2026-04-01,Kubernetes,93
+Compliance Officer,2026-04-01,Machine Learning,64
+Compliance Officer,2026-04-01,Excel,53
+Compliance Officer,2026-04-01,Power BI,88
+Compliance Officer,2026-04-01,Communication,169
+Compliance Officer,2026-04-01,AML,35
+Compliance Officer,2026-04-01,KYC,76
+Compliance Officer,2026-05-01,Python,190
+Compliance Officer,2026-05-01,SQL,113
+Compliance Officer,2026-05-01,Java,53
+Compliance Officer,2026-05-01,Kubernetes,81
+Compliance Officer,2026-05-01,Machine Learning,73
+Compliance Officer,2026-05-01,Excel,46
+Compliance Officer,2026-05-01,Power BI,78
+Compliance Officer,2026-05-01,Communication,155
+Compliance Officer,2026-05-01,AML,41
+Compliance Officer,2026-05-01,KYC,82
+Compliance Officer,2026-06-01,Python,194
+Compliance Officer,2026-06-01,SQL,123
+Compliance Officer,2026-06-01,Java,51
+Compliance Officer,2026-06-01,Kubernetes,86
+Compliance Officer,2026-06-01,Machine Learning,73
+Compliance Officer,2026-06-01,Excel,49
+Compliance Officer,2026-06-01,Power BI,83
+Compliance Officer,2026-06-01,Communication,168
+Compliance Officer,2026-06-01,AML,38
+Compliance Officer,2026-06-01,KYC,88
+Compliance Officer,2026-07-01,Python,189
+Compliance Officer,2026-07-01,SQL,118
+Compliance Officer,2026-07-01,Java,47
+Compliance Officer,2026-07-01,Kubernetes,87
+Compliance Officer,2026-07-01,Machine Learning,74
+Compliance Officer,2026-07-01,Excel,51
+Compliance Officer,2026-07-01,Power BI,76
+Compliance Officer,2026-07-01,Communication,169
+Compliance Officer,2026-07-01,AML,31
+Compliance Officer,2026-07-01,KYC,78
+Compliance Officer,2026-08-01,Python,197
+Compliance Officer,2026-08-01,SQL,118
+Compliance Officer,2026-08-01,Java,36
+Compliance Officer,2026-08-01,Kubernetes,103
+Compliance Officer,2026-08-01,Machine Learning,76
+Compliance Officer,2026-08-01,Excel,41
+Compliance Officer,2026-08-01,Power BI,83
+Compliance Officer,2026-08-01,Communication,156
+Compliance Officer,2026-08-01,AML,40
+Compliance Officer,2026-08-01,KYC,78

@@ -1,0 +1,6 @@
+1.
+We will make a database with job type with all the skills in demand for that job type and the date on which it was. My team will do the parser part, the database part and the advisor part. I have to do the database part with you. Currently I don't have the database part to work with, but we can use a simple to change stub. We have to do the visualisation part. When the client has chosen a job type, we want to visualize the numbers of different skills and how they rise or fall in time. I am thinking of making functions that the advisor layer can use, so that we can program them now without having to know how my team makes the advisor part. You can by the way see the vacancies data we use in the /data folder, but you won't directly use them as I already told you, you will eventually access them via the database. The advisor will make a tab in the browser locally hosted where one can chat with an LLM and the visualizations we make will be called and used to display things. Start by thinking through how to do our visualization part and making the core of it now
+2.
+How can I see examples of visualisations? And you can ignore the prompts.md, there I only upload the prompts I sent you.
+3.
+Put work in making the visualizations prettier
