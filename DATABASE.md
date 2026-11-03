@@ -6,6 +6,10 @@ De werkende database heet `data/skillmarket.duckdb`. De applicatie leest tabelle
 
 De DB draait ook op de teamserver. Via een SSH-tunnel en de Python-client kun je meteen query’s uitvoeren zonder het bestand te downloaden. Zie [docs/database-server.md](docs/database-server.md) voor de verbinding en voorbeelden.
 
+## Cursussen en skills
+
+De server bevat ook de cursuscatalogus, gekoppeld aan dezelfde skill-IDs als vacatures. Zie [docs/courses.md](docs/courses.md) voor tabellen, aanbevelingsqueries en het snelle `import-courses`-commando.
+
 ## Aanmaken na een clone
 
 Python 3.11+ is vereist. Voer dit uit vanuit de root van de repo:
