@@ -12,13 +12,13 @@ charts are Vega-Lite v5 specs that any frontend with `vega-embed` can draw.
 ```python
 from visualization import api
 
-api.list_job_types()                              # ["Compliance Officer", "Data Analyst", ...]
-api.skill_trends("Software Engineer")             # top 5 skills, share over time
-api.skill_trends("Software Engineer", n=3, metric="postings")
-api.skill_trends("Data Analyst", skills=["Python", "SQL"])
-api.top_skills("Risk Manager", n=10)
-api.skill_trend("Data Analyst", "Python", window_months=6)   # verdict only, no chart
-api.rising_and_falling_skills("Software Engineer", window_months=6, n=5)
+api.list_job_types()                              # ["customer service and support", "technology", ...]
+api.skill_trends("technology")                    # top 5 skills, share over time
+api.skill_trends("technology", n=3, metric="postings")
+api.skill_trends("technology", skills=["python", "sql"])
+api.top_skills("risk and compliance", n=10)
+api.skill_trend("technology", "python", window_months=6)   # verdict only, no chart
+api.rising_and_falling_skills("technology", window_months=6, n=5)
 ```
 
 To regenerate the gallery at `preview.html` (requires internet for the CDN scripts):

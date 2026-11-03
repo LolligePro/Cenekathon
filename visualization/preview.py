@@ -45,7 +45,7 @@ HTML = """<!doctype html>
 
 
 def build_gallery() -> list[tuple[str, str, dict]]:
-    job = "Software Engineer"
+    job = "technology"
     return [
         (
             "Skill share over time",
@@ -61,6 +61,11 @@ def build_gallery() -> list[tuple[str, str, dict]]:
             "Top skills",
             "Ranking of the 10 most demanded skills over the full period.",
             api.top_skills(job, n=10)["chart"],
+        ),
+        (
+            "Skill profile by job type",
+            "The 15 most demanded skills for one job type, as the advisor would return them.",
+            api.job_type_skills("legal", n=15)["chart"],
         ),
         (
             "Rising and falling skills",
