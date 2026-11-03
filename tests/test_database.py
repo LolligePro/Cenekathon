@@ -87,9 +87,9 @@ class ApplicationDatabaseTests(unittest.TestCase):
         path=self.root/name
         with duckdb.connect() as c:
             c.execute("""COPY (SELECT * FROM (VALUES
-                (?, 'technology', ['python','sql','sql']),
+                ($posting, 'technology', ['python','sql','sql']),
                 ('p2','technology',[]::VARCHAR[])) t(vacancy_id,job_type,skills))
-                TO ? (FORMAT PARQUET)""",['bad-id' if unknown else 'p1',str(path)])
+                TO $destination (FORMAT PARQUET)""",{'posting':'bad-id' if unknown else 'p1','destination':str(path)})
         return path
 
     def test_native_parser_adapter_and_idempotency(self):
