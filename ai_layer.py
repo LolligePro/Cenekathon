@@ -627,7 +627,7 @@ def _has_learning_tools(messages):
 def ask(question, history=None):
     """Answer one question. Returns {"answer", "charts", "usage", "messages"}."""
     cache_key = question.strip().lower()
-    learning_question = re.search(r"\b(courses?|cursus|cursussen|opleidingen?|learn|leren|profiel|profile)\b", question, re.I)
+    learning_question = re.search(learning.COURSE_INTENT, question, re.I) or re.search(r"\b(learn|leren|profiel|profile)\b", question, re.I)
     if (not history and cache_key in _ANSWER_CACHE and not learning_question
             and not _has_learning_tools(_ANSWER_CACHE[cache_key].get("messages", []))):
         cached = copy.deepcopy(_ANSWER_CACHE[cache_key])
@@ -699,7 +699,7 @@ def ask(question, history=None):
         messages.append({"role": "assistant", "content": assistant_content})
         if response.stop_reason != "tool_use":
             answer = "".join(b.text for b in response.content if b.type == "text").strip()
-            if re.search(r"\b(courses?|cursus|cursussen|opleidingen?)\b", question, re.I):
+            if re.search(learning.COURSE_INTENT, question, re.I):
                 fallback = learning.course_request(question, messages)
                 if fallback:
                     output = _run_tool("recommend_courses", fallback, charts)

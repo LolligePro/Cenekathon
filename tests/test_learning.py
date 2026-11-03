@@ -95,6 +95,7 @@ class LearningTests(unittest.TestCase):
             ai_layer._ANSWER_CACHE['welke courses voor ml en sql?']={'answer':'Old stale answer without courses','messages':[]}
             first=client.post('/api/ask',json={'question':'Welke courses voor ML en SQL?'})
             self.assertEqual(client.get('/api/health').json()['counts']['courses'],3)
+            self.assertIn('https://example.org/',client.post('/api/ask',json={'question':'Welke opleiding voor ML?'}).json()['answer'])
             self.assertEqual(first.status_code,200,first.text)
             self.assertIn('https://example.org/',first.json()['answer'])
             self.assertIn('Geen cursus gekoppeld',first.json()['answer'])

@@ -6,6 +6,8 @@ from urllib.parse import urlparse
 
 from .access import read_queries
 
+COURSE_INTENT = r'\b(courses?|cursus(?:sen)?|opleiding(?:en)?|training(?:en)?|leertraject(?:en)?)\b'
+
 ALIASES = {'ml':'machine learning', 'ai':'artificial intelligence', 'python3':'python',
            'ms excel':'microsoft excel', 'kunstmatige intelligentie':'artificial intelligence',
            'machine leren':'machine learning'}
@@ -196,7 +198,7 @@ def course_request(question,history=None):
     Questions describing existing skills or a role transition stay with the
     agent, which can distinguish profile advice from skills to learn.
     """
-    explicit=bool(re.search(r'\b(courses?|cursussen|cursus|opleidingen?|trainingen?)\b',question,re.I))
+    explicit=bool(re.search(COURSE_INTENT,question,re.I))
     context=any(b.get('type')=='tool_use' and b.get('name') in {'recommend_courses','profile_advice','career_path'}
                 for m in (history or []) if isinstance(m.get('content'),list)
                 for b in m['content'] if isinstance(b,dict))

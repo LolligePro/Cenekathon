@@ -61,3 +61,9 @@ python -m unittest discover -s tests -v
 ```
 
 De regressietests gebruiken echte, afzonderlijke cursustabellen en voegen nooit cursusrecords aan vacatures toe. Ze controleren meerdere platformen, aliases/IDs/synoniemen, onbekende en ambigue skills, lege dekking, beperkte cursusplannen, land- en jaarfilters, de remote DB-route, chatvervolgvragen, een verouderde antwoordcache en de bestaande talentdemo.
+
+## Uitgevoerde democontrole
+
+De gecombineerde versie heeft 70 geslaagde tests. Op de echte serverdatabase zijn negen scenario's via de HTTP-chatroute gecontroleerd: Python + SQL, ML, een bekende skill zonder cursus, onbekende invoer, persoonlijk profieladvies, carrièrepad met twee grafieken, AI-auditor, de Profiel D-vervolgvraag en een bestaande marktgrafiek. De directe cursus-, profiel- en talentvragen gebruikten nul modeltokens en duurden in deze eenmalige meting ongeveer 0,05–0,28 seconden.
+
+De actuele appversie staat onder `/home/team7/skillmarket-app/releases/<commit>/`. `/home/team7/skillmarket-db/active-chat-release.json` vermeldt de actieve versie, map, PID en log. De aparte ontwikkelcheckout van teamgenoten wordt niet overschreven. Controleer voor de demo `/api/health`; die moet dezelfde commit en de verwachte cursustellingen tonen.
