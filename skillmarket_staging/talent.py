@@ -88,7 +88,7 @@ def format_internal_talent(result):
     lines += ['', f"Voor {best['label']}:", 'Aanwezige doelvaardigheden: '+names(best['matched_skills'])+'.',
               'Ontbrekende doelvaardigheden: '+names(best['missing_skills'])+'.']
     if best['courses']:
-        lines += ['', 'Cursusopties voor ontbrekende skills (niveau niet beoordeeld):']
+        lines += ['', 'Cursusopties voor ontbrekende skills:']
         for course in best['courses']:
             lines.append(f"- {course['title']} ({course['site']}): {course['url']}\n"
                          f"  Gekoppelde ontbrekende skills: {names(course['covered_skills'])}.")
@@ -99,6 +99,6 @@ def format_internal_talent(result):
     if not_shown:
         lines.append('Niet afgedekt door deze cursusopties: '+names(
             [s for s in best['missing_skills'] if s['skill_id'] in not_shown])+'.')
-    lines += ['', 'De score meet skilloverlap, geen bewezen geschiktheid; cursusdekking komt uit parserkoppelingen.',
+    lines += ['',
               f"Volgende stap: bespreek met HR of {best['label']} wil doorgroeien en toets de ontbrekende skills voordat je een leertraject kiest."]
     return '\n'.join(lines)
