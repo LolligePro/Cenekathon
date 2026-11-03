@@ -129,7 +129,7 @@ class TalentTests(unittest.TestCase):
              patch.object(ai_layer,'USAGE_LOG',self.root/'usage.jsonl'), \
              patch.object(ai_layer,'_ANSWER_CACHE',{}), \
              patch.object(chat_server,'sessions',{}),TestClient(chat_server.app) as client:
-            response=client.post('/api/ask',json={'question':'Wie kan intern AI-auditor worden?'})
+            response=client.post('/api/ask',json={'question':'Wie heeft intern het beste profiel voor onze nieuwe controlefunctie?'})
             self.assertEqual(response.status_code,200,response.text)
             data=response.json()
             self.assertIn('5/7',data['answer'])
@@ -140,9 +140,15 @@ class TalentTests(unittest.TestCase):
             response=client.post('/api/ask',json={'question':'En Profiel D?', 'session_id':data['session_id']})
             self.assertEqual(response.status_code,200,response.text)
             self.assertIn('Profiel D',response.json()['answer'])
-            self.assertGreater(len(calls[1]['messages']),1)
-            self.assertEqual(len(calls),2)
+            self.assertEqual(len(calls),1)
+            self.assertEqual(response.json()['usage']['output_tokens'],0)
+            self.assertIn('Geen cursus gekoppeld in onze huidige catalogus voor: regulatory compliance, data governance.',response.json()['answer'])
             self.assertIn('find_internal_talent',{t['name'] for t in calls[0]['tools']})
+            with patch.object(ai_layer,'_get_client',side_effect=AssertionError('No model needed for the fixed demo')):
+                direct=client.post('/api/ask',json={'question':'Wie kan AI-auditor worden?'})
+                self.assertEqual(direct.status_code,200,direct.text)
+                self.assertIn('5/7',direct.json()['answer'])
+                self.assertEqual(direct.json()['usage']['input_tokens'],0)
             self.assertIn('AI-auditor',client.get('/').text)
 
 

@@ -66,7 +66,7 @@ Het resultaat bevat `synthetic`, `company`, `data_owner`, `target_role` met `req
 
 Elke kandidaat bevat `profile_id`, `label`, `current_role`, `matched_count`, `required_count`, `match_percentage`, `matched_skills`, `missing_skills`, `courses`, `skills_without_courses` en `skills_not_covered_by_recommendations`. Skills zijn objecten met `skill_id` en `name`. Een cursus bevat `course_id`, `title`, `url`, `site`, `covered_count` en `covered_skills`; deze laatste velden gaan alleen over de ontbrekende skills van deze kandidaat.
 
-`ai_layer.py` registreert deze functie als tool. De bestaande model/tool-loop, `/api/ask` en sessiegeschiedenis worden hergebruikt. De agent kiest de tool. Na een succesvolle toolaanroep bouwt een vaste Nederlandse formatter het antwoord op uit de berekende velden: fictieve data, ranking, ontbrekende skills, cursuslinks en gaten in de catalogus. Dit voorkomt dat een model zelf extra cursusdekking verzint en bespaart een tweede modelronde. De toolresultaten en het geformatteerde antwoord blijven in de sessiegeschiedenis voor vervolgvragen. De chat maakt HTTP(S)-cursuslinks klikbaar met DOM-nodes; modeltekst wordt niet als HTML geïnterpreteerd.
+`ai_layer.py` registreert deze functie als tool. De bestaande model/tool-loop, `/api/ask` en sessiegeschiedenis worden hergebruikt. De vaste demovraag met `AI-auditor` of `AI auditor` wordt rechtstreeks naar de geregistreerde tool gerouteerd; hiervoor is geen modelaanroep of API-key nodig. Andere HR-vragen kunnen de tool via de bestaande agent aanroepen. Na een succesvolle toolaanroep bouwt een vaste Nederlandse formatter het antwoord op uit de berekende velden: fictieve data, ranking, ontbrekende skills, cursuslinks en gaten in de catalogus. Dit voorkomt dat een model zelf extra cursusdekking verzint en bespaart een tweede modelronde. De toolresultaten en het geformatteerde antwoord blijven in de sessiegeschiedenis voor vervolgvragen. Een expliciete vervolgvraag over `Profiel A` t/m `Profiel E` wordt binnen deze talentcontext direct opnieuw doorgerekend en geformatteerd, zonder modelaanroep. Zo worden cursusgaten van verschillende kandidaten niet verwisseld. De chat maakt HTTP(S)-cursuslinks klikbaar met DOM-nodes; modeltekst wordt niet als HTML geïnterpreteerd.
 
 ## Starten vanuit de repo
 
@@ -84,7 +84,7 @@ export SKILLMARKET_API_URL=http://127.0.0.1:8765
 .venv/bin/python -m uvicorn server:app --host 127.0.0.1 --port 8000
 ```
 
-De bestaande LLM-providerconfiguratie blijft nodig voor chatantwoorden. Voor de gewone Anthropic-client is dat `ANTHROPIC_API_KEY` en eventueel `SKILLMARKET_MODEL`; gebruik de modelconfiguratie die voor jullie prototype werkt. De matchfunctie zelf gebruikt geen LLM en kan rechtstreeks vanuit Python worden aangeroepen.
+De bestaande LLM-providerconfiguratie blijft nodig voor algemene chatantwoorden; de vaste AI-auditordemo en expliciete profielvervolgvragen werken zonder modelaanroep. Voor de gewone Anthropic-client is dat `ANTHROPIC_API_KEY` en eventueel `SKILLMARKET_MODEL`; gebruik de modelconfiguratie die voor jullie prototype werkt. De matchfunctie zelf gebruikt geen LLM en kan rechtstreeks vanuit Python worden aangeroepen.
 
 Voor **deze tool** krijgt expliciet `SKILLMARKET_API_URL` voorrang. Anders opent hij `SKILLMARKET_DB`, standaard `data/skillmarket.duckdb`, read-only. Als dat bestand ontbreekt, gebruikt hij de localhost-API op poort 8765. Bestaande markt- en visualisatietools houden hun eigen bestaande databroninstellingen; deze optie verandert die niet.
 
@@ -100,3 +100,14 @@ Er is geen nieuwe databasemigratie nodig. De fixture blijft in JSON; de tool voe
 De gerichte tests controleren vaste-ID-ranking, gelijke scores, een volledig passend profiel, cursusdekking en ontbrekend aanbod, ongeldige invoer, de remote DB-route en het bestaande chatendpoint met vervolgvragen. De chattest gebruikt een gecontroleerde modelrespons en voert de echte matching en SQL uit, zonder API-kosten.
 
 De overlapscore is geen sollicitatiekans of oordeel over geschiktheid. Ervaring, beheersingsniveau, voorkeuren, diploma's en opleidingsresultaten worden niet gemodelleerd. Het advies is een startpunt voor een gesprek met HR en een leertraject.
+
+## Actieve demo op de teamserver
+
+De chat luistert op dezelfde serverpoort `127.0.0.1:8000`. Omdat het team tegelijk eigen commits en interfacewijzigingen maakte, draait deze demo vanuit een aparte appkopie met die wijzigingen behouden. De ontwikkelcheckout `/home/team7/Cenekathon` is daarbij niet aangepast. De code voor verdere integratie staat op `main`.
+
+- Actieve appkopie: `/home/team7/skillmarket-db/talent-deploy-20261103T154545Z/preview`.
+- Chatlog: `/home/team7/skillmarket-db/talent-deploy-20261103T154545Z/chat.log`.
+- De talenttool leest de bestaande database-API op `http://127.0.0.1:8765`.
+- Een nieuwe checkout vanaf `main` kan gewoon met de startinstructies hierboven draaien. Bij verdere wijzigingen moet de actieve app opnieuw worden gestart met de bijgewerkte code.
+
+De volledige suite bevat 63 geslaagde tests. De echte servercatalogus is gecontroleerd: Profiel A heeft 5/7 overlap en mist machine learning en model validation; er zijn cursuslinks voor machine learning en geen koppeling voor model validation. De vaste demovraag en de expliciete Profiel D-vervolgvraag gebruiken nul modeltokens.
