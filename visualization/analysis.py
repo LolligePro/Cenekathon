@@ -104,14 +104,18 @@ def rising_and_falling(
     after = recent.groupby("skill")["share"].mean().rename("share_after")
     df = pd.concat([before, after], axis=1).dropna().reset_index()
     df = df[df["share_before"] != 0].copy()
-    df["relative_change"] = (df["share_after"] - df["share_before"]) / df["share_before"]
+    df["relative_change"] = (df["share_after"] - df["share_before"]) / df[
+        "share_before"
+    ]
     df["direction"] = "flat"
     df.loc[df["relative_change"] >= FLAT_BAND, "direction"] = "rising"
     df.loc[df["relative_change"] <= -FLAT_BAND, "direction"] = "falling"
     df["job_type"] = job_type
     df["window_months"] = window_months
     df = df[df["share_after"] >= min_share]
-    rising = df[df["direction"] == "rising"].sort_values("relative_change", ascending=False)
+    rising = df[df["direction"] == "rising"].sort_values(
+        "relative_change", ascending=False
+    )
     falling = df[df["direction"] == "falling"].sort_values("relative_change")
     return {
         "rising": rising.head(n).to_dict("records"),
@@ -154,51 +158,76 @@ def significant_risers(
                 "z_score": float((after - before) / noise),
             }
         )
-    df = pd.DataFrame(rows, columns=["skill", "share_before", "share_after", "relative_change", "z_score"])
+    df = pd.DataFrame(
+        rows,
+        columns=["skill", "share_before", "share_after", "relative_change", "z_score"],
+    )
     return df.sort_values("z_score", ascending=False).head(n).reset_index(drop=True)
-# def skill_gap(
-#     source: DataSource, from_job: str, to_job: str, n: int = 10, window_months: int = 12
-# ) -> pd.DataFrame:
-#     """Skills `to_job` asks for more often than `from_job`, over the latest window.
-
-#     Columns: skill, share_from, share_to, gap (share_to - share_from), largest first.
-#     A skill missing from `from_job` counts as share 0.
-#     """
-#     def recent_share(job):
-#         shares = skill_share_over_time(source, job)
-#         shares = shares[shares["month"] > shares["month"].max() - pd.DateOffset(months=window_months)]
-#         return shares.groupby("skill")["share"].mean()
-
-#     df = pd.concat([recent_share(from_job).rename("share_from"), recent_share(to_job).rename("share_to")], axis=1)
-#     df["share_from"] = df["share_from"].fillna(0)
-#     df = df.dropna(subset=["share_to"])
-#     df["gap"] = df["share_to"] - df["share_from"]
-#     df = df[df["gap"] > 0].sort_values("gap", ascending=False).head(n)
-#     return df.reset_index(names="skill")
 
 
-# def recommend_courses(gap: pd.DataFrame, courses: pd.DataFrame, max_courses: int = 5) -> pd.DataFrame:
-#     """Greedy cover of the gap skills: each pick adds the most not yet covered gap.
+def skill_gap(
+    source: DataSource, from_job: str, to_job: str, n: int = 10, window_months: int = 12
+) -> pd.DataFrame:
+    """Skills `to_job` asks for more often than `from_job`, over the latest window.
 
-#     Columns: title, url, skills (newly covered gap skills), covered_gap (their summed gap).
-#     """
-#     weight = dict(zip(gap["skill"], gap["gap"]))
-#     per_course = (
-#         courses[courses["skill"].isin(weight)].groupby(["posting_id", "title", "url"], dropna=False)["skill"].agg(set)
-#     )
-#     picks, remaining = [], set(weight)
-#     while remaining and len(picks) < max_courses:
-#         gains = {k: sum(weight[x] for x in v & remaining) for k, v in per_course.items()}
-#         best = max(gains, key=gains.get, default=None)
-#         if best is None or gains[best] <= 0:
-#             break
-#         new = per_course[best] & remaining
-#         picks.append({
-#             "title": best[1], "url": best[2] if pd.notna(best[2]) else None,
-#             "skills": sorted(new, key=weight.get, reverse=True), "covered_gap": gains[best],
-#         })
-#         remaining -= new
-#     return pd.DataFrame(picks, columns=["title", "url", "skills", "covered_gap"])
+    Columns: skill, share_from, share_to, gap (share_to - share_from), largest first.
+    A skill missing from `from_job` counts as share 0.
+    """
+
+    def recent_share(job):
+        shares = skill_share_over_time(source, job)
+        shares = shares[
+            shares["month"]
+            > shares["month"].max() - pd.DateOffset(months=window_months)
+        ]
+        return shares.groupby("skill")["share"].mean()
+
+    df = pd.concat(
+        [
+            recent_share(from_job).rename("share_from"),
+            recent_share(to_job).rename("share_to"),
+        ],
+        axis=1,
+    )
+    df["share_from"] = df["share_from"].fillna(0)
+    df = df.dropna(subset=["share_to"])
+    df["gap"] = df["share_to"] - df["share_from"]
+    df = df[df["gap"] > 0].sort_values("gap", ascending=False).head(n)
+    return df.reset_index(names="skill")
+
+
+def recommend_courses(
+    gap: pd.DataFrame, courses: pd.DataFrame, max_courses: int = 5
+) -> pd.DataFrame:
+    """Greedy cover of the gap skills: each pick adds the most not yet covered gap.
+
+    Columns: title, url, skills (newly covered gap skills), covered_gap (their summed gap).
+    """
+    weight = dict(zip(gap["skill"], gap["gap"]))
+    per_course = (
+        courses[courses["skill"].isin(weight)]
+        .groupby(["posting_id", "title", "url"], dropna=False)["skill"]
+        .agg(set)
+    )
+    picks, remaining = [], set(weight)
+    while remaining and len(picks) < max_courses:
+        gains = {
+            k: sum(weight[x] for x in v & remaining) for k, v in per_course.items()
+        }
+        best = max(gains, key=gains.get, default=None)
+        if best is None or gains[best] <= 0:
+            break
+        new = per_course[best] & remaining
+        picks.append(
+            {
+                "title": best[1],
+                "url": best[2] if pd.notna(best[2]) else None,
+                "skills": sorted(new, key=weight.get, reverse=True),
+                "covered_gap": gains[best],
+            }
+        )
+        remaining -= new
+    return pd.DataFrame(picks, columns=["title", "url", "skills", "covered_gap"])
 
 
 def _filter_period(df: pd.DataFrame, start, end) -> pd.DataFrame:
