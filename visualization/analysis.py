@@ -157,11 +157,11 @@ def recommend_courses(gap: pd.DataFrame, courses: pd.DataFrame, max_courses: int
             break
         new = per_course[best] & remaining
         picks.append({
-            "title": best[1], "url": best[2] if pd.notna(best[2]) else None,
+            "course_id": best[0], "title": best[1], "url": best[2] if pd.notna(best[2]) else None,
             "skills": sorted(new, key=weight.get, reverse=True), "covered_gap": gains[best],
         })
         remaining -= new
-    return pd.DataFrame(picks, columns=["title", "url", "skills", "covered_gap"])
+    return pd.DataFrame(picks, columns=["course_id", "title", "url", "skills", "covered_gap"])
 
 
 def _filter_period(df: pd.DataFrame, start, end) -> pd.DataFrame:

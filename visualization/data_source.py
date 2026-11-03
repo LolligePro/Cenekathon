@@ -16,13 +16,12 @@ from pathlib import Path
 import os
 from typing import Protocol
 
-import json
-
 import pandas as pd
 import duckdb
 
+from skillmarket_staging.access import read_queries
+
 STUB_DIR = Path(__file__).parent / "stub"
-COURSES_META = Path(__file__).resolve().parents[1] / "courses" / "courses.jsonl"
 COURSE_COLUMNS = ["posting_id", "title", "url", "skill"]
 
 
@@ -92,25 +91,17 @@ class DatabaseSource:
         return sorted(self._totals["job_type"].unique().tolist())
 
     def courses(self):
-        """One row per (course, skill) for Coursera courses, which the DB keys 'coursera-NNNNN'.
-
-        Titles come from the DB when the course is in `postings`, else from
-        courses/courses.jsonl, which also supplies the URL.
-        """
-        with duckdb.connect(str(self.database), read_only=True) as conn:
-            df = conn.execute("""SELECT ps.posting_id, p.title, s.name AS skill
-                FROM skillmarket_app.posting_skills ps
-                JOIN skillmarket_app.skills s USING (skill_id)
-                LEFT JOIN skillmarket_app.postings p USING (posting_id)
-                WHERE ps.posting_id LIKE 'coursera-%'""").df()
-        meta = {}
-        if COURSES_META.exists():
-            with COURSES_META.open(encoding="utf-8") as f:
-                meta = {m["posting_id"]: m for m in map(json.loads, f)}
-        df["url"] = df["posting_id"].map(lambda i: meta.get(i, {}).get("url"))
-        df["title"] = df["title"].fillna(df["posting_id"].map(lambda i: meta.get(i, {}).get("title")))
-        df["title"] = df["title"].fillna(df["posting_id"])
-        return df[COURSE_COLUMNS]
+        """Fixed-ID joins over all course providers; posting_id is a legacy adapter name."""
+        with read_queries(self.database) as query:
+            rows=query("""SELECT c.course_id AS posting_id,c.title,c.url,
+                list(DISTINCT s.name ORDER BY s.name) AS skill
+                FROM skillmarket_app.course_skills cs
+                JOIN skillmarket_app.courses c USING(course_id)
+                JOIN skillmarket_app.skills s USING(skill_id)
+                WHERE c.parse_status='ok'
+                GROUP BY c.course_id,c.title,c.url""",[])
+        frame=pd.DataFrame(rows,columns=COURSE_COLUMNS)
+        return frame.explode("skill",ignore_index=True)
 
 
 _source: DataSource | None = None

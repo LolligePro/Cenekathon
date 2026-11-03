@@ -20,7 +20,10 @@ import pandas as pd
 
 from skillmarket_staging.talent import find_internal_talent, format_internal_talent
 
-from visualization import analysis
+from skillmarket_staging import learning
+from skillmarket_staging.access import read_queries
+
+from visualization import analysis, api as viz, charts as viz_charts
 from visualization.data_source import get_source
 
 DB_PATH = Path(os.environ.get("SKILLMARKET_DB", str(Path(__file__).resolve().parent / "data" / "skillmarket.duckdb")))
@@ -46,7 +49,8 @@ Rules:
 - Only state numbers that came from tool results. Never invent or estimate numbers.
 - For internal talent, employee reskilling, or who could become an AI auditor, call find_internal_talent directly. This is a synthetic HR demo with the fixed ai-auditor role. Use profile_id for follow-up questions about one candidate; do not call profile_advice for this use case.
 - For internal talent answers, explicitly say the profiles and target role are fictional. Show the best candidate's matched_count/required_count and match_percentage as skill overlap, never suitability or hiring probability. Explain missing skills, include actual recommended course titles and URLs, and explicitly mention skills_without_courses. Do not claim a course covers a skill absent from its covered_skills. Suggest HR review and training as the next action.
-- Resolve skill names with find_skills first for other market questions, then use the returned skill names in other tools.
+- For course questions ALWAYS use recommend_courses with learning targets, profile_advice with already-known skills, or career_path for a role transition. Never answer course availability from memory. Reuse skills from prior tool results for follow-ups such as "courses hiervoor". Report unrecognized skills separately from known skills without courses. Only recommend URLs returned by these tools.
+- Resolve skill names with find_skills first for other market questions. Names, synonyms, ML/AI and skill IDs are resolved by the backend.
 - Use top_skills for the most demanded skills in a job type, skill_trend for one skill's direction, and rising_and_falling_skills for the biggest movers.
 - Call make_chart for trends or comparisons over time.
 - Show shares as percentages (0.12 -> 12%). Share is the fraction of a job type's postings in that month that mention the skill.
@@ -60,20 +64,16 @@ def _tool_error(message):
 
 
 class _Data:
-    """Read-only connection to the team's DuckDB database (skillmarket_app schema)."""
+    """Open each query read-only so database replacement cannot leave stale handles."""
 
     def __init__(self, db_path):
-        if not Path(db_path).exists():
-            raise FileNotFoundError(f"database not found: {db_path}")
-        self.con = duckdb.connect(str(db_path), read_only=True)
+        self.database = db_path
 
     def query(self, sql, params, limit=MAX_ROWS):
-        cur = self.con.execute(sql, params)
-        cols = [d[0] for d in cur.description]
-        rows = []
-        for row in cur.fetchmany(limit):
-            rows.append({k: (v.isoformat() if hasattr(v, "isoformat") else v) for k, v in zip(cols, row)})
-        return rows
+        with read_queries(self.database) as query:
+            rows = query(sql, params, limit=limit)
+        return [{key: (value.isoformat() if hasattr(value, "isoformat") else value)
+                 for key, value in row.items()} for row in rows]
 
 
 _DATA = None
@@ -105,27 +105,14 @@ def _check_month(value, default):
 
 
 def find_skills(text):
-    """Match skill names, max 5 results."""
-    if not isinstance(text, str) or not text.strip():
-        return _tool_error("text must be a non-empty string")
-    pattern = f"%{text.strip().lower()}%"
-    rows = _data().query(
-        """
-        SELECT skill_id, name, category
-        FROM skillmarket_app.skills
-        WHERE lower(name) LIKE ?
-        ORDER BY name
-        LIMIT 5
-        """,
-        [pattern],
-    )
-    return {"skills": rows}
+    return learning.find_skills(text)
 
 
 def get_skill_share(skills, job_type="ALL", start_month="2021-01", end_month=None):
     """Monthly share (postings / total postings) for up to 5 skill names."""
     if not isinstance(skills, list) or not 1 <= len(skills) <= MAX_SKILLS_PER_QUERY:
         return _tool_error(f"skills must be a list of 1 to {MAX_SKILLS_PER_QUERY} skill names")
+    skills = learning.canonical_names(skills)
     job_type = _check_job_type(job_type)
     start = _check_month(start_month, "2021-01-01")
     end = _check_month(end_month, f"{DEFAULT_END_MONTH}-01")
@@ -206,18 +193,40 @@ def top_movers(direction, job_type="ALL", window_months=6, n=10, end_month=None)
     return {"movers": rows, "job_type": job_type or "ALL", "window_months": window_months, "end_month": end[:7]}
 
 
-def profile_advice(skills, country):
-    """Calls the profile advisor (advisor.py, owned by person C)."""
-    try:
-        from advisor import advise
-    except ImportError:
-        return _tool_error("profile advisor is not available yet (advisor.py missing)")
-    if country not in ("ALL", "BE", "NL", "LU", "GB"):
-        return _tool_error("country must be one of ALL, BE, NL, LU, GB")
-    try:
-        return advise({"skills": skills, "country": country})
-    except Exception as exc:  # the advisor is external code; report its failures to the model
-        return _tool_error(f"profile advisor failed: {exc}")
+def profile_advice(skills, country="ALL", job_type="ALL"):
+    return learning.profile_advice(skills, country, job_type)
+
+
+def recommend_courses(skills, max_courses=5):
+    return learning.recommend_courses(skills, max_courses)
+
+
+def career_path(from_job, to_job, n_skills=8, max_courses=5, end_month=None):
+    _require_job_type(from_job)
+    _require_job_type(to_job)
+    if from_job == to_job:
+        raise ValueError("from_job and to_job must differ")
+    if type(n_skills) is not int or not 1 <= n_skills <= 25:
+        raise ValueError("n_skills must be between 1 and 25")
+    if type(max_courses) is not int or not 1 <= max_courses <= 10:
+        raise ValueError("max_courses must be between 1 and 10")
+    result = viz._career_path(_viz_source(end_month), from_job, to_job, n_skills, max_courses)
+    return {"summary": result["summary"], "data": result["data"],
+            "_charts": [result[k] for k in ("chart", "courses_chart") if result.get(k)]}
+
+
+def skill_trends(job_type, skills=None, metric="share", n=5, end_month=None):
+    _require_job_type(job_type)
+    source = _viz_source(end_month)
+    selected = learning.canonical_names(skills) if skills else analysis.top_skills(source, job_type, n=n)["skill"].tolist()
+    if metric not in ("share", "postings") or not 1 <= len(selected) <= 10:
+        raise ValueError("Choose share/postings and 1 to 10 skills")
+    frame = analysis.skill_share_over_time(source, job_type, selected)
+    return {"summary": f"Skill demand in {job_type}.",
+            "data": [{"skill": skill, "first_share": float(rows["share"].iloc[0]),
+                      "last_share": float(rows["share"].iloc[-1])}
+                     for skill, rows in frame.groupby("skill")],
+            "_charts": [viz_charts.skill_trend_chart(frame, job_type, metric)]}
 
 
 class _CappedSource:
@@ -237,6 +246,9 @@ class _CappedSource:
 
     def job_types(self):
         return self._source.job_types()
+
+    def courses(self):
+        return self._source.courses()
 
 
 def _viz_source(end_month):
@@ -270,6 +282,7 @@ def top_skills(job_type, n=10, end_month=None):
 def skill_trend(job_type, skill, window_months=6, end_month=None):
     """Whether one skill's share is rising, falling or flat in one job type."""
     _require_job_type(job_type)
+    skill = learning.canonical_names([skill])[0]
     if not isinstance(window_months, int) or not 1 <= window_months <= 12:
         raise ValueError("window_months must be an integer from 1 to 12")
     source = _viz_source(end_month)
@@ -330,6 +343,65 @@ def make_chart(spec, charts):
 # ---------- tool definitions for the API ----------
 
 TOOLS = [
+    {'name': 'recommend_courses',
+     'description': 'Find actual catalog courses for skills the user WANTS TO LEARN. Accept names, synonyms, '
+                    'ML/AI or fixed skill IDs. Returns links and exact skill coverage; reports unknown skills '
+                    'and skills without courses. Use profile_advice for skills the user already knows.',
+     'input_schema': {'type': 'object',
+                      'properties': {'skills': {'type': 'array',
+                                                'items': {'type': 'string'},
+                                                'minItems': 1,
+                                                'maxItems': 20},
+                                     'max_courses': {'type': 'integer', 'minimum': 1, 'maximum': 10}},
+                      'required': ['skills'],
+                      'additionalProperties': False}},
+    {'name': 'career_path',
+     'description': 'Compare two supported job groups, compute skill gaps, and recommend actual courses across '
+                    'all platforms, with gap and course charts. Maps broad job groups, not precise occupations.',
+     'input_schema': {'type': 'object',
+                      'properties': {'from_job': {'type': 'string',
+                                                  'enum': ['customer service and support',
+                                                           'finance and accounting',
+                                                           'human resources',
+                                                           'legal',
+                                                           'operations',
+                                                           'other',
+                                                           'product and project management',
+                                                           'risk and compliance',
+                                                           'sales and marketing',
+                                                           'technology']},
+                                     'to_job': {'type': 'string',
+                                                'enum': ['customer service and support',
+                                                         'finance and accounting',
+                                                         'human resources',
+                                                         'legal',
+                                                         'operations',
+                                                         'other',
+                                                         'product and project management',
+                                                         'risk and compliance',
+                                                         'sales and marketing',
+                                                         'technology']},
+                                     'n_skills': {'type': 'integer', 'minimum': 1, 'maximum': 25},
+                                     'max_courses': {'type': 'integer', 'minimum': 1, 'maximum': 10}},
+                      'required': ['from_job', 'to_job']}},
+    {'name': 'skill_trends',
+     'description': 'Draw skill demand over time for a job group and optional skill names or IDs.',
+     'input_schema': {'type': 'object',
+                      'properties': {'job_type': {'type': 'string',
+                                                  'enum': ['customer service and support',
+                                                           'finance and accounting',
+                                                           'human resources',
+                                                           'legal',
+                                                           'operations',
+                                                           'other',
+                                                           'product and project management',
+                                                           'risk and compliance',
+                                                           'sales and marketing',
+                                                           'technology']},
+                                     'skills': {'type': 'array', 'items': {'type': 'string'}, 'maxItems': 10},
+                                     'metric': {'type': 'string', 'enum': ['share', 'postings']},
+                                     'n': {'type': 'integer', 'minimum': 1, 'maximum': 10}},
+                      'required': ['job_type']}},
     {
         "name": "find_skills",
         "description": "Find skills whose name matches the text. Returns up to 5 canonical skill names. Call this first to resolve skill names.",
@@ -370,14 +442,15 @@ TOOLS = [
     },
     {
         "name": "profile_advice",
-        "description": "Advice for a jobseeker with these skills: rising and falling skills, matching vacancies, and the skill that unlocks the most vacancies.",
+        "description": "Use existing user skills to compute 2025 vacancy skill overlap, missing skills, and actual linked courses. Input skills are already known, not learning targets. Country and job_type default to ALL.",
         "input_schema": {
             "type": "object",
             "properties": {
                 "skills": {"type": "array", "items": {"type": "string"}, "description": "Skill names as the user wrote them"},
                 "country": {"type": "string", "enum": ["ALL", "BE", "NL", "LU", "GB"]},
+                "job_type": {"type": "string", "enum": ["ALL"] + JOB_TYPES},
             },
-            "required": ["skills", "country"],
+            "required": ["skills"],
         },
     },
     {
@@ -495,6 +568,9 @@ TOOLS = [
 ]
 
 TOOL_FUNCTIONS = {
+    "recommend_courses": recommend_courses,
+    "career_path": career_path,
+    "skill_trends": skill_trends,
     "find_internal_talent": find_internal_talent,
     "find_skills": find_skills,
     "get_skill_share": get_skill_share,
@@ -546,6 +622,9 @@ def _run_tool(name, args, charts):
         output = fn(**args)
     except Exception as exc:  # bad arguments or DuckDB errors go back to the model
         return _tool_error(f"{type(exc).__name__}: {exc}")
+    if "error" in output:
+        return output
+    charts.extend(output.pop("_charts", []))
     if name in VIZ_TOOLS:
         output.setdefault("job_type", args.get("job_type"))
         spec = _viz_chart(name, output)
@@ -624,6 +703,19 @@ def ask(question, history=None):
             ])
             _log_usage(question, usage, cached=False)
             return {"answer": answer, "charts": charts, "usage": usage, "messages": messages}
+    course_args = learning.course_request(question, history)
+    if course_args:
+        output = _run_tool("recommend_courses", course_args, charts)
+        if "error" not in output:
+            tool_id = "courses_" + uuid.uuid4().hex
+            answer = learning.format_courses(output)
+            messages.extend([
+                {"role": "assistant", "content": [{"type": "tool_use", "id": tool_id, "name": "recommend_courses", "input": course_args}]},
+                {"role": "user", "content": [{"type": "tool_result", "tool_use_id": tool_id, "content": json.dumps(output)}]},
+                {"role": "assistant", "content": [{"type": "text", "text": answer}]},
+            ])
+            _log_usage(question, usage, cached=False)
+            return {"answer": answer, "charts": charts, "usage": usage, "messages": messages}
     client = _get_client()
     system = [{"type": "text", "text": SYSTEM_PROMPT, "cache_control": {"type": "ephemeral"}}]
     tools = _cached_tools()
@@ -650,11 +742,14 @@ def ask(question, history=None):
 
         results = []
         talent_result = None
+        course_result = None
         for block in response.content:
             if block.type == "tool_use":
                 output = _run_tool(block.name, block.input, charts)
                 if block.name == "find_internal_talent" and isinstance(output, dict) and "error" not in output:
                     talent_result = output
+                if block.name in {"recommend_courses", "profile_advice", "career_path"} and isinstance(output, dict) and "error" not in output:
+                    course_result = (block.name, output)
                 results.append({
                     "type": "tool_result",
                     "tool_use_id": block.id,
@@ -662,6 +757,17 @@ def ask(question, history=None):
                     "is_error": isinstance(output, dict) and "error" in output,
                 })
         messages.append({"role": "user", "content": results})
+        if course_result is not None:
+            name, output = course_result
+            if name == "career_path":
+                data = output["data"]
+                output = {"skills": [{"name": r["skill"]} for r in data["skills_to_learn"]],
+                          "courses": [{"title": c["title"], "url": c["url"], "site": "catalogus",
+                                       "covered_skills": [{"name": v} for v in c["skills"]]} for c in data["courses"]],
+                          "skills_without_courses": [{"name": v} for v in data["skills_without_courses"]]}
+            answer = learning.format_courses(output)
+            messages.append({"role": "assistant", "content": [{"type": "text", "text": answer}]})
+            break
         if talent_result is not None:
             # Use verified numbers and course mappings directly; save a model round.
             answer = format_internal_talent(talent_result)

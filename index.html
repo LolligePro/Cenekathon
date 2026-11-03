@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Skill Market</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
 <style>
   :root { --bg:#0f1419; --panel:#182029; --text:#e6edf3; --muted:#8b98a5; --accent:#3fb950; --user:#1f6feb; --line:#26313c; }
   * { box-sizing: border-box; }
@@ -21,7 +24,7 @@
   .msg a { color:#79c0ff; overflow-wrap:anywhere; }
   .user { background:var(--user); margin-left:20%; }
   .bot { background:var(--panel); margin-right:10%; }
-  .chart { background:var(--panel); border-radius:10px; padding:12px; margin:12px 10% 12px 0; }
+  .chart { background:var(--panel); border-radius:10px; padding:12px; margin:12px 10% 12px 0; overflow-x:auto; }
   .examples { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
   .examples button { background:var(--bg); color:var(--text); border:1px solid var(--line); border-radius:16px;
                      padding:6px 12px; cursor:pointer; font-size:13px; }
@@ -95,9 +98,16 @@ function addMessage(cls, text) {
 function renderChart(spec) {
   const box = document.createElement("div");
   box.className = "chart";
+  chat.appendChild(box);
+
+  // Specs from the visualization package are Vega-Lite; make_chart specs use the series format below.
+  if (spec.$schema) {
+    vegaEmbed(box, spec, { actions: false, renderer: "svg" });
+    chat.scrollTop = chat.scrollHeight;
+    return;
+  }
   const canvas = document.createElement("canvas");
   box.appendChild(canvas);
-  chat.appendChild(box);
 
   // Periods like 2025-Q1 sort correctly as plain strings.
   const labels = [...new Set(spec.series.flatMap(s => s.points.map(p => p[0])))].sort();

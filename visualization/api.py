@@ -137,9 +137,16 @@ def career_path(from_job: str, to_job: str, n_skills: int = 8, max_courses: int 
             raise ValueError(f"Unknown job type {job!r}; see list_job_types()")
     if from_job == to_job:
         raise ValueError("from_job and to_job must differ")
-    source = get_source()
+    return _career_path(get_source(), from_job, to_job, n_skills, max_courses)
+
+
+def _career_path(source, from_job, to_job, n_skills=8, max_courses=5):
     gap = analysis.skill_gap(source, from_job, to_job, n=n_skills)
-    plan = analysis.recommend_courses(gap, source.courses(), max_courses)
+    courses = source.courses()
+    plan = analysis.recommend_courses(gap, courses, max_courses)
+    available = set(courses["skill"])
+    unavailable = sorted(set(gap["skill"]) - available)
+    unselected = sorted(set(gap["skill"]) - {s for sk in plan["skills"] for s in sk})
     if gap.empty:
         summary = f"{to_job} asks for no skills more often than {from_job}."
     elif plan.empty:
@@ -149,11 +156,12 @@ def career_path(from_job: str, to_job: str, n_skills: int = 8, max_courses: int 
         summary = (
             f"To move from {from_job} to {to_job}, close {len(gap)} skill gaps; "
             f"{len(plan)} course(s) cover {len(gap) - len(left)} of them, starting with {plan['title'][0]}."
-            + (f" No course found for: {', '.join(left)}." if left else "")
+            + (f" Not covered by the selected plan: {', '.join(left)}." if left else "")
         )
     return {
         "summary": summary,
-        "data": {"skills_to_learn": gap.to_dict("records"), "courses": plan.to_dict("records")},
+        "data": {"skills_to_learn": gap.to_dict("records"), "courses": plan.to_dict("records"),
+                 "skills_without_courses": unavailable, "skills_not_covered_by_plan": unselected},
         "chart": charts.skill_gap_chart(gap, plan, from_job, to_job) if not gap.empty else None,
         "courses_chart": charts.course_plan_chart(plan, from_job, to_job) if not plan.empty else None,
     }
