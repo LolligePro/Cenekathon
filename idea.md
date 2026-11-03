@@ -88,6 +88,23 @@ All tables are Parquet files in `data/`. Period format: `YYYY-Qn` (quarters). Pl
 }
 ```
 
+### ai_layer.ask() (read by the frontend)
+`ask(question, history=None)` returns:
+```json
+{"answer": "...", "charts": [<chart spec>], "usage": {"input_tokens": 0, "output_tokens": 0}, "messages": [...]}
+```
+`messages` is the conversation so far; pass it back as `history` for follow-up questions.
+Every call appends one line to `usage_log.jsonl`.
+
+### chart spec (made by the AI layer's make_chart tool, read by the frontend)
+```json
+{"type": "line", "title": "Machine learning share, BE", "y_label": "share of postings",
+ "series": [{"name": "machine learning", "points": [["2025-Q1", 0.12], ["2025-Q2", 0.15]]}]}
+```
+- `type`: `line` or `bar`
+- `title`, `y_label`: strings
+- `series`: 1 to 6 series; each has a `name` and `points` (1 to 60 `[x_label, y_value]` pairs, y is a number)
+
 ## Owners
 - A: skill list + parser + posting_skills
 - B: skill_prices aggregation + graph tool
