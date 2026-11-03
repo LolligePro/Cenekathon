@@ -25,3 +25,13 @@ python -m skillmarket_staging init
 ## Company normalization
 
 Fast company-name normalization is available through `normalize-companies`. See [docs/companies.md](docs/companies.md).
+
+## Application database and parser handoff
+
+The original vacancy fields, company mapping, parser results and monthly visualization tables are connected. See [docs/database.md](docs/database.md) for loading source files, importing the folder received from the parser, checking coverage and exporting the tables.
+
+```bash
+python -m skillmarket_staging load-vacancies '/Users/daanderock/Downloads/vacancies_*.parquet'
+python -m skillmarket_staging import-parser '/Users/daanderock/Downloads/parser-output'
+python -m skillmarket_staging status
+```

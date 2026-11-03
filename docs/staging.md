@@ -1,6 +1,6 @@
 # DuckDB-basis voor team Database
 
-Deze basis ontvangt de bestanden uit `parser-db-contract.md`, valideert de overdracht en bewaart de JSON-objecten in een staginglaag. Het definitieve model voor vacatures, functies, skills en trends is nog niet vastgelegd.
+Deze basis ontvangt de bestanden uit `parser-db-contract.md`, valideert de overdracht en bewaart de JSON-objecten in een staginglaag. De toepassingsdatabase en koppeling met de visualisatie staan beschreven in [database.md](database.md).
 
 Er is geen databaseserver of wachtwoord nodig. De database is één lokaal DuckDB-bestand. Getest met DuckDB 2.0.0 en Python 3.14.
 
@@ -93,7 +93,7 @@ payload            JSON       het volledige ontvangen parserobject
 
 De JSON-inhoud blijft semantisch gelijk; opmaak en volgorde van objectsleutels kunnen veranderen. Bewaar de oorspronkelijke aanleverbestanden als exacte bytes nodig zijn. Het logboek bevat een SHA-256 van het oorspronkelijke JSONL-bestand.
 
-Er zijn geen tabellen of kolommen voor de definitieve genormaliseerde titels, vacaturemetadata of skillrelaties. De v1-contractvalidator staat los van de opslag. Bij extra afgesproken parservelden moet de contractvalidator worden aangepast; de JSON-kolom zelf kan ze al bewaren.
+De stagingrecords leggen zelf geen businesskolommen vast. De toepassingstabellen in het aparte schema `skillmarket_app` worden vanuit deze laag gevuld. De v1-contractvalidator staat los van de opslag. Bij extra afgesproken parservelden moet de contractvalidator worden aangepast; de JSON-kolom zelf kan ze al bewaren.
 
 ## 5. Wat de ontvanger controleert
 
@@ -172,7 +172,7 @@ De ontvanger leest parserrecords één voor één en laat DuckDB vervolgens een 
 
 De tests gebruiken eigen tijdelijke DuckDB-bestanden. Ze controleren onder andere rollback met behoud van het foutlogboek, herlevering, bron-ID-controles, ongeldige JSON, onbekende skill-ID’s, catalogusversies en parallelle aanroepen binnen één proces.
 
-Zodra de definitieve velden bekend zijn, volgt een aparte verwerking van staging naar het appmodel. Daar kunnen dan bronmetadata, relaties, telregels, trendaggregaties en profieladvies aan worden toegevoegd. De bestaande ontvangst en importhistorie blijven daarvoor bruikbaar.
+De verwerking van staging naar het appmodel is beschikbaar via `publish` en `import-parser`. Zie [database.md](database.md) voor het volledige pad van de originele bronvelden naar de maandtabellen.
 
 Officiële documentatie: [JSON in DuckDB](https://duckdb.org/docs/2.0/data/json/overview.html), [transacties](https://duckdb.org/docs/2.0/sql/statements/transactions.html), [concurrency](https://duckdb.org/docs/2.0/connect/concurrency.html).
 
