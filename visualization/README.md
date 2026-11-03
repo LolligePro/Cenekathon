@@ -37,7 +37,7 @@ python -m visualization.preview
 | `api.py` | The advisor-facing functions. Validates inputs, calls analysis and charts, builds summaries. |
 | `preview.py` | Builds the HTML gallery (`preview.html`) from the default charts. |
 | `preview.html` | Generated output. Do not edit by hand; rerun `preview.py`. |
-| `stub/` | Synthetic CSVs used until the database is ready. |
+| `stub/` | Synthetic CSVs. Used only when `SKILLMARKET_SOURCE=stub` or the database is not initialized. |
 
 Dependency direction is one-way: `api` → `analysis`/`charts` → `data_source`.
 Keep it that way. Analysis must not import charts, and nothing except `data_source`

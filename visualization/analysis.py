@@ -119,6 +119,45 @@ def rising_and_falling(
     }
 
 
+def significant_risers(
+    source: DataSource,
+    job_type: str,
+    window_months: int = 6,
+    n: int = 10,
+    min_share: float = 0.02,
+) -> pd.DataFrame:
+    """Skills whose recent share moved more than their normal month-to-month noise.
+
+    Each skill gets a z-score: the change between the latest window and the window
+    before it, divided by the typical size of month-to-month share changes for that
+    skill. Generic skills whose share hovers around a stable level score low and drop
+    out, while genuine shifts rank high. Only skills above `min_share` in the latest
+    window are considered.
+    """
+    shares = skill_share_over_time(source, job_type).sort_values(["skill", "month"])
+    rows = []
+    for skill, g in shares.groupby("skill"):
+        values = g["share"].to_numpy()
+        if len(values) < 2 * window_months:
+            continue
+        before = values[-2 * window_months : -window_months].mean()
+        after = values[-window_months:].mean()
+        if after < min_share or before == 0:
+            continue
+        noise = float(pd.Series(values).diff().std()) or 1e-9
+        rows.append(
+            {
+                "skill": skill,
+                "share_before": float(before),
+                "share_after": float(after),
+                "relative_change": float((after - before) / before),
+                "z_score": float((after - before) / noise),
+            }
+        )
+    df = pd.DataFrame(rows, columns=["skill", "share_before", "share_after", "relative_change", "z_score"])
+    return df.sort_values("z_score", ascending=False).head(n).reset_index(drop=True)
+
+
 def _filter_period(df: pd.DataFrame, start, end) -> pd.DataFrame:
     if start is not None:
         df = df[df["month"] >= pd.Timestamp(start)]

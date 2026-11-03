@@ -197,6 +197,59 @@ def top_skills_chart(top: pd.DataFrame, job_type: str) -> dict:
     }
 
 
+def risers_chart(risers: pd.DataFrame, job_type: str, window_months: int = 6) -> dict:
+    """Bar chart of significant risers, ranked by z-score (move relative to normal noise)."""
+    df = risers[["skill", "z_score", "relative_change", "share_after"]].copy()
+    order = df["skill"].tolist()
+    max_z = float(df["z_score"].max()) if not df.empty else 1.0
+    return {
+        "$schema": VEGA_LITE_SCHEMA,
+        "title": _title(
+            f"{job_type}: skills rising beyond normal noise",
+            f"Latest {window_months} months vs the {window_months} before. Generic skills that stay steady drop out.",
+        ),
+        "config": THEME,
+        "width": 460,
+        "height": {"step": 32},
+        "data": {"values": _records(df)},
+        "layer": [
+            {
+                "mark": {"type": "bar", "cornerRadiusEnd": 4, "size": 20, "color": RISING},
+                "encoding": {
+                    "y": {
+                        "field": "skill",
+                        "type": "nominal",
+                        "sort": order,
+                        "title": None,
+                        "axis": {"labelFontSize": 13, "labelColor": INK, "ticks": False, "domain": False, "labelPadding": 10},
+                    },
+                    "x": {
+                        "field": "z_score",
+                        "type": "quantitative",
+                        "title": "Change relative to normal month-to-month noise (z-score)",
+                        "scale": {"domain": [0, round(max_z * 1.3, 2)], "nice": False},
+                        "axis": {"grid": True, "tickCount": 6},
+                    },
+                    "tooltip": [
+                        {"field": "skill", "type": "nominal", "title": "Skill"},
+                        {"field": "z_score", "type": "quantitative", "title": "Z-score", "format": ".1f"},
+                        {"field": "relative_change", "type": "quantitative", "title": "Change in share", "format": "+.1%"},
+                        {"field": "share_after", "type": "quantitative", "title": "Recent share", "format": ".1%"},
+                    ],
+                },
+            },
+            {
+                "mark": {"type": "text", "align": "left", "dx": 6, "fontSize": 12, "color": INK, "fontWeight": 500},
+                "encoding": {
+                    "y": {"field": "skill", "type": "nominal", "sort": order},
+                    "x": {"field": "z_score", "type": "quantitative"},
+                    "text": {"field": "relative_change", "type": "quantitative", "format": "+.0%"},
+                },
+            },
+        ],
+    }
+
+
 def change_chart(rising_falling: dict, job_type: str, window_months: int = 6) -> dict:
     """Diverging bar chart of relative share change, anchored at zero."""
     rows = rising_falling["rising"] + rising_falling["falling"]
