@@ -118,20 +118,9 @@ class TalentTests(unittest.TestCase):
 
         def model_reply(**kwargs):
             calls.append(kwargs)
-            if len(calls)%2:
-                args={'profile_id':'demo-d'} if len(calls)>2 else {}
-                content=[SimpleNamespace(type='tool_use',id=f'talent-{len(calls)}',name='find_internal_talent',input=args)]
-                stop='tool_use'
-            else:
-                data=json.loads(kwargs['messages'][-1]['content'][0]['content'])
-                best=data['candidates'][0]
-                answer=f"Fictieve demo: {best['label']} heeft {best['matched_count']}/{best['required_count']} skills ({best['match_percentage']}% skilloverlap)."
-                if best['courses']:
-                    answer+=' Cursus: '+best['courses'][0]['url']
-                if best['skills_without_courses']:
-                    answer+=' Geen cursus voor: '+', '.join(s['name'] for s in best['skills_without_courses'])
-                content=[SimpleNamespace(type='text',text=answer)]
-                stop='end_turn'
+            args={'profile_id':'demo-d'} if len(calls)>1 else {}
+            content=[SimpleNamespace(type='tool_use',id=f'talent-{len(calls)}',name='find_internal_talent',input=args)]
+            stop='tool_use'
             return SimpleNamespace(content=content,stop_reason=stop,
                 usage=SimpleNamespace(input_tokens=1,output_tokens=1,cache_read_input_tokens=0,cache_creation_input_tokens=0))
 
@@ -145,11 +134,14 @@ class TalentTests(unittest.TestCase):
             data=response.json()
             self.assertIn('5/7',data['answer'])
             self.assertIn('https://example.org/',data['answer'])
-            self.assertIn('model validation',data['answer'])
+            self.assertIn('Geen cursus gekoppeld in onze huidige catalogus voor: model validation.',data['answer'])
+            self.assertIn('Fictieve HR-demo',data['answer'])
+            self.assertEqual(len(calls),1)
             response=client.post('/api/ask',json={'question':'En Profiel D?', 'session_id':data['session_id']})
             self.assertEqual(response.status_code,200,response.text)
             self.assertIn('Profiel D',response.json()['answer'])
-            self.assertGreater(len(calls[2]['messages']),1)
+            self.assertGreater(len(calls[1]['messages']),1)
+            self.assertEqual(len(calls),2)
             self.assertIn('find_internal_talent',{t['name'] for t in calls[0]['tools']})
             self.assertIn('AI-auditor',client.get('/').text)
 

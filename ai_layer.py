@@ -17,7 +17,7 @@ import duckdb
 import anthropic
 import pandas as pd
 
-from skillmarket_staging.talent import find_internal_talent
+from skillmarket_staging.talent import find_internal_talent, format_internal_talent
 
 from visualization import analysis
 from visualization.data_source import get_source
@@ -626,9 +626,12 @@ def ask(question, history=None):
             break
 
         results = []
+        talent_result = None
         for block in response.content:
             if block.type == "tool_use":
                 output = _run_tool(block.name, block.input, charts)
+                if block.name == "find_internal_talent" and isinstance(output, dict) and "error" not in output:
+                    talent_result = output
                 results.append({
                     "type": "tool_result",
                     "tool_use_id": block.id,
@@ -636,6 +639,11 @@ def ask(question, history=None):
                     "is_error": isinstance(output, dict) and "error" in output,
                 })
         messages.append({"role": "user", "content": results})
+        if talent_result is not None:
+            # Use verified numbers and course mappings directly; save a model round.
+            answer = format_internal_talent(talent_result)
+            messages.append({"role": "assistant", "content": [{"type": "text", "text": answer}]})
+            break
     else:
         answer = "I could not finish this question within the tool limit. Please ask a narrower question."
 

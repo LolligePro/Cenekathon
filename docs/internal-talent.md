@@ -66,7 +66,7 @@ Het resultaat bevat `synthetic`, `company`, `data_owner`, `target_role` met `req
 
 Elke kandidaat bevat `profile_id`, `label`, `current_role`, `matched_count`, `required_count`, `match_percentage`, `matched_skills`, `missing_skills`, `courses`, `skills_without_courses` en `skills_not_covered_by_recommendations`. Skills zijn objecten met `skill_id` en `name`. Een cursus bevat `course_id`, `title`, `url`, `site`, `covered_count` en `covered_skills`; deze laatste velden gaan alleen over de ontbrekende skills van deze kandidaat.
 
-`ai_layer.py` registreert deze functie als tool. De bestaande model/tool-loop, `/api/ask` en sessiegeschiedenis worden hergebruikt. De systeeminstructie laat de agent fictieve data benoemen, aantallen uit de tool overnemen en opleidingsgaten expliciet tonen. De chat maakt HTTP(S)-cursuslinks klikbaar met DOM-nodes; modeltekst wordt niet als HTML geïnterpreteerd.
+`ai_layer.py` registreert deze functie als tool. De bestaande model/tool-loop, `/api/ask` en sessiegeschiedenis worden hergebruikt. De agent kiest de tool. Na een succesvolle toolaanroep bouwt een vaste Nederlandse formatter het antwoord op uit de berekende velden: fictieve data, ranking, ontbrekende skills, cursuslinks en gaten in de catalogus. Dit voorkomt dat een model zelf extra cursusdekking verzint en bespaart een tweede modelronde. De toolresultaten en het geformatteerde antwoord blijven in de sessiegeschiedenis voor vervolgvragen. De chat maakt HTTP(S)-cursuslinks klikbaar met DOM-nodes; modeltekst wordt niet als HTML geïnterpreteerd.
 
 ## Starten vanuit de repo
 

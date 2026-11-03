@@ -110,3 +110,33 @@ def find_internal_talent(target_role_id='ai-auditor', n=3, profile_id=None):
             return [dict(zip([c[0] for c in cursor.description], row)) for row in cursor.fetchall()]
 
         return _match(query, **kwargs)
+
+
+def format_internal_talent(result):
+    """Render measured results directly, preventing invented course coverage."""
+    role = result['target_role']['title']
+    lines = [f"Fictieve HR-demo voor {result['company']}: de profielen en het {role}-doelprofiel zijn verzonnen.",
+             '', 'Ranking op skilloverlap:']
+    for index, candidate in enumerate(result['candidates'], 1):
+        lines.append(f"{index}. {candidate['label']} ({candidate['current_role']}): "
+                     f"{candidate['matched_count']}/{candidate['required_count']} skills "
+                     f"({candidate['match_percentage']}% overlap).")
+    best = result['candidates'][0]
+    names = lambda items: ', '.join(s['name'] for s in items) or 'geen'
+    lines += ['', f"Voor {best['label']}:", 'Aanwezige doelvaardigheden: '+names(best['matched_skills'])+'.',
+              'Ontbrekende doelvaardigheden: '+names(best['missing_skills'])+'.']
+    if best['courses']:
+        lines += ['', 'Cursusopties voor ontbrekende skills (niveau niet beoordeeld):']
+        for course in best['courses']:
+            lines.append(f"- {course['title']} ({course['site']}): {course['url']}\n"
+                         f"  Gekoppelde ontbrekende skills: {names(course['covered_skills'])}.")
+    if best['skills_without_courses']:
+        lines += ['', 'Geen cursus gekoppeld in onze huidige catalogus voor: '+names(best['skills_without_courses'])+'.']
+    not_shown = {s['skill_id'] for s in best['skills_not_covered_by_recommendations']} - {
+        s['skill_id'] for s in best['skills_without_courses']}
+    if not_shown:
+        lines.append('Niet afgedekt door deze cursusopties: '+names(
+            [s for s in best['missing_skills'] if s['skill_id'] in not_shown])+'.')
+    lines += ['', 'De score meet skilloverlap, geen bewezen geschiktheid; cursusdekking komt uit parserkoppelingen.',
+              f"Volgende stap: bespreek met HR of {best['label']} wil doorgroeien en toets de ontbrekende skills voordat je een leertraject kiest."]
+    return '\n'.join(lines)
