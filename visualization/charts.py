@@ -60,7 +60,7 @@ def _records(df: pd.DataFrame) -> list[dict]:
     for col in out.columns:
         if pd.api.types.is_datetime64_any_dtype(out[col]):
             out[col] = out[col].dt.strftime("%Y-%m-%d")
-    return out.to_dict("records")
+    return out.astype(object).where(pd.notna(out), None).to_dict("records")
 
 
 def skill_trend_chart(shares: pd.DataFrame, job_type: str, metric: str = "share") -> dict:

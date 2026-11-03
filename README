@@ -12,3 +12,20 @@ Visualize demand for skills in the job market and provide advice for job seekers
 
 extra: use competences from studies to create list of gathered skills
 use this to match with the skills extracted from job postings and provide advice for job seekers on which skills to learn or improve, or on which jobs apply to them, or on what study to pursue to improve their chances of getting a job in the future.
+
+## Database (DuckDB)
+
+See [DATABASE.md](DATABASE.md) for setup and application access, and [docs/database.md](docs/database.md) for all fields, trend queries, profile matching, import management and exports.
+
+The parsed input is committed in `parser/batches/` with its catalog in `parser/skills.jsonl`. Place the original `vacancies_2021.parquet` through `vacancies_2026.parquet` in `data/` or `~/Downloads/`, then run:
+
+```bash
+python3 -m venv .venv
+.venv/bin/python -m pip install -e .
+.venv/bin/python -m skillmarket_staging build
+.venv/bin/python -m skillmarket_staging verify --require-complete
+```
+
+This creates `data/skillmarket.duckdb` and five Parquet exports. Generated databases and Parquet files remain local and are excluded from Git. The visualization API automatically uses the database.
+
+For the parser wire format see [parser-db-contract.md](parser-db-contract.md). Lower-level receipt commands are documented in [docs/staging.md](docs/staging.md), and company normalization in [docs/companies.md](docs/companies.md).

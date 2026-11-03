@@ -31,7 +31,7 @@ python -m visualization.preview
 
 | File | Responsibility |
 |------|----------------|
-| `data_source.py` | The only module that knows where data comes from. Holds `StubSource` and `get_source()`. |
+| `data_source.py` | The only module that knows where data comes from. Holds `DatabaseSource`, `StubSource`, and `get_source()`. |
 | `analysis.py` | Pure pandas computations: shares, top skills, trends, rising/falling. No I/O, no charts. |
 | `charts.py` | Builds Vega-Lite v5 spec dicts. Holds the palette and shared `THEME`. |
 | `api.py` | The advisor-facing functions. Validates inputs, calls analysis and charts, builds summaries. |
@@ -100,8 +100,9 @@ will distort the window averages. Check this when the database source is added.
 
 ## Changing the data source
 
-1. Implement a class with `skill_demand`, `monthly_totals`, and `job_types` that meets the contract.
-2. Change `get_source()` in `data_source.py` to return it.
+`DatabaseSource` now reads the team's preaggregated DuckDB tables. `get_source()` uses it automatically when the application schema exists. Set `SKILLMARKET_DB` to select a database, `SKILLMARKET_SOURCE=duckdb` to require it, or `SKILLMARKET_SOURCE=stub` for the synthetic demo. An initialized DB with no parser results returns no job types. See `../docs/database.md` for loading the received parser folder.
+
+The source caches frames until the database file changes. Missing calendar months are present with zero totals; shares for those months serialize as JSON null.
 
 Nothing else should change. If you find yourself editing `analysis.py` or `api.py` to
 handle a new source, the source is returning the wrong shape.
@@ -127,9 +128,7 @@ handle a new source, the source is returning the wrong shape.
 
 ## Known limitations
 
-- **No tests.** Behaviour is checked by calling the functions and rendering the gallery. If
-  you add tests, put them in a `tests/` folder and do not change the function signatures
-  without updating the advisor.
+- **DB integration tests** are in `tests/test_database.py`. Existing advisor function signatures are unchanged.
 - **Gallery notes are hardcoded.** The captions in `preview.py` say "Top 5" and "2%". Update
   them if the defaults change.
 - **Vega sort warnings on the combined page.** When all four gallery charts are on one page,
@@ -138,5 +137,5 @@ handle a new source, the source is returning the wrong shape.
 - **`change_chart` has an unused `flat` colour** in its colour scale. The advisor never
   passes flat skills to it.
 - **Preview needs internet.** Vega, Vega-Lite, and vega-embed are loaded from a CDN.
-- **Stub data only.** The skill set, job types, and date range are synthetic
-  (4 job types, 10 skills, 2024-01 to 2026-08).
+- **Stub mode is synthetic.** Its skill set, job types, and date range are synthetic
+  (4 job types, 10 skills, 2024-01 to 2026-08). DuckDB mode uses imported parser results.

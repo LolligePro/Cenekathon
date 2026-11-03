@@ -1,2 +1,13 @@
 **.parquet
 .venv/
+
+# Local database and import artifacts
+*.duckdb
+*.duckdb.wal
+data/incoming/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+build/
+dist/
