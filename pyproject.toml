@@ -17,4 +17,4 @@ include = ["skillmarket_staging*", "visualization*"]
 
 [tool.setuptools.package-data]
 skillmarket_staging = ["sql/*.sql"]
-visualization = ["stub/*.csv"]
+visualization = ["stub/*.csv", "dashboard.html"]

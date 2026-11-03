@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skill Market: dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+<style>
+  body{font-family:"Segoe UI",Helvetica,Arial,sans-serif;margin:0;background:#f3f4f6;color:#111827}
+  header{background:#111827;color:#fff;padding:20px 40px;display:flex;justify-content:space-between;align-items:center}
+  header h1{margin:0;font-size:22px;font-weight:600}
+  header a{color:#9CA3AF;font-size:14px}
+  nav{display:flex;gap:4px;padding:0 40px;background:#fff;border-bottom:1px solid #e5e7eb;overflow-x:auto}
+  nav button{border:0;background:none;padding:14px 16px;font-size:14px;cursor:pointer;color:#6B7280;border-bottom:3px solid transparent;white-space:nowrap}
+  nav button.on{color:#2563EB;border-color:#2563EB;font-weight:600}
+  main{padding:24px 40px}
+  .card{background:#fff;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,.08);padding:20px 24px;margin-bottom:24px;overflow-x:auto}
+  .desc{margin:0 0 14px;color:#6B7280;font-size:14px}
+  .controls{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;margin-bottom:16px}
+  label{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:500;color:#374151}
+  select,input{font:inherit;font-size:14px;padding:6px 8px;border:1px solid #d1d5db;border-radius:6px;min-width:120px}
+  select[multiple]{height:90px}
+  #summary{font-size:15px;margin:0 0 12px}
+  #error{color:#DC2626;font-size:14px}
+  .chart{margin-bottom:16px}
+  .hint{font-size:12px;color:#9CA3AF}
+</style></head><body>
+<header><h1>Skill Market: dashboard</h1><a href="/">Back to the advisor chat</a></header>
+<nav id="tabs"></nav>
+<main><div class="card">
+  <p class="desc" id="desc"></p>
+  <div class="controls" id="controls"></div>
+  <p id="summary"></p><p id="error"></p>
+  <div id="charts"></div>
+</div></main>
+<script>
+// Each view maps to one api.py function. Control `type`: job | skills | select | number.
+const VIEWS = [
+  {fn:"skill_trends", title:"Skill trends", desc:"Monthly demand per skill. Pick skills, or leave empty for the top n.",
+   controls:[{name:"job_type",type:"job",label:"Job type"},
+             {name:"skills",type:"skills",label:"Skills (optional, max 10)"},
+             {name:"metric",type:"select",label:"Metric",options:["share","postings"]},
+             {name:"n",type:"number",label:"Top n",value:5,min:1,max:10}]},
+  {fn:"top_skills", title:"Top skills", desc:"Most demanded skills by average share of postings.",
+   controls:[{name:"job_type",type:"job",label:"Job type"},
+             {name:"n",type:"number",label:"Top n",value:10,min:1,max:25},
+             {name:"start",type:"date",label:"From"},{name:"end",type:"date",label:"To"}]},
+  {fn:"job_type_skills", title:"Skill profile", desc:"What one job type asks for.",
+   controls:[{name:"job_type",type:"job",label:"Job type"},
+             {name:"n",type:"number",label:"Skills",value:15,min:1,max:25}]},
+  {fn:"rising_and_falling_skills", title:"Rising & falling", desc:"Biggest share movers in the latest window.",
+   controls:[{name:"job_type",type:"job",label:"Job type"},
+             {name:"window_months",type:"number",label:"Window (months)",value:6,min:1,max:24},
+             {name:"n",type:"number",label:"Per direction",value:5,min:1,max:25},
+             {name:"min_share",type:"number",label:"Min share",value:0.02,min:0,max:1,step:0.01}]},
+  {fn:"skill_trend", title:"One skill", desc:"Direction of change for a single skill.",
+   controls:[{name:"job_type",type:"job",label:"Job type"},
+             {name:"skill",type:"skill",label:"Skill"},
+             {name:"window_months",type:"number",label:"Window (months)",value:6,min:1,max:24}]},
+  {fn:"career_path", title:"Career path & courses", desc:"Skills to learn to move between two job types, and courses that cover them.",
+   controls:[{name:"from_job",type:"job",label:"From job"},
+             {name:"to_job",type:"job",label:"To job",second:true},
+             {name:"n_skills",type:"number",label:"Skills",value:8,min:1,max:25},
+             {name:"max_courses",type:"number",label:"Courses",value:5,min:1,max:10}]},
+];
+const $ = id => document.getElementById(id);
+let jobs = [], current = null, token = 0;
+
+async function get(path){
+  const r = await fetch(path);
+  const body = await r.json();
+  if(!r.ok) throw new Error(body.detail || r.statusText);
+  return body;
+}
+
+function input(c){
+  const label = document.createElement("label"); label.textContent = c.label;
+  let el;
+  if(c.type==="job"||c.type==="select"){
+    el = document.createElement("select");
+    (c.type==="job"?jobs:c.options).forEach(o=>el.add(new Option(o,o)));
+    if(c.second && jobs.length>1) el.value = jobs[1];
+  } else if(c.type==="skills"||c.type==="skill"){
+    el = document.createElement("select"); el.dataset.skills = c.type;
+    if(c.type==="skills") el.multiple = true;
+  } else {
+    el = document.createElement("input");
+    el.type = c.type==="date" ? "date" : c.type;
+    ["min","max","step","value"].forEach(k=>{ if(c[k]!==undefined) el[k]=c[k]; });
+  }
+  el.name = c.name; el.addEventListener("change", ()=>{ if(c.type==="job") refreshSkills(); render(); });
+  label.append(el); return label;
+}
+
+// Skill pickers follow the job type chosen in the first job control.
+async function refreshSkills(){
+  const job = document.querySelector("select[name=job_type]")?.value;
+  const pickers = document.querySelectorAll("select[data-skills]");
+  if(!job || !pickers.length) return;
+  try{
+    const top = (await get(`/api/viz/top_skills?job_type=${encodeURIComponent(job)}&n=25`)).data;
+    pickers.forEach(p=>{
+      p.innerHTML = ""; top.forEach(r=>p.add(new Option(r.skill,r.skill)));
+      if(p.dataset.skills==="skill") p.selectedIndex = 0;
+    });
+    if(pickers.length && current.fn==="skill_trend") render();
+  }catch(e){ $("error").textContent = e.message; }
+}
+
+function params(){
+  const q = new URLSearchParams();
+  document.querySelectorAll("#controls [name]").forEach(el=>{
+    const v = el.multiple ? [...el.selectedOptions].map(o=>o.value).join(",") : el.value;
+    if(v!=="") q.set(el.name, v);
+  });
+  return q;
+}
+
+async function render(){
+  const mine = ++token;
+  $("error").textContent = "";
+  try{
+    const res = await get(`/api/viz/${current.fn}?${params()}`);
+    if(mine!==token) return;
+    $("summary").textContent = res.summary;
+    $("charts").innerHTML = "";
+    const specs = Object.entries(res).filter(([k,v])=>k.endsWith("chart") && v).map(([,v])=>v);
+    if(!specs.length) $("charts").innerHTML = '<p class="hint">No chart for this view; see the summary above.</p>';
+    for(const spec of specs){
+      const div = document.createElement("div"); div.className = "chart"; $("charts").append(div);
+      await vegaEmbed(div, spec, {renderer:"svg", actions:{export:true, source:false, compiled:false, editor:false}});
+    }
+  }catch(e){ if(mine===token){ $("summary").textContent = ""; $("charts").innerHTML = ""; $("error").textContent = e.message; } }
+}
+
+async function show(view){
+  current = view;
+  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on", b.dataset.fn===view.fn));
+  $("desc").textContent = view.desc;
+  $("controls").replaceChildren(...view.controls.map(input));
+  location.hash = view.fn;
+  await refreshSkills();
+  if(view.fn!=="skill_trend") render();
+}
+
+(async()=>{
+  VIEWS.forEach(v=>{
+    const b = document.createElement("button"); b.textContent = v.title; b.dataset.fn = v.fn;
+    b.onclick = ()=>show(v); $("tabs").append(b);
+  });
+  try{ jobs = await get("/api/viz/list_job_types"); }catch(e){ $("error").textContent = e.message; return; }
+  show(VIEWS.find(v=>"#"+v.fn===location.hash) || VIEWS[0]);
+})();
+</script></body></html>

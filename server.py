@@ -13,12 +13,14 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
 from ai_layer import ask
+from visualization.web import router as viz_router
 
 HERE = Path(__file__).parent
 MAX_HISTORY = 20
 
 app = FastAPI()
 sessions = {}  # session_id -> list of messages, kept in memory
+app.include_router(viz_router)
 
 
 class AskRequest(BaseModel):

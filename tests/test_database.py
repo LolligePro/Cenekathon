@@ -164,6 +164,19 @@ class ApplicationDatabaseTests(unittest.TestCase):
         self.assertEqual(result['rising'],[expected])
         self.assertEqual(result['falling'],[])
 
+    def test_course_recommendation_covers_gap_from_database(self):
+        import pandas as pd
+        from visualization import analysis
+        from visualization.data_source import DatabaseSource
+
+        import_parser(self.db,self.batch(self.valid_rows()))
+        with duckdb.connect(str(self.db)) as c:
+            c.execute("INSERT INTO skillmarket_app.posting_skills VALUES ('coursera-00001','S001'),('coursera-00001','S002')")
+        courses=DatabaseSource(self.db).courses()
+        self.assertEqual(sorted(courses['skill']),['Python','SQL'])
+        plan=analysis.recommend_courses(pd.DataFrame({'skill':['Python','SQL'],'gap':[0.2,0.1]}),courses)
+        self.assertEqual(plan['skills'].tolist(),[['Python','SQL']])
+
     def test_visualization_reads_database_and_serializes_gaps_as_null(self):
         from visualization.data_source import DatabaseSource
         from visualization import api
