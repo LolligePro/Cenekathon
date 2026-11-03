@@ -8,6 +8,7 @@ from unittest.mock import patch
 import duckdb
 
 from skillmarket_staging.contracts import ContractError
+from skillmarket_staging.courses import import_courses
 from skillmarket_staging.database import build_database, database_status, export_database, import_labeled, import_parser, load_vacancies, verify_database
 from skillmarket_staging.db import initialize
 
@@ -170,10 +171,23 @@ class ApplicationDatabaseTests(unittest.TestCase):
         from visualization.data_source import DatabaseSource
 
         import_parser(self.db,self.batch(self.valid_rows()))
-        with duckdb.connect(str(self.db)) as c:
-            c.execute("INSERT INTO skillmarket_app.posting_skills VALUES ('coursera-00001','S001'),('coursera-00001','S002')")
+        folder=self.root/'courses'
+        batch=folder/'batches'/'one'
+        batch.mkdir(parents=True)
+        self.write_jsonl(folder/'courses.jsonl', [dict(posting_id='coursera-00001',title='Real course',
+            url='https://example.org/course',site='Coursera',short_intro=None,listed_skills=[],skill_source='listed'),
+            dict(posting_id='udacity-00002',title='Second provider',url='https://example.org/other',site='Udacity',
+                 short_intro=None,listed_skills=[],skill_source='listed')])
+        self.write_jsonl(batch/'parsed.jsonl', [dict(posting_id='coursera-00001',parse_status='ok',
+            normalized_title='course',skill_ids=['S001','S002'],error=None),dict(posting_id='udacity-00002',
+            parse_status='ok',normalized_title='course',skill_ids=['S001'],error=None)])
+        (batch/'manifest.json').write_text(json.dumps(dict(contract_version='1.0',batch_id='courses-test',
+            parser_version='test',skill_taxonomy_version='skills-v1',record_count=2)))
+        import_courses(self.db,folder)
         courses=DatabaseSource(self.db).courses()
-        self.assertEqual(sorted(courses['skill']),['Python','SQL'])
+        self.assertEqual(sorted(courses['skill']),['Python','Python','SQL'])
+        self.assertEqual(set(courses['posting_id']),{'coursera-00001','udacity-00002'})
+        self.assertEqual(self.query("SELECT count(*) FROM skillmarket_app.posting_skills WHERE posting_id LIKE 'coursera-%'"),[(0,)])
         plan=analysis.recommend_courses(pd.DataFrame({'skill':['Python','SQL'],'gap':[0.2,0.1]}),courses)
         self.assertEqual(plan['skills'].tolist(),[['Python','SQL']])
 

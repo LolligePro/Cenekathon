@@ -35,3 +35,7 @@ For the parser wire format see [parser-db-contract.md](parser-db-contract.md). L
 The existing chat can rank five fictional internal profiles for an AI-auditor role and recommend real courses for their missing skill IDs. Try: **Wie kan binnen onze fictieve bank doorgroeien naar AI-auditor, en welke courses helpen?**
 
 See [docs/internal-talent.md](docs/internal-talent.md) for setup, synthetic profiles, the role definition, matching, tool output, course gaps and tests. Install chat dependencies with `pip install -e '.[chat,test]'`.
+
+## Courses and skill matching in chat
+
+Course advice, profile advice and career paths use the shared catalog and actual course tables. See [docs/course-chat.md](docs/course-chat.md) for the integration, matching rules, demo questions, healthcheck and start procedure.

@@ -86,3 +86,5 @@ Dezelfde batch opnieuw importeren levert `duplicate` en telt niets dubbel. Veran
 Op de teamserver: import van 8.092 cursussen en 16.852 koppelingen in 3,587 seconden; identieke herimport in 0,426 seconden als `duplicate`. Het uploadpakket was 1,2 MB; de grote vacaturedatabase is niet opnieuw over het netwerk verstuurd. De serviceherstart en controle duurden 0,162 seconden. Dit zijn eenmalige metingen op de hackathonmachine.
 
 Alle 1.542.169 vacatures, 36.538.876 vacature-skillrelaties, 690 maandtotalen en 793.155 trendrijen zijn behouden. De bestaande volledige integriteitscontrole slaagt; er zijn geen course-koppelingen naar onbekende skills of ontbrekende cursussen. Aanbevelingsqueries zijn via de centrale HTTP-service en de laptopclient getest. De 54 unittest-cases, inclusief vijf nieuwe course-importtests, slagen op DuckDB 1.5.6 en 2.0.0.
+
+Voor de volledige chatbotintegratie, skillresolutie, persoonlijke adviezen en democontroles: [course-chat.md](course-chat.md).

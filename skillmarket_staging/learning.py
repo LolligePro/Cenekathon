@@ -38,9 +38,9 @@ class SkillCatalog:
         for value in values:
             key=normalize(value)
             skill_id=value.strip().upper()
-            matches={skill_id} if skill_id in self.rows else self.names.get(key,set())
-            if not matches and key in ALIASES:
-                matches=self.names.get(normalize(ALIASES[key]),set())
+            matches={skill_id} if skill_id in self.rows else self.names.get(normalize(ALIASES.get(key,key)),set())
+            if not matches:
+                matches=self.names.get(key,set())
             if len(matches)==1: selected.update(matches)
             elif matches: ambiguous[value]=[self.skill(s) for s in sorted(matches)]
             else: unresolved.append(value)
@@ -171,7 +171,10 @@ def format_courses(result):
         lines.append(f"In {result['year']} ({result['country']}, {result['job_type']}): "
             f"{result['overlap_postings']} vacatures met minstens één van je skills; "
             f"{result['full_skill_matches']} met volledige overlap met de gevonden parser-skills.")
-        lines.append('Vaak gevraagde ontbrekende skills bij die vacatures: '+', '.join(s['name'] for s in result['suggested_skills'])+'.')
+        if result['suggested_skills']:
+            lines.append('Vaak gevraagde ontbrekende skills bij die vacatures: '+', '.join(s['name'] for s in result['suggested_skills'])+'.')
+        else:
+            lines.append('Geen aanvullende skills gevonden binnen deze selectie.')
     for course in result.get('courses',[]):
         names=', '.join(s['name'] for s in course['covered_skills'])
         lines.append(f"- {course['title']} ({course['site']}): {course['url']}\n  Gekoppelde skills: {names}.")
@@ -179,6 +182,9 @@ def format_courses(result):
         lines.append('Geen cursus gekoppeld in de huidige catalogus voor: '+', '.join(s['name'] for s in result['skills_without_courses'])+'.')
     if result.get('unresolved'): lines.append('Niet herkend: '+', '.join(result['unresolved'])+'. Geef de skillnaam of een vaste skill-ID.')
     if result.get('ambiguous'): lines.append('Meerdere betekenissen; specificeer: '+', '.join(result['ambiguous'])+'.')
+    remaining={s['skill_id']:s for s in result.get('skills_not_covered_by_plan',[]) if 'skill_id' in s}
+    for missing in result.get('skills_without_courses',[]): remaining.pop(missing.get('skill_id'),None)
+    if remaining: lines.append('Nog niet gedekt door dit cursusplan: '+', '.join(s['name'] for s in remaining.values())+'.')
     if not result.get('courses'): lines.append('Geen passend cursusadvies gevonden voor deze selectie.')
     lines.append('De koppelingen komen uit de parser; niveau, prijs en leerresultaten zijn niet beoordeeld. Skilloverlap garandeert geen geschiktheid voor een baan.')
     return '\n\n'.join(lines)
@@ -190,13 +196,30 @@ def course_request(question,history=None):
     Questions describing existing skills or a role transition stay with the
     agent, which can distinguish profile advice from skills to learn.
     """
-    if not re.search(r'\b(courses?|cursussen|cursus|opleidingen?|trainingen?)\b',question,re.I): return None
+    explicit=bool(re.search(r'\b(courses?|cursussen|cursus|opleidingen?|trainingen?)\b',question,re.I))
+    context=any(b.get('type')=='tool_use' and b.get('name') in {'recommend_courses','profile_advice','career_path'}
+                for m in (history or []) if isinstance(m.get('content'),list)
+                for b in m['content'] if isinstance(b,dict))
+    follow_up=context and re.search(r'^\s*(en\b|and\b|what about\b|hoe zit)',question,re.I)
+    if not explicit and not follow_up: return None
+    if not explicit and re.search(r'\b(trend|grafiek|chart|demand)\b',question,re.I): return None
     if re.search(r'\b(my skills|mijn skills|ik ken|ik beheers|i know|already know)\b|skills\s*:',question,re.I): return None
     if re.search(r'\b(from|van)\b.+\b(to|naar)\b',question,re.I): return None
+    deictic=bool(re.search(r'\b(hiervoor|daarvoor|deze|die|those|these|them|above)\b',question,re.I))
+    tail=re.search(r'\b(?:for|voor)\s+(.+?)\??$',question,re.I)
     with read_queries() as query:
-        mentioned=SkillCatalog(query).mentions(question)
+        catalog=SkillCatalog(query)
+        if tail and not deictic:
+            value=re.sub(r'\s+(?:te leren|to learn)\??$','',tail.group(1),flags=re.I).strip(' ?. !')
+            exact=catalog.resolve([value])
+            if exact['skills']: return {'skills':[value]}
+            if re.search(r'[,;]|\s+(?:en|and)\s+',value,re.I):
+                return {'skills':[v.strip() for v in re.split(r'[,;]|\s+(?:en|and)\s+',value,flags=re.I) if v.strip()][:20]}
+        mentioned=catalog.mentions(question)
     if mentioned:
         return {'skills':[s['skill_id'] for s in mentioned]}
+    if tail and not deictic:
+        return {'skills':[tail.group(1).strip(' ?. !')]}
     for message in reversed(history or []):
         if not isinstance(message.get('content'),list): continue
         for block in reversed(message['content']):
@@ -216,3 +239,26 @@ def course_request(question,history=None):
             else: continue
             if values: return {'skills':list(dict.fromkeys(values))[:20]}
     return None
+
+
+def profile_request(question):
+    """Parse an explicit list of already-known skills; leave complex goals to the agent."""
+    match=re.search(r'\b(?:my skills|mijn skills|ik ken|ik beheers|i know|already know)\b\s*:?\s*(.+)',question,re.I)
+    if not match or re.search(r'\b(?:ik wil|i want)\b.+\b(?:leren|learn)\b',question,re.I): return None
+    text=re.split(r'[.?]|\b(?:welke|which|wat moet|what should|ik wil|i want)\b',match.group(1),maxsplit=1,flags=re.I)[0]
+    text=re.sub(r'^(?:zijn|are)\s+','',text,flags=re.I).strip(' ,;:')
+    if not text: return None
+    values=[v.strip() for v in re.split(r'[,;]|\s+(?:en|and)\s+',text,flags=re.I) if v.strip()]
+    country='ALL'
+    key=' '+normalize(question)+' '
+    explicit=re.search(r'\b(BE|NL|LU|GB|UK)\b',question)
+    if explicit: country='GB' if explicit.group(1)=='UK' else explicit.group(1)
+    for code,names in {'BE':['belgie','belgium'],'NL':['nederland','netherlands'],
+                       'LU':['luxemburg','luxembourg'],'GB':['united kingdom','verenigd koninkrijk']}.items():
+        if any(' '+name+' ' in key for name in names): country=code
+    job='ALL'
+    groups=['risk and compliance','finance and accounting','customer service and support','sales and marketing',
+            'product and project management','human resources','operations','technology','legal']
+    for value in groups:
+        if normalize(value) in key: job=value; break
+    return {'skills':values,'country':country,'job_type':job}

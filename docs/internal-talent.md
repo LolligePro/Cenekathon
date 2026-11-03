@@ -111,3 +111,5 @@ De chat luistert op dezelfde serverpoort `127.0.0.1:8000`. Omdat het team tegeli
 - Een nieuwe checkout vanaf `main` kan gewoon met de startinstructies hierboven draaien. Bij verdere wijzigingen moet de actieve app opnieuw worden gestart met de bijgewerkte code.
 
 De volledige suite bevat 63 geslaagde tests. De echte servercatalogus is gecontroleerd: Profiel A heeft 5/7 overlap en mist machine learning en model validation; er zijn cursuslinks voor machine learning en geen koppeling voor model validation. De vaste demovraag en de expliciete Profiel D-vervolgvraag gebruiken nul modeltokens.
+
+De algemene cursus- en profieladviezen en de talentdemo delen nu dezelfde skillresolver, cursusplanner en queryprovider. De actuele startprocedure en democontroles staan in [course-chat.md](course-chat.md). De eerdere appkopie hierboven is een historische activatie; controleer de actieve versie via `/api/health`.

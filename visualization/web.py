@@ -24,6 +24,7 @@ EXPOSED = {
         api.job_type_skills,
         api.skill_trend,
         api.rising_and_falling_skills,
+        api.significant_risers,
         api.career_path,
     )
 }

@@ -6,12 +6,14 @@ Then open http://localhost:8000
 """
 
 import uuid
+import os
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
+from skillmarket_staging.access import read_queries
 from ai_layer import ask
 from visualization.web import router as viz_router
 
@@ -48,6 +50,20 @@ def trim_history(messages):
 @app.get("/")
 def index():
     return FileResponse(HERE / "index.html")
+
+
+@app.get("/api/health")
+def health():
+    try:
+        with read_queries() as query:
+            counts = query("""SELECT
+                (SELECT count(*) FROM skillmarket_app.postings) AS postings,
+                (SELECT count(*) FROM skillmarket_app.skills) AS skills,
+                (SELECT count(*) FROM skillmarket_app.courses) AS courses,
+                (SELECT count(*) FROM skillmarket_app.course_skills) AS course_skills""", [])[0]
+        return {"status": "ok", "release": os.environ.get("SKILLMARKET_RELEASE", "working-tree"), "counts": counts}
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail="Database of cursusimport niet beschikbaar") from exc
 
 
 @app.post("/api/ask")

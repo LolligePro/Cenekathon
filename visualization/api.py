@@ -7,7 +7,25 @@ Every function returns a dict with:
 """
 
 from visualization import analysis, charts
-from visualization.data_source import get_source
+from visualization.data_source import get_source as _default_source
+from contextlib import contextmanager
+from contextvars import ContextVar
+
+_SOURCE = ContextVar("visualization_source", default=None)
+
+
+def get_source():
+    source = _SOURCE.get()
+    return source if source is not None else _default_source()
+
+
+@contextmanager
+def use_source(source):
+    token = _SOURCE.set(source)
+    try:
+        yield
+    finally:
+        _SOURCE.reset(token)
 
 DEFAULT_TOP_N = 5
 MAX_SKILLS = 10
@@ -84,6 +102,32 @@ def job_type_skills(job_type: str, n: int = 15) -> dict:
         ),
         "data": top.to_dict("records"),
         "chart": charts.top_skills_chart(top, job_type),
+    }
+
+
+def significant_risers(
+    job_type: str,
+    window_months: int = 6,
+    n: int = 10,
+    min_share: float = 0.02,
+) -> dict:
+    """Skills whose recent share rose beyond their normal month-to-month noise.
+
+    Prefer this over `rising_and_falling_skills` when the user wants the skills that
+    are genuinely gaining ground: generic skills mentioned steadily every month (for
+    example "team player") are filtered out because they don't move beyond noise.
+    """
+    _check_n(n, MAX_TOP_N)
+    risers = analysis.significant_risers(
+        get_source(), job_type, window_months, n, min_share
+    )
+    return {
+        "summary": (
+            f"Skills for {job_type} rising beyond normal noise over the last "
+            f"{window_months} months."
+        ),
+        "data": risers.to_dict("records"),
+        "chart": charts.risers_chart(risers, job_type, window_months),
     }
 
 

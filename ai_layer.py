@@ -7,6 +7,7 @@ tables in the skillmarket_app schema (skill_demand, monthly_totals, skills).
 
 import copy
 import json
+import math
 import os
 import re
 import sys
@@ -52,7 +53,7 @@ Rules:
 - For course questions ALWAYS use recommend_courses with learning targets, profile_advice with already-known skills, or career_path for a role transition. Never answer course availability from memory. Reuse skills from prior tool results for follow-ups such as "courses hiervoor". Report unrecognized skills separately from known skills without courses. Only recommend URLs returned by these tools.
 - Resolve skill names with find_skills first for other market questions. Names, synonyms, ML/AI and skill IDs are resolved by the backend.
 - Use top_skills for the most demanded skills in a job type, skill_trend for one skill's direction, and rising_and_falling_skills for the biggest movers.
-- Call make_chart for trends or comparisons over time.
+- Visualization tools draw their own charts. Call make_chart only for an additional comparison not drawn by a tool.
 - Show shares as percentages (0.12 -> 12%). Share is the fraction of a job type's postings in that month that mention the skill.
 - For market questions, mention the limits in your answer: postings are not hires; the data covers finance only; data collection was incomplete from January to April 2026, so drops in those months reflect collection, not hiring.
 - Keep market answers to at most 5 sentences, plus one concrete piece of advice that includes a number. For internal talent, use a short ranking and explain the best candidate with course links and uncovered skills. End with a concrete next action.
@@ -201,32 +202,10 @@ def recommend_courses(skills, max_courses=5):
     return learning.recommend_courses(skills, max_courses)
 
 
-def career_path(from_job, to_job, n_skills=8, max_courses=5, end_month=None):
-    _require_job_type(from_job)
-    _require_job_type(to_job)
-    if from_job == to_job:
-        raise ValueError("from_job and to_job must differ")
-    if type(n_skills) is not int or not 1 <= n_skills <= 25:
-        raise ValueError("n_skills must be between 1 and 25")
-    if type(max_courses) is not int or not 1 <= max_courses <= 10:
-        raise ValueError("max_courses must be between 1 and 10")
-    result = viz._career_path(_viz_source(end_month), from_job, to_job, n_skills, max_courses)
-    return {"summary": result["summary"], "data": result["data"],
-            "_charts": [result[k] for k in ("chart", "courses_chart") if result.get(k)]}
 
 
-def skill_trends(job_type, skills=None, metric="share", n=5, end_month=None):
-    _require_job_type(job_type)
-    source = _viz_source(end_month)
-    selected = learning.canonical_names(skills) if skills else analysis.top_skills(source, job_type, n=n)["skill"].tolist()
-    if metric not in ("share", "postings") or not 1 <= len(selected) <= 10:
-        raise ValueError("Choose share/postings and 1 to 10 skills")
-    frame = analysis.skill_share_over_time(source, job_type, selected)
-    return {"summary": f"Skill demand in {job_type}.",
-            "data": [{"skill": skill, "first_share": float(rows["share"].iloc[0]),
-                      "last_share": float(rows["share"].iloc[-1])}
-                     for skill, rows in frame.groupby("skill")],
-            "_charts": [viz_charts.skill_trend_chart(frame, job_type, metric)]}
+
+
 
 
 class _CappedSource:
@@ -267,45 +246,44 @@ def _native(value):
 
 def _plain(obj):
     """Converts pandas and numpy values into JSON-safe Python values."""
-    return json.loads(json.dumps(obj, default=_native))
+    def clean(value):
+        if isinstance(value, float) and not math.isfinite(value): return None
+        if isinstance(value, dict): return {key: clean(item) for key, item in value.items()}
+        if isinstance(value, list): return [clean(item) for item in value]
+        return value
+    return clean(json.loads(json.dumps(obj, default=_native)))
 
 
-def top_skills(job_type, n=10, end_month=None):
-    """Most demanded skills in one job type, by average monthly share."""
-    _require_job_type(job_type)
-    if not isinstance(n, int) or not 1 <= n <= 20:
-        raise ValueError("n must be an integer from 1 to 20")
-    top = analysis.top_skills(_viz_source(end_month), job_type, n=n)
-    return _plain({"job_type": job_type, "skills": top.round(4).to_dict("records")})
+VIZ_FUNCTIONS = {
+    "skill_trends": viz.skill_trends,
+    "top_skills": viz.top_skills,
+    "skill_trend": viz.skill_trend,
+    "rising_and_falling_skills": viz.rising_and_falling_skills,
+    "significant_risers": viz.significant_risers,
+    "career_path": viz.career_path,
+}
 
 
-def skill_trend(job_type, skill, window_months=6, end_month=None):
-    """Whether one skill's share is rising, falling or flat in one job type."""
-    _require_job_type(job_type)
-    skill = learning.canonical_names([skill])[0]
-    if not isinstance(window_months, int) or not 1 <= window_months <= 12:
-        raise ValueError("window_months must be an integer from 1 to 12")
-    source = _viz_source(end_month)
-    result = analysis.trend(source, job_type, skill, window_months)
-    shares = analysis.skill_share_over_time(source, job_type, [skill])
-    result["monthly"] = [
-        {"month": m.strftime("%Y-%m"), "share": round(float(s), 4)}
-        for m, s in zip(shares["month"], shares["share"])
-    ]
-    return _plain(result)
-
-
-def rising_and_falling_skills(job_type, window_months=6, n=5, end_month=None):
-    """Biggest share movers in one job type over the latest window."""
-    _require_job_type(job_type)
-    if not isinstance(window_months, int) or not 1 <= window_months <= 12:
-        raise ValueError("window_months must be an integer from 1 to 12")
-    if not isinstance(n, int) or not 1 <= n <= 20:
-        raise ValueError("n must be an integer from 1 to 20")
-    result = analysis.rising_and_falling(
-        _viz_source(end_month), job_type, window_months, n, MOVER_MIN_SHARE
-    )
-    return _plain(result)
+def _run_viz_tool(name, args, charts):
+    args = dict(args)
+    end_month = args.pop("end_month", None)
+    if args.get("skills"):
+        args["skills"] = learning.canonical_names(args["skills"])
+    if args.get("skill"):
+        args["skill"] = learning.canonical_names([args["skill"]])[0]
+    with viz.use_source(_viz_source(end_month)):
+        result = VIZ_FUNCTIONS[name](**args)
+    for key in ("chart", "courses_chart"):
+        if result.get(key):
+            charts.append(result[key])
+    data = result["data"]
+    if name == "skill_trends":
+        # The full time series is in the chart; the model needs only a small summary.
+        frame = pd.DataFrame(data)
+        data = [{"skill": skill, "first_share": rows.iloc[0]["share"],
+                 "last_share": rows.iloc[-1]["share"]}
+                for skill, rows in frame.dropna(subset=["share"]).groupby("skill")]
+    return _plain({"summary": result["summary"], "data": data})
 
 
 def validate_chart_spec(spec):
@@ -343,6 +321,14 @@ def make_chart(spec, charts):
 # ---------- tool definitions for the API ----------
 
 TOOLS = [
+    {'name': 'significant_risers',
+     'description': 'Draw skills rising beyond usual month-to-month noise in a job group. A '
+                    'descriptive ranking, not statistical proof.',
+     'input_schema': {'type': 'object',
+                      'properties': {'job_type': {'type': 'string'},
+                                     'window_months': {'type': 'integer', 'minimum': 1, 'maximum': 12},
+                                     'n': {'type': 'integer', 'minimum': 1, 'maximum': 25}},
+                      'required': ['job_type']}},
     {'name': 'recommend_courses',
      'description': 'Find actual catalog courses for skills the user WANTS TO LEARN. Accept names, synonyms, '
                     'ML/AI or fixed skill IDs. Returns links and exact skill coverage; reports unknown skills '
@@ -569,16 +555,11 @@ TOOLS = [
 
 TOOL_FUNCTIONS = {
     "recommend_courses": recommend_courses,
-    "career_path": career_path,
-    "skill_trends": skill_trends,
     "find_internal_talent": find_internal_talent,
     "find_skills": find_skills,
     "get_skill_share": get_skill_share,
     "top_movers": top_movers,
     "profile_advice": profile_advice,
-    "top_skills": top_skills,
-    "skill_trend": skill_trend,
-    "rising_and_falling_skills": rising_and_falling_skills,
 }
 
 
@@ -588,50 +569,18 @@ def _cached_tools():
     return tools
 
 
-VIZ_TOOLS = {"top_skills", "skill_trend", "rising_and_falling_skills"}
-
-
-def _viz_chart(name, output):
-    """Builds a chart spec in the index.html format from a visualization tool result."""
-    if name == "top_skills":
-        points = [[r["skill"], r["avg_share"]] for r in output["skills"]]
-        return {"type": "bar", "title": f"Top skills in {output['job_type']}",
-                "y_label": "Average share of postings",
-                "series": [{"name": "Average share", "points": points}]}
-    if name == "rising_and_falling_skills":
-        rows = output["rising"] + output["falling"]
-        points = [[r["skill"], r["relative_change"]] for r in rows]
-        return {"type": "bar", "title": f"Biggest share changes in {output['job_type']}",
-                "y_label": "Relative change in share",
-                "series": [{"name": "Relative change", "points": points}]}
-    if name == "skill_trend":
-        points = [[m["month"], m["share"]] for m in output["monthly"]]
-        return {"type": "line", "title": f"{output['skill']} in {output['job_type']}",
-                "y_label": "Share of postings",
-                "series": [{"name": output["skill"], "points": points}]}
-    return None
-
-
 def _run_tool(name, args, charts):
-    if name == "make_chart":
-        return make_chart(args.get("spec"), charts)
-    fn = TOOL_FUNCTIONS.get(name)
-    if fn is None:
-        return _tool_error(f"unknown tool {name}")
     try:
-        output = fn(**args)
-    except Exception as exc:  # bad arguments or DuckDB errors go back to the model
+        if name == "make_chart":
+            return make_chart(args.get("spec"), charts)
+        if name in VIZ_FUNCTIONS:
+            return _run_viz_tool(name, args, charts)
+        fn = TOOL_FUNCTIONS.get(name)
+        if fn is None:
+            return _tool_error(f"unknown tool {name}")
+        return fn(**args)
+    except Exception as exc:
         return _tool_error(f"{type(exc).__name__}: {exc}")
-    if "error" in output:
-        return output
-    charts.extend(output.pop("_charts", []))
-    if name in VIZ_TOOLS:
-        output.setdefault("job_type", args.get("job_type"))
-        spec = _viz_chart(name, output)
-        if spec and validate_chart_spec(spec) is None:
-            charts.append(spec)
-        output.pop("monthly", None)
-    return output
 
 
 def _to_api_content(block):
@@ -668,10 +617,19 @@ def _get_client():
     return _client
 
 
+def _has_learning_tools(messages):
+    names = {"recommend_courses", "profile_advice", "career_path", "find_internal_talent"}
+    return any(block.get("type") == "tool_use" and block.get("name") in names
+               for message in messages if isinstance(message.get("content"), list)
+               for block in message["content"] if isinstance(block, dict))
+
+
 def ask(question, history=None):
     """Answer one question. Returns {"answer", "charts", "usage", "messages"}."""
     cache_key = question.strip().lower()
-    if not history and cache_key in _ANSWER_CACHE:
+    learning_question = re.search(r"\b(courses?|cursus|cursussen|opleidingen?|learn|leren|profiel|profile)\b", question, re.I)
+    if (not history and cache_key in _ANSWER_CACHE and not learning_question
+            and not _has_learning_tools(_ANSWER_CACHE[cache_key].get("messages", []))):
         cached = copy.deepcopy(_ANSWER_CACHE[cache_key])
         zero = {"input_tokens": 0, "output_tokens": 0, "cache_read_tokens": 0, "cache_write_tokens": 0}
         cached["usage"] = zero
@@ -703,14 +661,17 @@ def ask(question, history=None):
             ])
             _log_usage(question, usage, cached=False)
             return {"answer": answer, "charts": charts, "usage": usage, "messages": messages}
-    course_args = learning.course_request(question, history)
-    if course_args:
-        output = _run_tool("recommend_courses", course_args, charts)
+    profile_args = learning.profile_request(question)
+    course_args = None if profile_args else learning.course_request(question, history)
+    learning_tool = "profile_advice" if profile_args else "recommend_courses"
+    if profile_args or course_args:
+        course_args = profile_args or course_args
+        output = _run_tool(learning_tool, course_args, charts)
         if "error" not in output:
             tool_id = "courses_" + uuid.uuid4().hex
             answer = learning.format_courses(output)
             messages.extend([
-                {"role": "assistant", "content": [{"type": "tool_use", "id": tool_id, "name": "recommend_courses", "input": course_args}]},
+                {"role": "assistant", "content": [{"type": "tool_use", "id": tool_id, "name": learning_tool, "input": course_args}]},
                 {"role": "user", "content": [{"type": "tool_result", "tool_use_id": tool_id, "content": json.dumps(output)}]},
                 {"role": "assistant", "content": [{"type": "text", "text": answer}]},
             ])
@@ -738,6 +699,14 @@ def ask(question, history=None):
         messages.append({"role": "assistant", "content": assistant_content})
         if response.stop_reason != "tool_use":
             answer = "".join(b.text for b in response.content if b.type == "text").strip()
+            if re.search(r"\b(courses?|cursus|cursussen|opleidingen?)\b", question, re.I):
+                fallback = learning.course_request(question, messages)
+                if fallback:
+                    output = _run_tool("recommend_courses", fallback, charts)
+                    answer = learning.format_courses(output) if "error" not in output else "Cursusadvies is tijdelijk niet beschikbaar; controleer de cursusimport en databaseverbinding."
+                else:
+                    answer = "Voor welke vaardigheden zoek je een cursus? Geef skillnamen of vaste skill-ID’s, dan zoek ik de gekoppelde opleidingen in onze catalogus."
+                messages[-1] = {"role": "assistant", "content": [{"type": "text", "text": answer}]}
             break
 
         results = []
@@ -778,7 +747,7 @@ def ask(question, history=None):
 
     result = {"answer": answer, "charts": charts, "usage": usage, "messages": messages}
     _log_usage(question, usage, cached=False)
-    if not history and answer:
+    if not history and answer and not learning_question and not _has_learning_tools(messages):
         _ANSWER_CACHE[cache_key] = copy.deepcopy({k: v for k, v in result.items() if k != "usage"})
     return result
 

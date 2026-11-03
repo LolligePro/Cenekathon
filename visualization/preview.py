@@ -1,4 +1,4 @@
-"""Write an HTML gallery of all chart specs built from the stub data, then open it.
+"""Write an HTML gallery of all chart specs built from the active data source, then open it.
 
 Usage: python -m visualization.preview
 Charts are rendered in the browser with vega-embed (loaded from a CDN), so an
@@ -32,7 +32,7 @@ HTML = """<!doctype html>
 </head><body>
 <header>
   <h1>Skill demand advisor: visualization preview</h1>
-  <p>Synthetic stub data. Charts are rendered with vega-embed from a CDN.</p>
+  <p>Data from the active source (the skillmarket DuckDB database). Charts are rendered with vega-embed from a CDN.</p>
 </header>
 <main>
 %s
@@ -62,6 +62,11 @@ def build_gallery() -> list[tuple[str, str, dict]]:
             "Top skills",
             "Ranking of the 10 most demanded skills over the full period.",
             api.top_skills(job, n=10)["chart"],
+        ),
+        (
+            "Significant risers",
+            "Skills whose share rose beyond their normal month-to-month noise. Steady generic skills drop out.",
+            api.significant_risers(job, n=8)["chart"],
         ),
         (
             "Skill profile by job type",
