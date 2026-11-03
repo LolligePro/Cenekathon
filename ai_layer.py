@@ -17,6 +17,8 @@ import duckdb
 import anthropic
 import pandas as pd
 
+from skillmarket_staging.talent import find_internal_talent, format_internal_talent
+
 from visualization import api as viz
 from visualization.data_source import get_source
 
@@ -37,16 +39,18 @@ JOB_TYPES = [
     "risk and compliance", "sales and marketing", "technology",
 ]
 
-SYSTEM_PROMPT = """You are the Skill Market assistant. You help jobseekers and students in finance decide which skills to learn, based on job postings in Belgium, the Netherlands, Luxembourg and the UK.
+SYSTEM_PROMPT = """You are the Skill Market assistant. You help HR teams, jobseekers and students in finance decide which skills to learn, based on job postings in Belgium, the Netherlands, Luxembourg and the UK.
 
 Rules:
 - Only state numbers that came from tool results. Never invent or estimate numbers.
-- Resolve skill names with find_skills first, then use the returned skill names in other tools.
+- For internal talent, employee reskilling, or who could become an AI auditor, call find_internal_talent directly. This is a synthetic HR demo with the fixed ai-auditor role. Use profile_id for follow-up questions about one candidate; do not call profile_advice for this use case.
+- For internal talent answers, explicitly say the profiles and target role are fictional. Show the best candidate's matched_count/required_count and match_percentage as skill overlap, never suitability or hiring probability. Explain missing skills, include actual recommended course titles and URLs, and explicitly mention skills_without_courses. Do not claim a course covers a skill absent from its covered_skills. Suggest HR review and training as the next action.
+- Resolve skill names with find_skills first for other market questions, then use the returned skill names in other tools.
 - Use top_skills for the most demanded skills in a job type, skill_trends for skills over time (also draws a chart), skill_trend for one skill's direction, rising_and_falling_skills for the biggest movers, and career_path for moving from one job type to another. These tools draw their own charts.
 - Call make_chart only when no other tool draws the chart you need.
 - Show shares as percentages (0.12 -> 12%). Share is the fraction of a job type's postings in that month that mention the skill.
-- Mention the limits in your answer: postings are not hires; the data covers finance only; data collection was incomplete from January to April 2026, so drops in those months reflect collection, not hiring.
-- Keep the answer to at most 5 sentences, plus one concrete piece of advice that includes a number. Always end with that advice.
+- For market questions, mention the limits in your answer: postings are not hires; the data covers finance only; data collection was incomplete from January to April 2026, so drops in those months reflect collection, not hiring.
+- Keep market answers to at most 5 sentences, plus one concrete piece of advice that includes a number. For internal talent, use a short ranking and explain the best candidate with course links and uncovered skills. End with a concrete next action.
 """
 
 
@@ -451,6 +455,40 @@ TOOLS = [
         },
     },
     {
+        "name": "find_internal_talent",
+        "description": "Find hidden internal talent for the AI-auditor role using five explicitly fictional employee profiles. Returns a skill-overlap ranking, missing skills, real catalog course titles/URLs, and gaps without courses. Use for HR reskilling and internal mobility; profile_id selects one candidate for follow-up questions.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "target_role_id": {
+                    "type": "string",
+                    "enum": [
+                        "ai-auditor"
+                    ],
+                    "description": "Fixed hand-curated demo role; default ai-auditor."
+                },
+                "n": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5,
+                    "description": "Number of candidates, default 3."
+                },
+                "profile_id": {
+                    "type": "string",
+                    "enum": [
+                        "demo-a",
+                        "demo-b",
+                        "demo-c",
+                        "demo-d",
+                        "demo-e"
+                    ],
+                    "description": "Optional candidate from a previous result, to see their gaps and courses."
+                }
+            },
+            "additionalProperties": False
+        }
+    },
+    {
         "name": "make_chart",
         "description": "Add a line or bar chart to the answer. Use for trends (line) or comparisons (bar). The chart is shown to the user next to your answer.",
         "input_schema": {
@@ -490,6 +528,7 @@ TOOLS = [
 ]
 
 TOOL_FUNCTIONS = {
+    "find_internal_talent": find_internal_talent,
     "find_skills": find_skills,
     "get_skill_share": get_skill_share,
     "top_movers": top_movers,
@@ -589,9 +628,12 @@ def ask(question, history=None):
             break
 
         results = []
+        talent_result = None
         for block in response.content:
             if block.type == "tool_use":
                 output = _run_tool(block.name, block.input, charts)
+                if block.name == "find_internal_talent" and isinstance(output, dict) and "error" not in output:
+                    talent_result = output
                 results.append({
                     "type": "tool_result",
                     "tool_use_id": block.id,
@@ -599,6 +641,11 @@ def ask(question, history=None):
                     "is_error": isinstance(output, dict) and "error" in output,
                 })
         messages.append({"role": "user", "content": results})
+        if talent_result is not None:
+            # Use verified numbers and course mappings directly; save a model round.
+            answer = format_internal_talent(talent_result)
+            messages.append({"role": "assistant", "content": [{"type": "text", "text": answer}]})
+            break
     else:
         answer = "I could not finish this question within the tool limit. Please ask a narrower question."
 

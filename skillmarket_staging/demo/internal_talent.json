@@ -1,0 +1,45 @@
+{
+  "synthetic": true,
+  "company": "Demo Bank",
+  "data_owner": "HR / Learning & Development (fictieve interne gegevens)",
+  "roles": [
+    {
+      "role_id": "ai-auditor",
+      "title": "AI-auditor",
+      "description": "Handmatig demo-functieprofiel voor het beoordelen van AI-modellen, risico's en beheersmaatregelen; geen beroepsstandaard.",
+      "skill_ids": ["S004", "S006", "S007", "S090", "S091", "S125", "S345"]
+    }
+  ],
+  "profiles": [
+    {
+      "profile_id": "demo-a",
+      "label": "Profiel A",
+      "current_role": "Compliance analyst",
+      "skill_ids": ["S004", "S006", "S007", "S024", "S090", "S125"]
+    },
+    {
+      "profile_id": "demo-b",
+      "label": "Profiel B",
+      "current_role": "Internal auditor",
+      "skill_ids": ["S004", "S006", "S096", "S125", "S316"]
+    },
+    {
+      "profile_id": "demo-c",
+      "label": "Profiel C",
+      "current_role": "Data analyst",
+      "skill_ids": ["S007", "S018", "S024", "S091"]
+    },
+    {
+      "profile_id": "demo-d",
+      "label": "Profiel D",
+      "current_role": "Model risk specialist",
+      "skill_ids": ["S004", "S007", "S091", "S345", "S679"]
+    },
+    {
+      "profile_id": "demo-e",
+      "label": "Profiel E",
+      "current_role": "Operations associate",
+      "skill_ids": ["S003", "S007", "S024"]
+    }
+  ]
+}
