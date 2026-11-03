@@ -7,7 +7,7 @@ name = "cenekathon-staging"
 version = "0.1.0"
 description = "DuckDB staging and import audit log for Skill Market parser output"
 requires-python = ">=3.11"
-dependencies = ["duckdb>=2.0,<3", "pytz>=2024.1", "pandas>=2,<4"]
+dependencies = ["duckdb>=1.5.6,<3", "pytz>=2024.1", "pandas>=2,<4"]
 
 [project.scripts]
 skillmarket-staging = "skillmarket_staging.cli:main"
