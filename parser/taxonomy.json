@@ -1,0 +1,3575 @@
+{
+  "sample_postings": 1700,
+  "min_df": 5,
+  "max_tokens": 4,
+  "skills": [
+    {
+      "name": "communication",
+      "sample_df": 381
+    },
+    {
+      "name": "stakeholder management",
+      "sample_df": 358
+    },
+    {
+      "name": "problem solving",
+      "sample_df": 355
+    },
+    {
+      "name": "risk management",
+      "sample_df": 289
+    },
+    {
+      "name": "project management",
+      "sample_df": 282
+    },
+    {
+      "name": "customer service",
+      "sample_df": 228
+    },
+    {
+      "name": "regulatory compliance",
+      "sample_df": 223
+    },
+    {
+      "name": "data analysis",
+      "sample_df": 196
+    },
+    {
+      "name": "training",
+      "sample_df": 158
+    },
+    {
+      "name": "teamwork",
+      "sample_df": 149
+    },
+    {
+      "name": "process improvement",
+      "sample_df": 140
+    },
+    {
+      "name": "attention to detail",
+      "sample_df": 133
+    },
+    {
+      "name": "excel",
+      "sample_df": 129
+    },
+    {
+      "name": "client relationship management",
+      "sample_df": 122
+    },
+    {
+      "name": "change management",
+      "sample_df": 108
+    },
+    {
+      "name": "interpersonal skills",
+      "sample_df": 108
+    },
+    {
+      "name": "time management",
+      "sample_df": 106
+    },
+    {
+      "name": "reporting",
+      "sample_df": 102
+    },
+    {
+      "name": "compliance",
+      "sample_df": 96
+    },
+    {
+      "name": "team collaboration",
+      "sample_df": 96
+    },
+    {
+      "name": "risk assessment",
+      "sample_df": 96
+    },
+    {
+      "name": "written communication",
+      "sample_df": 82
+    },
+    {
+      "name": "sql",
+      "sample_df": 78
+    },
+    {
+      "name": "python",
+      "sample_df": 77
+    },
+    {
+      "name": "client management",
+      "sample_df": 77
+    },
+    {
+      "name": "relationship building",
+      "sample_df": 74
+    },
+    {
+      "name": "agile methodology",
+      "sample_df": 74
+    },
+    {
+      "name": "quality assurance",
+      "sample_df": 74
+    },
+    {
+      "name": "initiative",
+      "sample_df": 73
+    },
+    {
+      "name": "relationship management",
+      "sample_df": 71
+    },
+    {
+      "name": "team leadership",
+      "sample_df": 71
+    },
+    {
+      "name": "flexibility",
+      "sample_df": 67
+    },
+    {
+      "name": "financial services",
+      "sample_df": 65
+    },
+    {
+      "name": "innovation",
+      "sample_df": 65
+    },
+    {
+      "name": "negotiation",
+      "sample_df": 65
+    },
+    {
+      "name": "team player",
+      "sample_df": 62
+    },
+    {
+      "name": "analytical thinking",
+      "sample_df": 57
+    },
+    {
+      "name": "organizational skills",
+      "sample_df": 57
+    },
+    {
+      "name": "verbal communication",
+      "sample_df": 57
+    },
+    {
+      "name": "coaching",
+      "sample_df": 57
+    },
+    {
+      "name": "leadership",
+      "sample_df": 57
+    },
+    {
+      "name": "financial analysis",
+      "sample_df": 56
+    },
+    {
+      "name": "java",
+      "sample_df": 52
+    },
+    {
+      "name": "market analysis",
+      "sample_df": 50
+    },
+    {
+      "name": "team management",
+      "sample_df": 49
+    },
+    {
+      "name": "decision making",
+      "sample_df": 48
+    },
+    {
+      "name": "ms office",
+      "sample_df": 47
+    },
+    {
+      "name": "cross functional collaboration",
+      "sample_df": 46
+    },
+    {
+      "name": "sales",
+      "sample_df": 46
+    },
+    {
+      "name": "data management",
+      "sample_df": 44
+    },
+    {
+      "name": "devops",
+      "sample_df": 42
+    },
+    {
+      "name": "accounting",
+      "sample_df": 41
+    },
+    {
+      "name": "networking",
+      "sample_df": 40
+    },
+    {
+      "name": "portfolio management",
+      "sample_df": 40
+    },
+    {
+      "name": "collaboration",
+      "sample_df": 39
+    },
+    {
+      "name": "strategic planning",
+      "sample_df": 39
+    },
+    {
+      "name": "customer relationship management",
+      "sample_df": 39
+    },
+    {
+      "name": "empathy",
+      "sample_df": 39
+    },
+    {
+      "name": "adaptability",
+      "sample_df": 39
+    },
+    {
+      "name": "business analysis",
+      "sample_df": 38
+    },
+    {
+      "name": "customer support",
+      "sample_df": 38
+    },
+    {
+      "name": "stakeholder communication",
+      "sample_df": 37
+    },
+    {
+      "name": "stakeholder engagement",
+      "sample_df": 36
+    },
+    {
+      "name": "report writing",
+      "sample_df": 36
+    },
+    {
+      "name": "customer experience",
+      "sample_df": 36
+    },
+    {
+      "name": "financial reporting",
+      "sample_df": 35
+    },
+    {
+      "name": "client communication",
+      "sample_df": 35
+    },
+    {
+      "name": "business development",
+      "sample_df": 35
+    },
+    {
+      "name": "fraud detection",
+      "sample_df": 34
+    },
+    {
+      "name": "data entry",
+      "sample_df": 34
+    },
+    {
+      "name": "product knowledge",
+      "sample_df": 33
+    },
+    {
+      "name": "automation",
+      "sample_df": 33
+    },
+    {
+      "name": "stress management",
+      "sample_df": 32
+    },
+    {
+      "name": "powerpoint",
+      "sample_df": 32
+    },
+    {
+      "name": "incident management",
+      "sample_df": 31
+    },
+    {
+      "name": "proactive",
+      "sample_df": 31
+    },
+    {
+      "name": "prioritization",
+      "sample_df": 31
+    },
+    {
+      "name": "administrative support",
+      "sample_df": 31
+    },
+    {
+      "name": "microsoft office",
+      "sample_df": 31
+    },
+    {
+      "name": "shift work",
+      "sample_df": 30
+    },
+    {
+      "name": "detail orientation",
+      "sample_df": 30
+    },
+    {
+      "name": "customer communication",
+      "sample_df": 29
+    },
+    {
+      "name": "telephone communication",
+      "sample_df": 29
+    },
+    {
+      "name": "budget management",
+      "sample_df": 29
+    },
+    {
+      "name": "agile",
+      "sample_df": 29
+    },
+    {
+      "name": "content creation",
+      "sample_df": 28
+    },
+    {
+      "name": "regulatory reporting",
+      "sample_df": 28
+    },
+    {
+      "name": "numeracy",
+      "sample_df": 28
+    },
+    {
+      "name": "flexible working",
+      "sample_df": 28
+    },
+    {
+      "name": "financial modeling",
+      "sample_df": 27
+    },
+    {
+      "name": "governance",
+      "sample_df": 27
+    },
+    {
+      "name": "product development",
+      "sample_df": 27
+    },
+    {
+      "name": "data analytics",
+      "sample_df": 27
+    },
+    {
+      "name": "javascript",
+      "sample_df": 27
+    },
+    {
+      "name": "root cause analysis",
+      "sample_df": 27
+    },
+    {
+      "name": "continuous improvement",
+      "sample_df": 27
+    },
+    {
+      "name": "performance management",
+      "sample_df": 27
+    },
+    {
+      "name": "client service",
+      "sample_df": 26
+    },
+    {
+      "name": "agile development",
+      "sample_df": 26
+    },
+    {
+      "name": "contract negotiation",
+      "sample_df": 26
+    },
+    {
+      "name": "kubernetes",
+      "sample_df": 26
+    },
+    {
+      "name": "financial markets",
+      "sample_df": 26
+    },
+    {
+      "name": "process management",
+      "sample_df": 26
+    },
+    {
+      "name": "critical thinking",
+      "sample_df": 25
+    },
+    {
+      "name": "audit",
+      "sample_df": 25
+    },
+    {
+      "name": "technical expertise",
+      "sample_df": 25
+    },
+    {
+      "name": "account management",
+      "sample_df": 25
+    },
+    {
+      "name": "market research",
+      "sample_df": 25
+    },
+    {
+      "name": "ci cd",
+      "sample_df": 24
+    },
+    {
+      "name": "data governance",
+      "sample_df": 24
+    },
+    {
+      "name": "research",
+      "sample_df": 24
+    },
+    {
+      "name": "strategy development",
+      "sample_df": 24
+    },
+    {
+      "name": "independent work",
+      "sample_df": 24
+    },
+    {
+      "name": "anti money laundering",
+      "sample_df": 23
+    },
+    {
+      "name": "scrum",
+      "sample_df": 23
+    },
+    {
+      "name": "agile methodologies",
+      "sample_df": 23
+    },
+    {
+      "name": "customer engagement",
+      "sample_df": 23
+    },
+    {
+      "name": "multi tasking",
+      "sample_df": 23
+    },
+    {
+      "name": "professional development",
+      "sample_df": 22
+    },
+    {
+      "name": "due diligence",
+      "sample_df": 22
+    },
+    {
+      "name": "fast paced environment",
+      "sample_df": 22
+    },
+    {
+      "name": "cash management",
+      "sample_df": 22
+    },
+    {
+      "name": "customer focus",
+      "sample_df": 22
+    },
+    {
+      "name": "aws",
+      "sample_df": 22
+    },
+    {
+      "name": "training and development",
+      "sample_df": 22
+    },
+    {
+      "name": "dutch language",
+      "sample_df": 22
+    },
+    {
+      "name": "complex problem solving",
+      "sample_df": 22
+    },
+    {
+      "name": "numerical skills",
+      "sample_df": 21
+    },
+    {
+      "name": "strategic thinking",
+      "sample_df": 21
+    },
+    {
+      "name": "documentation",
+      "sample_df": 21
+    },
+    {
+      "name": "accuracy",
+      "sample_df": 21
+    },
+    {
+      "name": "ms excel",
+      "sample_df": 21
+    },
+    {
+      "name": "mentoring",
+      "sample_df": 21
+    },
+    {
+      "name": "security",
+      "sample_df": 21
+    },
+    {
+      "name": "query resolution",
+      "sample_df": 20
+    },
+    {
+      "name": "software development",
+      "sample_df": 20
+    },
+    {
+      "name": "legal knowledge",
+      "sample_df": 20
+    },
+    {
+      "name": "word",
+      "sample_df": 20
+    },
+    {
+      "name": "commercial acumen",
+      "sample_df": 20
+    },
+    {
+      "name": "regulatory knowledge",
+      "sample_df": 20
+    },
+    {
+      "name": "underwriting",
+      "sample_df": 19
+    },
+    {
+      "name": "multitasking",
+      "sample_df": 19
+    },
+    {
+      "name": "technical knowledge",
+      "sample_df": 19
+    },
+    {
+      "name": "legal compliance",
+      "sample_df": 19
+    },
+    {
+      "name": "telephone support",
+      "sample_df": 19
+    },
+    {
+      "name": "cross selling",
+      "sample_df": 19
+    },
+    {
+      "name": "customer satisfaction",
+      "sample_df": 19
+    },
+    {
+      "name": "risk analysis",
+      "sample_df": 19
+    },
+    {
+      "name": "credit analysis",
+      "sample_df": 19
+    },
+    {
+      "name": "legal advice",
+      "sample_df": 19
+    },
+    {
+      "name": "administrative tasks",
+      "sample_df": 19
+    },
+    {
+      "name": "forecasting",
+      "sample_df": 19
+    },
+    {
+      "name": "data protection",
+      "sample_df": 18
+    },
+    {
+      "name": "c#",
+      "sample_df": 18
+    },
+    {
+      "name": "customer service experience",
+      "sample_df": 18
+    },
+    {
+      "name": "policy development",
+      "sample_df": 18
+    },
+    {
+      "name": "testing",
+      "sample_df": 18
+    },
+    {
+      "name": "asset management",
+      "sample_df": 18
+    },
+    {
+      "name": "vendor management",
+      "sample_df": 17
+    },
+    {
+      "name": "english language",
+      "sample_df": 17
+    },
+    {
+      "name": "influencing",
+      "sample_df": 17
+    },
+    {
+      "name": "transaction processing",
+      "sample_df": 17
+    },
+    {
+      "name": "git",
+      "sample_df": 17
+    },
+    {
+      "name": "people management",
+      "sample_df": 17
+    },
+    {
+      "name": "legal research",
+      "sample_df": 17
+    },
+    {
+      "name": "finance",
+      "sample_df": 17
+    },
+    {
+      "name": "transaction monitoring",
+      "sample_df": 17
+    },
+    {
+      "name": "banking knowledge",
+      "sample_df": 17
+    },
+    {
+      "name": "sas",
+      "sample_df": 17
+    },
+    {
+      "name": "data quality",
+      "sample_df": 17
+    },
+    {
+      "name": "quantitative analysis",
+      "sample_df": 16
+    },
+    {
+      "name": "analytical",
+      "sample_df": 16
+    },
+    {
+      "name": "sustainability",
+      "sample_df": 16
+    },
+    {
+      "name": "business intelligence",
+      "sample_df": 16
+    },
+    {
+      "name": "credit risk management",
+      "sample_df": 16
+    },
+    {
+      "name": "vba",
+      "sample_df": 16
+    },
+    {
+      "name": "customer care",
+      "sample_df": 16
+    },
+    {
+      "name": "investment management",
+      "sample_df": 16
+    },
+    {
+      "name": "contract management",
+      "sample_df": 16
+    },
+    {
+      "name": "process optimization",
+      "sample_df": 15
+    },
+    {
+      "name": "machine learning",
+      "sample_df": 15
+    },
+    {
+      "name": "technical leadership",
+      "sample_df": 15
+    },
+    {
+      "name": "insurance knowledge",
+      "sample_df": 15
+    },
+    {
+      "name": "organization",
+      "sample_df": 15
+    },
+    {
+      "name": "ms word",
+      "sample_df": 15
+    },
+    {
+      "name": "r",
+      "sample_df": 15
+    },
+    {
+      "name": "pension scheme",
+      "sample_df": 15
+    },
+    {
+      "name": "banking",
+      "sample_df": 15
+    },
+    {
+      "name": "power bi",
+      "sample_df": 15
+    },
+    {
+      "name": "planning",
+      "sample_df": 15
+    },
+    {
+      "name": "data visualization",
+      "sample_df": 15
+    },
+    {
+      "name": "continuous delivery",
+      "sample_df": 15
+    },
+    {
+      "name": "terraform",
+      "sample_df": 15
+    },
+    {
+      "name": "customer interaction",
+      "sample_df": 15
+    },
+    {
+      "name": "database management",
+      "sample_df": 15
+    },
+    {
+      "name": "self motivation",
+      "sample_df": 14
+    },
+    {
+      "name": "administration",
+      "sample_df": 14
+    },
+    {
+      "name": "digital marketing",
+      "sample_df": 14
+    },
+    {
+      "name": "commercial law",
+      "sample_df": 14
+    },
+    {
+      "name": "credit risk",
+      "sample_df": 14
+    },
+    {
+      "name": "docker",
+      "sample_df": 14
+    },
+    {
+      "name": "financial planning",
+      "sample_df": 14
+    },
+    {
+      "name": "solution development",
+      "sample_df": 14
+    },
+    {
+      "name": "advisory",
+      "sample_df": 14
+    },
+    {
+      "name": "customer service expertise",
+      "sample_df": 14
+    },
+    {
+      "name": "api development",
+      "sample_df": 14
+    },
+    {
+      "name": "motivation",
+      "sample_df": 14
+    },
+    {
+      "name": "career development",
+      "sample_df": 14
+    },
+    {
+      "name": "financial products",
+      "sample_df": 14
+    },
+    {
+      "name": "branch operations",
+      "sample_df": 14
+    },
+    {
+      "name": "hybrid working",
+      "sample_df": 14
+    },
+    {
+      "name": "administrative work",
+      "sample_df": 14
+    },
+    {
+      "name": "risk mitigation",
+      "sample_df": 14
+    },
+    {
+      "name": "jira",
+      "sample_df": 14
+    },
+    {
+      "name": "continuous integration",
+      "sample_df": 14
+    },
+    {
+      "name": "presentation",
+      "sample_df": 14
+    },
+    {
+      "name": "regulatory requirements",
+      "sample_df": 14
+    },
+    {
+      "name": "compliance monitoring",
+      "sample_df": 13
+    },
+    {
+      "name": "outlook",
+      "sample_df": 13
+    },
+    {
+      "name": "budgeting",
+      "sample_df": 13
+    },
+    {
+      "name": "aml",
+      "sample_df": 13
+    },
+    {
+      "name": "integrity",
+      "sample_df": 13
+    },
+    {
+      "name": "self motivated",
+      "sample_df": 13
+    },
+    {
+      "name": "solvency ii",
+      "sample_df": 13
+    },
+    {
+      "name": "data modelling",
+      "sample_df": 13
+    },
+    {
+      "name": "solution design",
+      "sample_df": 13
+    },
+    {
+      "name": "powerbi",
+      "sample_df": 13
+    },
+    {
+      "name": "data interpretation",
+      "sample_df": 13
+    },
+    {
+      "name": "azure devops",
+      "sample_df": 13
+    },
+    {
+      "name": "insurance industry knowledge",
+      "sample_df": 13
+    },
+    {
+      "name": "modeling",
+      "sample_df": 12
+    },
+    {
+      "name": "business acumen",
+      "sample_df": 12
+    },
+    {
+      "name": "operational risk management",
+      "sample_df": 12
+    },
+    {
+      "name": "kpi management",
+      "sample_df": 12
+    },
+    {
+      "name": "react",
+      "sample_df": 12
+    },
+    {
+      "name": "event management",
+      "sample_df": 12
+    },
+    {
+      "name": "client engagement",
+      "sample_df": 12
+    },
+    {
+      "name": "autonomy",
+      "sample_df": 12
+    },
+    {
+      "name": "financial crime",
+      "sample_df": 12
+    },
+    {
+      "name": "professionalism",
+      "sample_df": 12
+    },
+    {
+      "name": "jenkins",
+      "sample_df": 12
+    },
+    {
+      "name": "sales strategy",
+      "sample_df": 12
+    },
+    {
+      "name": "contract law",
+      "sample_df": 12
+    },
+    {
+      "name": "scheduling",
+      "sample_df": 12
+    },
+    {
+      "name": "analytics",
+      "sample_df": 12
+    },
+    {
+      "name": "fca regulations",
+      "sample_df": 12
+    },
+    {
+      "name": "reconciliation",
+      "sample_df": 12
+    },
+    {
+      "name": "record keeping",
+      "sample_df": 12
+    },
+    {
+      "name": "agile environment",
+      "sample_df": 12
+    },
+    {
+      "name": "project support",
+      "sample_df": 12
+    },
+    {
+      "name": "credit risk modeling",
+      "sample_df": 12
+    },
+    {
+      "name": "onboarding",
+      "sample_df": 12
+    },
+    {
+      "name": "model development",
+      "sample_df": 12
+    },
+    {
+      "name": "financial services knowledge",
+      "sample_df": 12
+    },
+    {
+      "name": "technical support",
+      "sample_df": 12
+    },
+    {
+      "name": "financial advisory",
+      "sample_df": 12
+    },
+    {
+      "name": "development",
+      "sample_df": 12
+    },
+    {
+      "name": "insurance",
+      "sample_df": 12
+    },
+    {
+      "name": "data science",
+      "sample_df": 12
+    },
+    {
+      "name": "influence",
+      "sample_df": 11
+    },
+    {
+      "name": "oral communication",
+      "sample_df": 11
+    },
+    {
+      "name": "actuarial science",
+      "sample_df": 11
+    },
+    {
+      "name": "spring boot",
+      "sample_df": 11
+    },
+    {
+      "name": "event organization",
+      "sample_df": 11
+    },
+    {
+      "name": "money laundering",
+      "sample_df": 11
+    },
+    {
+      "name": "writing",
+      "sample_df": 11
+    },
+    {
+      "name": "product ownership",
+      "sample_df": 11
+    },
+    {
+      "name": "legal drafting",
+      "sample_df": 11
+    },
+    {
+      "name": "troubleshooting",
+      "sample_df": 11
+    },
+    {
+      "name": "knowledge sharing",
+      "sample_df": 11
+    },
+    {
+      "name": "curiosity",
+      "sample_df": 11
+    },
+    {
+      "name": "management information",
+      "sample_df": 11
+    },
+    {
+      "name": "claims management",
+      "sample_df": 11
+    },
+    {
+      "name": "microservices",
+      "sample_df": 11
+    },
+    {
+      "name": "investment analysis",
+      "sample_df": 11
+    },
+    {
+      "name": "learning and development",
+      "sample_df": 11
+    },
+    {
+      "name": "kyc",
+      "sample_df": 11
+    },
+    {
+      "name": "quality control",
+      "sample_df": 11
+    },
+    {
+      "name": "ifrs",
+      "sample_df": 11
+    },
+    {
+      "name": "data driven decision making",
+      "sample_df": 11
+    },
+    {
+      "name": "hybrid work",
+      "sample_df": 11
+    },
+    {
+      "name": "prospecting",
+      "sample_df": 11
+    },
+    {
+      "name": "unit testing",
+      "sample_df": 11
+    },
+    {
+      "name": "data accuracy",
+      "sample_df": 11
+    },
+    {
+      "name": "project planning",
+      "sample_df": 11
+    },
+    {
+      "name": "financial advice",
+      "sample_df": 11
+    },
+    {
+      "name": "angular",
+      "sample_df": 11
+    },
+    {
+      "name": "customer orientation",
+      "sample_df": 11
+    },
+    {
+      "name": "network building",
+      "sample_df": 11
+    },
+    {
+      "name": "project coordination",
+      "sample_df": 11
+    },
+    {
+      "name": "stress testing",
+      "sample_df": 10
+    },
+    {
+      "name": "team working",
+      "sample_df": 10
+    },
+    {
+      "name": "performance monitoring",
+      "sample_df": 10
+    },
+    {
+      "name": "consultative selling",
+      "sample_df": 10
+    },
+    {
+      "name": "microsoft excel",
+      "sample_df": 10
+    },
+    {
+      "name": "digital transformation",
+      "sample_df": 10
+    },
+    {
+      "name": "programming",
+      "sample_df": 10
+    },
+    {
+      "name": "agile working",
+      "sample_df": 10
+    },
+    {
+      "name": "email management",
+      "sample_df": 10
+    },
+    {
+      "name": "conflict resolution",
+      "sample_df": 10
+    },
+    {
+      "name": "accounting standards",
+      "sample_df": 10
+    },
+    {
+      "name": "advisory services",
+      "sample_df": 10
+    },
+    {
+      "name": "sanctions",
+      "sample_df": 10
+    },
+    {
+      "name": "audit support",
+      "sample_df": 10
+    },
+    {
+      "name": "azure",
+      "sample_df": 10
+    },
+    {
+      "name": "service delivery",
+      "sample_df": 10
+    },
+    {
+      "name": "customer due diligence",
+      "sample_df": 10
+    },
+    {
+      "name": "analysis",
+      "sample_df": 10
+    },
+    {
+      "name": "english language proficiency",
+      "sample_df": 10
+    },
+    {
+      "name": "rapport building",
+      "sample_df": 10
+    },
+    {
+      "name": "claims handling",
+      "sample_df": 10
+    },
+    {
+      "name": "solution architecture",
+      "sample_df": 10
+    },
+    {
+      "name": "cloud technologies",
+      "sample_df": 10
+    },
+    {
+      "name": "customer centric",
+      "sample_df": 10
+    },
+    {
+      "name": "social media management",
+      "sample_df": 10
+    },
+    {
+      "name": "pipeline management",
+      "sample_df": 10
+    },
+    {
+      "name": "consulting",
+      "sample_df": 10
+    },
+    {
+      "name": "tableau",
+      "sample_df": 10
+    },
+    {
+      "name": "new business development",
+      "sample_df": 10
+    },
+    {
+      "name": "typescript",
+      "sample_df": 10
+    },
+    {
+      "name": "work ethic",
+      "sample_df": 9
+    },
+    {
+      "name": "itil",
+      "sample_df": 9
+    },
+    {
+      "name": "computer literacy",
+      "sample_df": 9
+    },
+    {
+      "name": "remote work",
+      "sample_df": 9
+    },
+    {
+      "name": "payment processing",
+      "sample_df": 9
+    },
+    {
+      "name": "system management",
+      "sample_df": 9
+    },
+    {
+      "name": "commercial awareness",
+      "sample_df": 9
+    },
+    {
+      "name": "learning",
+      "sample_df": 9
+    },
+    {
+      "name": "diary management",
+      "sample_df": 9
+    },
+    {
+      "name": "credit risk assessment",
+      "sample_df": 9
+    },
+    {
+      "name": "ansible",
+      "sample_df": 9
+    },
+    {
+      "name": "user experience",
+      "sample_df": 9
+    },
+    {
+      "name": "architecture",
+      "sample_df": 9
+    },
+    {
+      "name": "brand management",
+      "sample_df": 9
+    },
+    {
+      "name": "thought leadership",
+      "sample_df": 9
+    },
+    {
+      "name": "coding",
+      "sample_df": 9
+    },
+    {
+      "name": "sap",
+      "sample_df": 9
+    },
+    {
+      "name": "issue management",
+      "sample_df": 9
+    },
+    {
+      "name": "wealth management",
+      "sample_df": 9
+    },
+    {
+      "name": "campaign management",
+      "sample_df": 9
+    },
+    {
+      "name": "digital services",
+      "sample_df": 9
+    },
+    {
+      "name": "requirements gathering",
+      "sample_df": 9
+    },
+    {
+      "name": "derivatives",
+      "sample_df": 9
+    },
+    {
+      "name": "tax compliance",
+      "sample_df": 9
+    },
+    {
+      "name": "automated testing",
+      "sample_df": 9
+    },
+    {
+      "name": "proactive customer support",
+      "sample_df": 9
+    },
+    {
+      "name": "resilience",
+      "sample_df": 9
+    },
+    {
+      "name": "application development",
+      "sample_df": 9
+    },
+    {
+      "name": "data warehousing",
+      "sample_df": 9
+    },
+    {
+      "name": "data processing",
+      "sample_df": 9
+    },
+    {
+      "name": "data modeling",
+      "sample_df": 9
+    },
+    {
+      "name": "document management",
+      "sample_df": 9
+    },
+    {
+      "name": "valuation",
+      "sample_df": 9
+    },
+    {
+      "name": "proactiveness",
+      "sample_df": 8
+    },
+    {
+      "name": "competitive analysis",
+      "sample_df": 8
+    },
+    {
+      "name": "corporate governance",
+      "sample_df": 8
+    },
+    {
+      "name": "professional qualifications",
+      "sample_df": 8
+    },
+    {
+      "name": "cybersecurity",
+      "sample_df": 8
+    },
+    {
+      "name": "wft basis",
+      "sample_df": 8
+    },
+    {
+      "name": "issue resolution",
+      "sample_df": 8
+    },
+    {
+      "name": "qualification",
+      "sample_df": 8
+    },
+    {
+      "name": "technical skills",
+      "sample_df": 8
+    },
+    {
+      "name": "linux",
+      "sample_df": 8
+    },
+    {
+      "name": "listening",
+      "sample_df": 8
+    },
+    {
+      "name": "positive attitude",
+      "sample_df": 8
+    },
+    {
+      "name": "audit management",
+      "sample_df": 8
+    },
+    {
+      "name": "financial services experience",
+      "sample_df": 8
+    },
+    {
+      "name": "client satisfaction",
+      "sample_df": 8
+    },
+    {
+      "name": "french language",
+      "sample_df": 8
+    },
+    {
+      "name": "statistical analysis",
+      "sample_df": 8
+    },
+    {
+      "name": "creative thinking",
+      "sample_df": 8
+    },
+    {
+      "name": "wft certification",
+      "sample_df": 8
+    },
+    {
+      "name": "computer skills",
+      "sample_df": 8
+    },
+    {
+      "name": "workload management",
+      "sample_df": 8
+    },
+    {
+      "name": "fund administration",
+      "sample_df": 8
+    },
+    {
+      "name": "dutch language proficiency",
+      "sample_df": 8
+    },
+    {
+      "name": "agile scrum",
+      "sample_df": 8
+    },
+    {
+      "name": "credit control",
+      "sample_df": 8
+    },
+    {
+      "name": "roadmap development",
+      "sample_df": 8
+    },
+    {
+      "name": "confidentiality",
+      "sample_df": 8
+    },
+    {
+      "name": "data manipulation",
+      "sample_df": 8
+    },
+    {
+      "name": "agile project management",
+      "sample_df": 8
+    },
+    {
+      "name": "email communication",
+      "sample_df": 8
+    },
+    {
+      "name": "complaint handling",
+      "sample_df": 8
+    },
+    {
+      "name": "seo",
+      "sample_df": 8
+    },
+    {
+      "name": "creativity",
+      "sample_df": 8
+    },
+    {
+      "name": "ms powerpoint",
+      "sample_df": 8
+    },
+    {
+      "name": "storytelling",
+      "sample_df": 8
+    },
+    {
+      "name": "control framework",
+      "sample_df": 8
+    },
+    {
+      "name": "net",
+      "sample_df": 8
+    },
+    {
+      "name": "client focus",
+      "sample_df": 8
+    },
+    {
+      "name": "operations",
+      "sample_df": 8
+    },
+    {
+      "name": "commercial skills",
+      "sample_df": 8
+    },
+    {
+      "name": "trend analysis",
+      "sample_df": 8
+    },
+    {
+      "name": "administrative experience",
+      "sample_df": 8
+    },
+    {
+      "name": "numerical analysis",
+      "sample_df": 8
+    },
+    {
+      "name": "business case development",
+      "sample_df": 8
+    },
+    {
+      "name": "resource management",
+      "sample_df": 8
+    },
+    {
+      "name": "english",
+      "sample_df": 8
+    },
+    {
+      "name": "accountancy",
+      "sample_df": 8
+    },
+    {
+      "name": "software development lifecycle",
+      "sample_df": 8
+    },
+    {
+      "name": "pressure management",
+      "sample_df": 8
+    },
+    {
+      "name": "rest",
+      "sample_df": 8
+    },
+    {
+      "name": "internal audit",
+      "sample_df": 8
+    },
+    {
+      "name": "big data",
+      "sample_df": 8
+    },
+    {
+      "name": "pega",
+      "sample_df": 8
+    },
+    {
+      "name": "program management",
+      "sample_df": 8
+    },
+    {
+      "name": "change control",
+      "sample_df": 8
+    },
+    {
+      "name": "volunteering",
+      "sample_df": 8
+    },
+    {
+      "name": "application support",
+      "sample_df": 8
+    },
+    {
+      "name": "ms office applications",
+      "sample_df": 7
+    },
+    {
+      "name": "vulnerable customer support",
+      "sample_df": 7
+    },
+    {
+      "name": "treasury management",
+      "sample_df": 7
+    },
+    {
+      "name": "banking regulations",
+      "sample_df": 7
+    },
+    {
+      "name": "market understanding",
+      "sample_df": 7
+    },
+    {
+      "name": "feedback",
+      "sample_df": 7
+    },
+    {
+      "name": "cost effective legal function",
+      "sample_df": 7
+    },
+    {
+      "name": "business strategy",
+      "sample_df": 7
+    },
+    {
+      "name": "trend identification",
+      "sample_df": 7
+    },
+    {
+      "name": "internal communications",
+      "sample_df": 7
+    },
+    {
+      "name": "facilitation",
+      "sample_df": 7
+    },
+    {
+      "name": "business alignment",
+      "sample_df": 7
+    },
+    {
+      "name": "risk reporting",
+      "sample_df": 7
+    },
+    {
+      "name": "econometrics",
+      "sample_df": 7
+    },
+    {
+      "name": "technical communication",
+      "sample_df": 7
+    },
+    {
+      "name": "talent management",
+      "sample_df": 7
+    },
+    {
+      "name": "third party management",
+      "sample_df": 7
+    },
+    {
+      "name": "requirements analysis",
+      "sample_df": 7
+    },
+    {
+      "name": "market knowledge",
+      "sample_df": 7
+    },
+    {
+      "name": "legal judgment",
+      "sample_df": 7
+    },
+    {
+      "name": "performance analysis",
+      "sample_df": 7
+    },
+    {
+      "name": "team development",
+      "sample_df": 7
+    },
+    {
+      "name": "target achievement",
+      "sample_df": 7
+    },
+    {
+      "name": "capacity management",
+      "sample_df": 7
+    },
+    {
+      "name": "recruitment",
+      "sample_df": 7
+    },
+    {
+      "name": "service level agreements",
+      "sample_df": 7
+    },
+    {
+      "name": "entrepreneurial spirit",
+      "sample_df": 7
+    },
+    {
+      "name": "service orientation",
+      "sample_df": 7
+    },
+    {
+      "name": "ssis",
+      "sample_df": 7
+    },
+    {
+      "name": "sales support",
+      "sample_df": 7
+    },
+    {
+      "name": "content marketing",
+      "sample_df": 7
+    },
+    {
+      "name": "c++",
+      "sample_df": 7
+    },
+    {
+      "name": "legal function management",
+      "sample_df": 7
+    },
+    {
+      "name": "organisational skills",
+      "sample_df": 7
+    },
+    {
+      "name": "financial control",
+      "sample_df": 7
+    },
+    {
+      "name": "cloud security",
+      "sample_df": 7
+    },
+    {
+      "name": "retail experience",
+      "sample_df": 7
+    },
+    {
+      "name": "presentation preparation",
+      "sample_df": 7
+    },
+    {
+      "name": "html",
+      "sample_df": 7
+    },
+    {
+      "name": "infrastructure as code",
+      "sample_df": 7
+    },
+    {
+      "name": "programming languages",
+      "sample_df": 7
+    },
+    {
+      "name": "actuarial analysis",
+      "sample_df": 7
+    },
+    {
+      "name": "data security",
+      "sample_df": 7
+    },
+    {
+      "name": "test automation",
+      "sample_df": 7
+    },
+    {
+      "name": "model validation",
+      "sample_df": 7
+    },
+    {
+      "name": "agile manifesto",
+      "sample_df": 7
+    },
+    {
+      "name": "etl",
+      "sample_df": 7
+    },
+    {
+      "name": "flexible working hours",
+      "sample_df": 7
+    },
+    {
+      "name": "kanban",
+      "sample_df": 7
+    },
+    {
+      "name": "dashboard development",
+      "sample_df": 7
+    },
+    {
+      "name": "collateral management",
+      "sample_df": 7
+    },
+    {
+      "name": "data integrity",
+      "sample_df": 7
+    },
+    {
+      "name": "oracle",
+      "sample_df": 7
+    },
+    {
+      "name": "prioritisation",
+      "sample_df": 7
+    },
+    {
+      "name": "payment solutions",
+      "sample_df": 7
+    },
+    {
+      "name": "mentorship",
+      "sample_df": 7
+    },
+    {
+      "name": "word processing",
+      "sample_df": 7
+    },
+    {
+      "name": "data collection",
+      "sample_df": 7
+    },
+    {
+      "name": "design thinking",
+      "sample_df": 7
+    },
+    {
+      "name": "fraud prevention",
+      "sample_df": 7
+    },
+    {
+      "name": "case management",
+      "sample_df": 7
+    },
+    {
+      "name": "coaching and mentoring",
+      "sample_df": 7
+    },
+    {
+      "name": "gdpr",
+      "sample_df": 7
+    },
+    {
+      "name": "diversity and inclusion",
+      "sample_df": 7
+    },
+    {
+      "name": "legal strategy",
+      "sample_df": 7
+    },
+    {
+      "name": "data architecture",
+      "sample_df": 7
+    },
+    {
+      "name": "legislation",
+      "sample_df": 7
+    },
+    {
+      "name": "product management",
+      "sample_df": 7
+    },
+    {
+      "name": "information security",
+      "sample_df": 7
+    },
+    {
+      "name": "client interaction",
+      "sample_df": 7
+    },
+    {
+      "name": "telephone manner",
+      "sample_df": 7
+    },
+    {
+      "name": "cross functional coordination",
+      "sample_df": 7
+    },
+    {
+      "name": "system implementation",
+      "sample_df": 6
+    },
+    {
+      "name": "performance metrics",
+      "sample_df": 6
+    },
+    {
+      "name": "service improvement",
+      "sample_df": 6
+    },
+    {
+      "name": "insurance broking",
+      "sample_df": 6
+    },
+    {
+      "name": "cold calling",
+      "sample_df": 6
+    },
+    {
+      "name": "market trends",
+      "sample_df": 6
+    },
+    {
+      "name": "strategy implementation",
+      "sample_df": 6
+    },
+    {
+      "name": "bookkeeping",
+      "sample_df": 6
+    },
+    {
+      "name": "investment strategy",
+      "sample_df": 6
+    },
+    {
+      "name": "team building",
+      "sample_df": 6
+    },
+    {
+      "name": "risk based approach",
+      "sample_df": 6
+    },
+    {
+      "name": "data cleansing",
+      "sample_df": 6
+    },
+    {
+      "name": "audit coordination",
+      "sample_df": 6
+    },
+    {
+      "name": "diversity",
+      "sample_df": 6
+    },
+    {
+      "name": "version control",
+      "sample_df": 6
+    },
+    {
+      "name": "cucumber",
+      "sample_df": 6
+    },
+    {
+      "name": "it skills",
+      "sample_df": 6
+    },
+    {
+      "name": "supplier management",
+      "sample_df": 6
+    },
+    {
+      "name": "organised",
+      "sample_df": 6
+    },
+    {
+      "name": "salesforce",
+      "sample_df": 6
+    },
+    {
+      "name": "confluence",
+      "sample_df": 6
+    },
+    {
+      "name": "css",
+      "sample_df": 6
+    },
+    {
+      "name": "usability testing",
+      "sample_df": 6
+    },
+    {
+      "name": "persuasion",
+      "sample_df": 6
+    },
+    {
+      "name": "hbo education",
+      "sample_df": 6
+    },
+    {
+      "name": "sql server",
+      "sample_df": 6
+    },
+    {
+      "name": "crm",
+      "sample_df": 6
+    },
+    {
+      "name": "financial accounting",
+      "sample_df": 6
+    },
+    {
+      "name": "powershell",
+      "sample_df": 6
+    },
+    {
+      "name": "cash handling",
+      "sample_df": 6
+    },
+    {
+      "name": "technical analysis",
+      "sample_df": 6
+    },
+    {
+      "name": "performance optimization",
+      "sample_df": 6
+    },
+    {
+      "name": "financial risk management",
+      "sample_df": 6
+    },
+    {
+      "name": "implementation",
+      "sample_df": 6
+    },
+    {
+      "name": "escalation management",
+      "sample_df": 6
+    },
+    {
+      "name": "data structures",
+      "sample_df": 6
+    },
+    {
+      "name": "user research",
+      "sample_df": 6
+    },
+    {
+      "name": "marketing",
+      "sample_df": 6
+    },
+    {
+      "name": "administrative skills",
+      "sample_df": 6
+    },
+    {
+      "name": "scripting",
+      "sample_df": 6
+    },
+    {
+      "name": "succession planning",
+      "sample_df": 6
+    },
+    {
+      "name": "planning and organization",
+      "sample_df": 6
+    },
+    {
+      "name": "creative problem solving",
+      "sample_df": 6
+    },
+    {
+      "name": "client relationships",
+      "sample_df": 6
+    },
+    {
+      "name": "configuration management",
+      "sample_df": 6
+    },
+    {
+      "name": "metadata management",
+      "sample_df": 6
+    },
+    {
+      "name": "project delivery",
+      "sample_df": 6
+    },
+    {
+      "name": "technology strategy",
+      "sample_df": 6
+    },
+    {
+      "name": "transaction analysis",
+      "sample_df": 6
+    },
+    {
+      "name": "market trend analysis",
+      "sample_df": 6
+    },
+    {
+      "name": "dental cover",
+      "sample_df": 6
+    },
+    {
+      "name": "multilingual",
+      "sample_df": 6
+    },
+    {
+      "name": "report preparation",
+      "sample_df": 6
+    },
+    {
+      "name": "trading",
+      "sample_df": 6
+    },
+    {
+      "name": "employee relations",
+      "sample_df": 6
+    },
+    {
+      "name": "contract drafting",
+      "sample_df": 6
+    },
+    {
+      "name": "policy analysis",
+      "sample_df": 6
+    },
+    {
+      "name": "bash",
+      "sample_df": 6
+    },
+    {
+      "name": "holiday entitlement",
+      "sample_df": 6
+    },
+    {
+      "name": "technical documentation",
+      "sample_df": 6
+    },
+    {
+      "name": "banking services",
+      "sample_df": 6
+    },
+    {
+      "name": "solution oriented",
+      "sample_df": 6
+    },
+    {
+      "name": "controls",
+      "sample_df": 6
+    },
+    {
+      "name": "community engagement",
+      "sample_df": 6
+    },
+    {
+      "name": "communications",
+      "sample_df": 6
+    },
+    {
+      "name": "result oriented",
+      "sample_df": 6
+    },
+    {
+      "name": "client onboarding",
+      "sample_df": 6
+    },
+    {
+      "name": "windows",
+      "sample_df": 6
+    },
+    {
+      "name": "lead generation",
+      "sample_df": 6
+    },
+    {
+      "name": "distributed systems",
+      "sample_df": 6
+    },
+    {
+      "name": "online training",
+      "sample_df": 6
+    },
+    {
+      "name": "content management",
+      "sample_df": 6
+    },
+    {
+      "name": "pension administration",
+      "sample_df": 6
+    },
+    {
+      "name": "backlog management",
+      "sample_df": 6
+    },
+    {
+      "name": "subject matter expertise",
+      "sample_df": 6
+    },
+    {
+      "name": "cloud infrastructure",
+      "sample_df": 6
+    },
+    {
+      "name": "technical design",
+      "sample_df": 6
+    },
+    {
+      "name": "trade finance",
+      "sample_df": 6
+    },
+    {
+      "name": "foreign exchange",
+      "sample_df": 6
+    },
+    {
+      "name": "oversight",
+      "sample_df": 6
+    },
+    {
+      "name": "reinsurance",
+      "sample_df": 6
+    },
+    {
+      "name": "business planning",
+      "sample_df": 6
+    },
+    {
+      "name": "pricing",
+      "sample_df": 6
+    },
+    {
+      "name": "monitoring",
+      "sample_df": 6
+    },
+    {
+      "name": "account reconciliation",
+      "sample_df": 6
+    },
+    {
+      "name": "kotlin",
+      "sample_df": 6
+    },
+    {
+      "name": "asset allocation",
+      "sample_df": 6
+    },
+    {
+      "name": "agile coaching",
+      "sample_df": 6
+    },
+    {
+      "name": "fund accounting",
+      "sample_df": 6
+    },
+    {
+      "name": "client services",
+      "sample_df": 6
+    },
+    {
+      "name": "hadoop",
+      "sample_df": 6
+    },
+    {
+      "name": "economic capital",
+      "sample_df": 6
+    },
+    {
+      "name": "financial statement preparation",
+      "sample_df": 6
+    },
+    {
+      "name": "email marketing",
+      "sample_df": 6
+    },
+    {
+      "name": "business continuity",
+      "sample_df": 6
+    },
+    {
+      "name": "customer journey",
+      "sample_df": 6
+    },
+    {
+      "name": "client experience",
+      "sample_df": 6
+    },
+    {
+      "name": "financial modelling",
+      "sample_df": 6
+    },
+    {
+      "name": "risk identification",
+      "sample_df": 6
+    },
+    {
+      "name": "knowledge management",
+      "sample_df": 5
+    },
+    {
+      "name": "agile mindset",
+      "sample_df": 5
+    },
+    {
+      "name": "operational risk",
+      "sample_df": 5
+    },
+    {
+      "name": "advanced analytics",
+      "sample_df": 5
+    },
+    {
+      "name": "detail oriented",
+      "sample_df": 5
+    },
+    {
+      "name": "banking industry knowledge",
+      "sample_df": 5
+    },
+    {
+      "name": "process mapping",
+      "sample_df": 5
+    },
+    {
+      "name": "analytical mindset",
+      "sample_df": 5
+    },
+    {
+      "name": "engagement",
+      "sample_df": 5
+    },
+    {
+      "name": "actuarial",
+      "sample_df": 5
+    },
+    {
+      "name": "data lineage",
+      "sample_df": 5
+    },
+    {
+      "name": "data driven",
+      "sample_df": 5
+    },
+    {
+      "name": "insurance industry experience",
+      "sample_df": 5
+    },
+    {
+      "name": "education",
+      "sample_df": 5
+    },
+    {
+      "name": "openshift",
+      "sample_df": 5
+    },
+    {
+      "name": "responsibility",
+      "sample_df": 5
+    },
+    {
+      "name": "solution implementation",
+      "sample_df": 5
+    },
+    {
+      "name": "network security",
+      "sample_df": 5
+    },
+    {
+      "name": "springboot",
+      "sample_df": 5
+    },
+    {
+      "name": "shell scripting",
+      "sample_df": 5
+    },
+    {
+      "name": "optimization",
+      "sample_df": 5
+    },
+    {
+      "name": "banking operations",
+      "sample_df": 5
+    },
+    {
+      "name": "internal auditing",
+      "sample_df": 5
+    },
+    {
+      "name": "agile way of working",
+      "sample_df": 5
+    },
+    {
+      "name": "agency management",
+      "sample_df": 5
+    },
+    {
+      "name": "economics",
+      "sample_df": 5
+    },
+    {
+      "name": "network development",
+      "sample_df": 5
+    },
+    {
+      "name": "deal structuring",
+      "sample_df": 5
+    },
+    {
+      "name": "customer empathy",
+      "sample_df": 5
+    },
+    {
+      "name": "banking experience",
+      "sample_df": 5
+    },
+    {
+      "name": "control environment",
+      "sample_df": 5
+    },
+    {
+      "name": "dutch",
+      "sample_df": 5
+    },
+    {
+      "name": "credit risk analysis",
+      "sample_df": 5
+    },
+    {
+      "name": "process adherence",
+      "sample_df": 5
+    },
+    {
+      "name": "audit planning",
+      "sample_df": 5
+    },
+    {
+      "name": "best practices",
+      "sample_df": 5
+    },
+    {
+      "name": "commercial strategy",
+      "sample_df": 5
+    },
+    {
+      "name": "market awareness",
+      "sample_df": 5
+    },
+    {
+      "name": "statistics",
+      "sample_df": 5
+    },
+    {
+      "name": "clear communication",
+      "sample_df": 5
+    },
+    {
+      "name": "mbo diploma",
+      "sample_df": 5
+    },
+    {
+      "name": "test driven development",
+      "sample_df": 5
+    },
+    {
+      "name": "artificial intelligence",
+      "sample_df": 5
+    },
+    {
+      "name": "database design",
+      "sample_df": 5
+    },
+    {
+      "name": "deadlines",
+      "sample_df": 5
+    },
+    {
+      "name": "incident response",
+      "sample_df": 5
+    },
+    {
+      "name": "benchmarking",
+      "sample_df": 5
+    },
+    {
+      "name": "legal risk management",
+      "sample_df": 5
+    },
+    {
+      "name": "cassandra",
+      "sample_df": 5
+    },
+    {
+      "name": "analytical ability",
+      "sample_df": 5
+    },
+    {
+      "name": "klantenservice",
+      "sample_df": 5
+    },
+    {
+      "name": "insight generation",
+      "sample_df": 5
+    },
+    {
+      "name": "project governance",
+      "sample_df": 5
+    },
+    {
+      "name": "mortgage advice",
+      "sample_df": 5
+    },
+    {
+      "name": "self starter",
+      "sample_df": 5
+    },
+    {
+      "name": "data validation",
+      "sample_df": 5
+    },
+    {
+      "name": "people skills",
+      "sample_df": 5
+    },
+    {
+      "name": "legal documentation",
+      "sample_df": 5
+    },
+    {
+      "name": "client advisory",
+      "sample_df": 5
+    },
+    {
+      "name": "customer needs analysis",
+      "sample_df": 5
+    },
+    {
+      "name": "anti bribery and corruption",
+      "sample_df": 5
+    },
+    {
+      "name": "fraud management",
+      "sample_df": 5
+    },
+    {
+      "name": "client retention",
+      "sample_df": 5
+    },
+    {
+      "name": "client needs assessment",
+      "sample_df": 5
+    },
+    {
+      "name": "email support",
+      "sample_df": 5
+    },
+    {
+      "name": "market intelligence",
+      "sample_df": 5
+    },
+    {
+      "name": "incident resolution",
+      "sample_df": 5
+    },
+    {
+      "name": "risk governance",
+      "sample_df": 5
+    },
+    {
+      "name": "customer retention",
+      "sample_df": 5
+    },
+    {
+      "name": "emotional intelligence",
+      "sample_df": 5
+    },
+    {
+      "name": "service now",
+      "sample_df": 5
+    },
+    {
+      "name": "regulatory standards",
+      "sample_df": 5
+    },
+    {
+      "name": "quality management",
+      "sample_df": 5
+    },
+    {
+      "name": "sector expertise",
+      "sample_df": 5
+    },
+    {
+      "name": "ux design",
+      "sample_df": 5
+    },
+    {
+      "name": "prince2",
+      "sample_df": 5
+    },
+    {
+      "name": "integration",
+      "sample_df": 5
+    },
+    {
+      "name": "cost management",
+      "sample_df": 5
+    },
+    {
+      "name": "event planning",
+      "sample_df": 5
+    },
+    {
+      "name": "branch management",
+      "sample_df": 5
+    },
+    {
+      "name": "ci cd pipelines",
+      "sample_df": 5
+    },
+    {
+      "name": "career progression",
+      "sample_df": 5
+    },
+    {
+      "name": "proactivity",
+      "sample_df": 5
+    },
+    {
+      "name": "brand awareness",
+      "sample_df": 5
+    },
+    {
+      "name": "performance improvement",
+      "sample_df": 5
+    },
+    {
+      "name": "identity and access management",
+      "sample_df": 5
+    },
+    {
+      "name": "phone communication",
+      "sample_df": 5
+    },
+    {
+      "name": "insight development",
+      "sample_df": 5
+    },
+    {
+      "name": "pension management",
+      "sample_df": 5
+    },
+    {
+      "name": "maven",
+      "sample_df": 5
+    },
+    {
+      "name": "resilient",
+      "sample_df": 5
+    },
+    {
+      "name": "financial product knowledge",
+      "sample_df": 5
+    },
+    {
+      "name": "spring framework",
+      "sample_df": 5
+    },
+    {
+      "name": "life assurance",
+      "sample_df": 5
+    },
+    {
+      "name": "deadline management",
+      "sample_df": 5
+    },
+    {
+      "name": "problem resolution",
+      "sample_df": 5
+    },
+    {
+      "name": "issue identification",
+      "sample_df": 5
+    },
+    {
+      "name": "financial administration",
+      "sample_df": 5
+    },
+    {
+      "name": "excellent communication skills",
+      "sample_df": 5
+    },
+    {
+      "name": "microsoft word",
+      "sample_df": 5
+    },
+    {
+      "name": "data privacy",
+      "sample_df": 5
+    },
+    {
+      "name": "full stack development",
+      "sample_df": 5
+    },
+    {
+      "name": "workshop facilitation",
+      "sample_df": 5
+    },
+    {
+      "name": "klantcontact",
+      "sample_df": 5
+    },
+    {
+      "name": "consumer duty",
+      "sample_df": 5
+    },
+    {
+      "name": "problem management",
+      "sample_df": 5
+    },
+    {
+      "name": "cloud computing",
+      "sample_df": 5
+    },
+    {
+      "name": "esg",
+      "sample_df": 5
+    },
+    {
+      "name": "waterfall methodology",
+      "sample_df": 5
+    },
+    {
+      "name": "event coordination",
+      "sample_df": 5
+    },
+    {
+      "name": "code reviews",
+      "sample_df": 5
+    },
+    {
+      "name": "process documentation",
+      "sample_df": 5
+    },
+    {
+      "name": "client due diligence",
+      "sample_df": 5
+    },
+    {
+      "name": "anti money laundering aml",
+      "sample_df": 5
+    },
+    {
+      "name": "proactive conversations",
+      "sample_df": 5
+    },
+    {
+      "name": "accountability",
+      "sample_df": 5
+    },
+    {
+      "name": "video production",
+      "sample_df": 5
+    },
+    {
+      "name": "data integration",
+      "sample_df": 5
+    },
+    {
+      "name": "data quality management",
+      "sample_df": 5
+    },
+    {
+      "name": "private equity",
+      "sample_df": 5
+    },
+    {
+      "name": "technical architecture",
+      "sample_df": 5
+    },
+    {
+      "name": "customer insights",
+      "sample_df": 5
+    },
+    {
+      "name": "industry knowledge",
+      "sample_df": 5
+    },
+    {
+      "name": "internal communication",
+      "sample_df": 5
+    },
+    {
+      "name": "telephony experience",
+      "sample_df": 5
+    },
+    {
+      "name": "gitlab",
+      "sample_df": 5
+    },
+    {
+      "name": "risk appetite",
+      "sample_df": 5
+    },
+    {
+      "name": "kafka",
+      "sample_df": 5
+    }
+  ],
+  "aliases": {
+    "knowledge management": "knowledge management",
+    "relationship building": "relationship building",
+    "underwriting": "underwriting",
+    "agile mindset": "agile mindset",
+    "process optimization": "process optimization",
+    "ms office applications": "ms office applications",
+    "operational risk": "operational risk",
+    "financial modeling": "financial modeling",
+    "multitasking": "multitasking",
+    "client service": "client service",
+    "influence": "influence",
+    "advanced analytics": "advanced analytics",
+    "vulnerable customer support": "vulnerable customer support",
+    "system implementation": "system implementation",
+    "banking regulations": "banking regulations",
+    "stakeholder engagement": "stakeholder engagement",
+    "treasury management": "treasury management",
+    "oral communication": "oral communication",
+    "modeling": "modeling",
+    "self motivation": "self motivation",
+    "detail oriented": "detail oriented",
+    "performance metrics": "performance metrics",
+    "work ethic": "work ethic",
+    "agile methodology": "agile methodology",
+    "listening skills": "listening",
+    "service improvement": "service improvement",
+    "actuarial science": "actuarial science",
+    "banking industry knowledge": "banking industry knowledge",
+    "business acumen": "business acumen",
+    "itil": "itil",
+    "process mapping": "process mapping",
+    "compliance monitoring": "compliance monitoring",
+    "market understanding": "market understanding",
+    "feedback": "feedback",
+    "analytical mindset": "analytical mindset",
+    "cost effective legal function": "cost effective legal function",
+    "numerical skills": "numerical skills",
+    "engagement": "engagement",
+    "business strategy": "business strategy",
+    "trend identification": "trend identification",
+    "actuarial": "actuarial",
+    "machine learning": "machine learning",
+    "vendor management": "vendor management",
+    "governance": "governance",
+    "quantitative analysis": "quantitative analysis",
+    "product development": "product development",
+    "data analysis": "data analysis",
+    "query resolution": "query resolution",
+    "proactiveness": "proactiveness",
+    "insurance broking": "insurance broking",
+    "competitive analysis": "competitive analysis",
+    "internal communications": "internal communications",
+    "market analysis": "market analysis",
+    "data lineage": "data lineage",
+    "anti money laundering": "anti money laundering",
+    "facilitation": "facilitation",
+    "cold calling": "cold calling",
+    "operational risk management": "operational risk management",
+    "data driven": "data driven",
+    "accounting": "accounting",
+    "insurance industry experience": "insurance industry experience",
+    "process improvement": "process improvement",
+    "data analytics": "data analytics",
+    "outlook": "outlook",
+    "stress testing": "stress testing",
+    "technical leadership": "technical leadership",
+    "kpi management": "kpi management",
+    "education": "education",
+    "business alignment": "business alignment",
+    "english language": "english language",
+    "risk reporting": "risk reporting",
+    "openshift": "openshift",
+    "react": "react",
+    "responsibility": "responsibility",
+    "corporate governance": "corporate governance",
+    "solution implementation": "solution implementation",
+    "compliance": "compliance",
+    "analytical thinking": "analytical thinking",
+    "team working": "team working",
+    "econometrics": "econometrics",
+    "time management": "time management",
+    "administration": "administration",
+    "professional qualifications": "professional qualifications",
+    "network security": "network security",
+    "spring boot": "spring boot",
+    "digital marketing": "digital marketing",
+    "analytical": "analytical",
+    "event organization": "event organization",
+    "technical communication": "technical communication",
+    "talent management": "talent management",
+    "insurance knowledge": "insurance knowledge",
+    "budgeting": "budgeting",
+    "technical knowledge": "technical knowledge",
+    "third party management": "third party management",
+    "negotiation skills": "negotiation",
+    "springboot": "springboot",
+    "requirements analysis": "requirements analysis",
+    "market trends": "market trends",
+    "cybersecurity": "cybersecurity",
+    "strategy implementation": "strategy implementation",
+    "wft basis": "wft basis",
+    "shell scripting": "shell scripting",
+    "bookkeeping": "bookkeeping",
+    "performance monitoring": "performance monitoring",
+    "event management": "event management",
+    "organizational skills": "organizational skills",
+    "market knowledge": "market knowledge",
+    "issue resolution": "issue resolution",
+    "organization": "organization",
+    "devops": "devops",
+    "optimization": "optimization",
+    "consultative selling": "consultative selling",
+    "financial reporting": "financial reporting",
+    "banking operations": "banking operations",
+    "analytical skills": "analytical",
+    "sustainability": "sustainability",
+    "qualification": "qualification",
+    "microsoft excel": "microsoft excel",
+    "investment strategy": "investment strategy",
+    "decision making": "decision making",
+    "internal auditing": "internal auditing",
+    "legal judgment": "legal judgment",
+    "technical skills": "technical skills",
+    "client engagement": "client engagement",
+    "business analysis": "business analysis",
+    "team building": "team building",
+    "agile way of working": "agile way of working",
+    "risk based approach": "risk based approach",
+    "influencing": "influencing",
+    "project management": "project management",
+    "computer literacy": "computer literacy",
+    "change management": "change management",
+    "remote work": "remote work",
+    "data cleansing": "data cleansing",
+    "money laundering": "money laundering",
+    "critical thinking": "critical thinking",
+    "payment processing": "payment processing",
+    "data protection": "data protection",
+    "ci cd": "ci cd",
+    "incident management": "incident management",
+    "autonomy": "autonomy",
+    "performance analysis": "performance analysis",
+    "team development": "team development",
+    "transaction processing": "transaction processing",
+    "audit coordination": "audit coordination",
+    "agency management": "agency management",
+    "commercial law": "commercial law",
+    "target achievement": "target achievement",
+    "economics": "economics",
+    "advisory skills": "advisory",
+    "digital transformation": "digital transformation",
+    "capacity management": "capacity management",
+    "recruitment": "recruitment",
+    "diversity": "diversity",
+    "network development": "network development",
+    "content creation": "content creation",
+    "deal structuring": "deal structuring",
+    "writing": "writing",
+    "service level agreements": "service level agreements",
+    "entrepreneurial spirit": "entrepreneurial spirit",
+    "version control": "version control",
+    "git": "git",
+    "cucumber": "cucumber",
+    "it skills": "it skills",
+    "flexibility": "flexibility",
+    "javascript": "javascript",
+    "linux": "linux",
+    "customer empathy": "customer empathy",
+    "service orientation": "service orientation",
+    "ssis": "ssis",
+    "banking experience": "banking experience",
+    "sales support": "sales support",
+    "credit risk": "credit risk",
+    "supplier management": "supplier management",
+    "system management": "system management",
+    "commercial awareness": "commercial awareness",
+    "organised": "organised",
+    "control environment": "control environment",
+    "content marketing": "content marketing",
+    "docker": "docker",
+    "dutch": "dutch",
+    "c++": "c++",
+    "customer service": "customer service",
+    "salesforce": "salesforce",
+    "professional development": "professional development",
+    "confluence": "confluence",
+    "product ownership": "product ownership",
+    "legal compliance": "legal compliance",
+    "programming": "programming",
+    "financial planning": "financial planning",
+    "credit risk analysis": "credit risk analysis",
+    "data governance": "data governance",
+    "process adherence": "process adherence",
+    "css": "css",
+    "solution development": "solution development",
+    "usability testing": "usability testing",
+    "legal function management": "legal function management",
+    "organisational skills": "organisational skills",
+    "audit planning": "audit planning",
+    "communication skills": "communication",
+    "best practices": "best practices",
+    "financial control": "financial control",
+    "listening": "listening",
+    "positive attitude": "positive attitude",
+    "due diligence": "due diligence",
+    "commercial strategy": "commercial strategy",
+    "audit management": "audit management",
+    "stakeholder communication": "stakeholder communication",
+    "persuasion": "persuasion",
+    "hbo education": "hbo education",
+    "market awareness": "market awareness",
+    "financial crime": "financial crime",
+    "cloud security": "cloud security",
+    "retail experience": "retail experience",
+    "python": "python",
+    "agile working": "agile working",
+    "regulatory reporting": "regulatory reporting",
+    "statistics": "statistics",
+    "communication": "communication",
+    "financial services experience": "financial services experience",
+    "clear communication": "clear communication",
+    "mbo diploma": "mbo diploma",
+    "telephone support": "telephone support",
+    "test driven development": "test driven development",
+    "artificial intelligence": "artificial intelligence",
+    "business intelligence": "business intelligence",
+    "database design": "database design",
+    "cross selling": "cross selling",
+    "advisory": "advisory",
+    "collaboration": "collaboration",
+    "scrum": "scrum",
+    "problem solving skills": "problem solving",
+    "team player": "team player",
+    "ms word": "ms word",
+    "deadlines": "deadlines",
+    "presentation preparation": "presentation preparation",
+    "incident response": "incident response",
+    "sql server": "sql server",
+    "customer communication": "customer communication",
+    "crm": "crm",
+    "professionalism": "professionalism",
+    "benchmarking": "benchmarking",
+    "financial accounting": "financial accounting",
+    "legal drafting": "legal drafting",
+    "legal risk management": "legal risk management",
+    "html": "html",
+    "cassandra": "cassandra",
+    "customer service expertise": "customer service expertise",
+    "analytical ability": "analytical ability",
+    "root cause analysis": "root cause analysis",
+    "teamwork": "teamwork",
+    "client satisfaction": "client satisfaction",
+    "initiative": "initiative",
+    "klantenservice": "klantenservice",
+    "people management": "people management",
+    "jenkins": "jenkins",
+    "r": "r",
+    "agile development": "agile development",
+    "legal research": "legal research",
+    "learning": "learning",
+    "team management": "team management",
+    "insight generation": "insight generation",
+    "project governance": "project governance",
+    "troubleshooting": "troubleshooting",
+    "proactive": "proactive",
+    "sales strategy": "sales strategy",
+    "strategic thinking": "strategic thinking",
+    "french language": "french language",
+    "powershell": "powershell",
+    "cash handling": "cash handling",
+    "mortgage advice": "mortgage advice",
+    "self starter": "self starter",
+    "infrastructure as code": "infrastructure as code",
+    "statistical analysis": "statistical analysis",
+    "training": "training",
+    "knowledge sharing": "knowledge sharing",
+    "c#": "c#",
+    "creative thinking": "creative thinking",
+    "credit risk management": "credit risk management",
+    "technical analysis": "technical analysis",
+    "performance optimization": "performance optimization",
+    "contract law": "contract law",
+    "data validation": "data validation",
+    "wft certification": "wft certification",
+    "programming languages": "programming languages",
+    "people skills": "people skills",
+    "email management": "email management",
+    "diary management": "diary management",
+    "documentation": "documentation",
+    "computer skills": "computer skills",
+    "fast paced environment": "fast paced environment",
+    "agile methodologies": "agile methodologies",
+    "financial risk management": "financial risk management",
+    "implementation": "implementation",
+    "actuarial analysis": "actuarial analysis",
+    "conflict resolution": "conflict resolution",
+    "prioritization": "prioritization",
+    "finance": "finance",
+    "curiosity": "curiosity",
+    "escalation management": "escalation management",
+    "scheduling": "scheduling",
+    "workload management": "workload management",
+    "data structures": "data structures",
+    "user research": "user research",
+    "customer satisfaction": "customer satisfaction",
+    "client communication": "client communication",
+    "fund administration": "fund administration",
+    "legal documentation": "legal documentation",
+    "client advisory": "client advisory",
+    "report writing": "report writing",
+    "customer needs analysis": "customer needs analysis",
+    "anti bribery and corruption": "anti bribery and corruption",
+    "contract negotiation": "contract negotiation",
+    "pension scheme": "pension scheme",
+    "management information": "management information",
+    "credit risk assessment": "credit risk assessment",
+    "banking": "banking",
+    "dutch language proficiency": "dutch language proficiency",
+    "fraud management": "fraud management",
+    "accounting standards": "accounting standards",
+    "marketing": "marketing",
+    "administrative skills": "administrative skills",
+    "ansible": "ansible",
+    "client retention": "client retention",
+    "data security": "data security",
+    "scripting": "scripting",
+    "test automation": "test automation",
+    "agile scrum": "agile scrum",
+    "team collaboration": "team collaboration",
+    "advisory services": "advisory services",
+    "user experience": "user experience",
+    "succession planning": "succession planning",
+    "continuous improvement": "continuous improvement",
+    "client needs assessment": "client needs assessment",
+    "credit control": "credit control",
+    "relationship management": "relationship management",
+    "email support": "email support",
+    "audit": "audit",
+    "model validation": "model validation",
+    "verbal communication": "verbal communication",
+    "aml": "aml",
+    "planning and organization": "planning and organization",
+    "risk analysis": "risk analysis",
+    "market intelligence": "market intelligence",
+    "claims management": "claims management",
+    "incident resolution": "incident resolution",
+    "cash management": "cash management",
+    "integrity": "integrity",
+    "sanctions": "sanctions",
+    "creative problem solving": "creative problem solving",
+    "microservices": "microservices",
+    "audit support": "audit support",
+    "risk governance": "risk governance",
+    "customer retention": "customer retention",
+    "customer service experience": "customer service experience",
+    "emotional intelligence": "emotional intelligence",
+    "architecture": "architecture",
+    "transaction monitoring": "transaction monitoring",
+    "brand management": "brand management",
+    "service now": "service now",
+    "thought leadership": "thought leadership",
+    "numeracy": "numeracy",
+    "research": "research",
+    "investment analysis": "investment analysis",
+    "stakeholder management": "stakeholder management",
+    "client relationships": "client relationships",
+    "configuration management": "configuration management",
+    "business development": "business development",
+    "flexible working": "flexible working",
+    "regulatory standards": "regulatory standards",
+    "coding": "coding",
+    "metadata management": "metadata management",
+    "stress management": "stress management",
+    "roadmap development": "roadmap development",
+    "agile manifesto": "agile manifesto",
+    "etl": "etl",
+    "azure": "azure",
+    "powerpoint": "powerpoint",
+    "risk assessment": "risk assessment",
+    "service delivery": "service delivery",
+    "self motivated": "self motivated",
+    "project delivery": "project delivery",
+    "api development": "api development",
+    "analytics": "analytics",
+    "confidentiality": "confidentiality",
+    "banking knowledge": "banking knowledge",
+    "quality management": "quality management",
+    "customer due diligence": "customer due diligence",
+    "data manipulation": "data manipulation",
+    "software development": "software development",
+    "technology strategy": "technology strategy",
+    "flexible working hours": "flexible working hours",
+    "sap": "sap",
+    "transaction analysis": "transaction analysis",
+    "sector expertise": "sector expertise",
+    "fca regulations": "fca regulations",
+    "vba": "vba",
+    "kanban": "kanban",
+    "ux design": "ux design",
+    "solvency ii": "solvency ii",
+    "prince2": "prince2",
+    "accuracy": "accuracy",
+    "market trend analysis": "market trend analysis",
+    "dental cover": "dental cover",
+    "agile project management": "agile project management",
+    "reconciliation": "reconciliation",
+    "integration": "integration",
+    "cost management": "cost management",
+    "power bi": "power bi",
+    "multilingual": "multilingual",
+    "event planning": "event planning",
+    "motivation": "motivation",
+    "branch management": "branch management",
+    "networking": "networking",
+    "ci cd pipelines": "ci cd pipelines",
+    "financial services": "financial services",
+    "learning and development": "learning and development",
+    "email communication": "email communication",
+    "customer focus": "customer focus",
+    "career progression": "career progression",
+    "issue management": "issue management",
+    "record keeping": "record keeping",
+    "client relationship management": "client relationship management",
+    "report preparation": "report preparation",
+    "trading": "trading",
+    "attention to detail": "attention to detail",
+    "ms office": "ms office",
+    "reporting": "reporting",
+    "kyc": "kyc",
+    "excel": "excel",
+    "planning": "planning",
+    "aws": "aws",
+    "fraud detection": "fraud detection",
+    "proactivity": "proactivity",
+    "employee relations": "employee relations",
+    "brand awareness": "brand awareness",
+    "analysis": "analysis",
+    "quality control": "quality control",
+    "data modelling": "data modelling",
+    "performance improvement": "performance improvement",
+    "english language proficiency": "english language proficiency",
+    "identity and access management": "identity and access management",
+    "dashboard development": "dashboard development",
+    "contract drafting": "contract drafting",
+    "collateral management": "collateral management",
+    "ifrs": "ifrs",
+    "wealth management": "wealth management",
+    "solution design": "solution design",
+    "presentation skills": "presentation",
+    "agile environment": "agile environment",
+    "policy analysis": "policy analysis",
+    "phone communication": "phone communication",
+    "complaint handling": "complaint handling",
+    "project support": "project support",
+    "data integrity": "data integrity",
+    "credit risk modeling": "credit risk modeling",
+    "strategic planning": "strategic planning",
+    "data visualization": "data visualization",
+    "career development": "career development",
+    "campaign management": "campaign management",
+    "telephone communication": "telephone communication",
+    "insight development": "insight development",
+    "bash": "bash",
+    "pension management": "pension management",
+    "digital services": "digital services",
+    "data driven decision making": "data driven decision making",
+    "requirements gathering": "requirements gathering",
+    "seo": "seo",
+    "interpersonal skills": "interpersonal skills",
+    "maven": "maven",
+    "innovation": "innovation",
+    "holiday entitlement": "holiday entitlement",
+    "technical documentation": "technical documentation",
+    "resilient": "resilient",
+    "technical expertise": "technical expertise",
+    "hybrid work": "hybrid work",
+    "banking services": "banking services",
+    "financial products": "financial products",
+    "prospecting": "prospecting",
+    "powerbi": "powerbi",
+    "rapport building": "rapport building",
+    "claims handling": "claims handling",
+    "regulatory compliance": "regulatory compliance",
+    "sql": "sql",
+    "solution oriented": "solution oriented",
+    "solution architecture": "solution architecture",
+    "unit testing": "unit testing",
+    "policy development": "policy development",
+    "controls": "controls",
+    "financial product knowledge": "financial product knowledge",
+    "community engagement": "community engagement",
+    "sas": "sas",
+    "financial analysis": "financial analysis",
+    "communications": "communications",
+    "creativity": "creativity",
+    "derivatives": "derivatives",
+    "oracle": "oracle",
+    "spring framework": "spring framework",
+    "branch operations": "branch operations",
+    "life assurance": "life assurance",
+    "customer care": "customer care",
+    "result oriented": "result oriented",
+    "data accuracy": "data accuracy",
+    "deadline management": "deadline management",
+    "problem resolution": "problem resolution",
+    "performance management": "performance management",
+    "ms powerpoint": "ms powerpoint",
+    "issue identification": "issue identification",
+    "client onboarding": "client onboarding",
+    "windows": "windows",
+    "storytelling": "storytelling",
+    "continuous delivery": "continuous delivery",
+    "cloud technologies": "cloud technologies",
+    "negotiation": "negotiation",
+    "onboarding": "onboarding",
+    "legal knowledge": "legal knowledge",
+    "customer centric": "customer centric",
+    "lead generation": "lead generation",
+    "financial administration": "financial administration",
+    "prioritisation": "prioritisation",
+    "project planning": "project planning",
+    "tax compliance": "tax compliance",
+    "model development": "model development",
+    "credit analysis": "credit analysis",
+    "distributed systems": "distributed systems",
+    "control framework": "control framework",
+    "payment solutions": "payment solutions",
+    "excellent communication skills": "excellent communication skills",
+    "automated testing": "automated testing",
+    "customer support": "customer support",
+    "mentorship": "mentorship",
+    "word": "word",
+    "net": "net",
+    "commercial acumen": "commercial acumen",
+    "client focus": "client focus",
+    "online training": "online training",
+    "microsoft word": "microsoft word",
+    "financial services knowledge": "financial services knowledge",
+    "content management": "content management",
+    "portfolio management": "portfolio management",
+    "hybrid working": "hybrid working",
+    "financial advice": "financial advice",
+    "data privacy": "data privacy",
+    "cross functional collaboration": "cross functional collaboration",
+    "pension administration": "pension administration",
+    "word processing": "word processing",
+    "operations": "operations",
+    "data collection": "data collection",
+    "backlog management": "backlog management",
+    "subject matter expertise": "subject matter expertise",
+    "social media management": "social media management",
+    "full stack development": "full stack development",
+    "cloud infrastructure": "cloud infrastructure",
+    "angular": "angular",
+    "influencing skills": "influencing",
+    "customer orientation": "customer orientation",
+    "investment management": "investment management",
+    "technical design": "technical design",
+    "shift work": "shift work",
+    "strategy development": "strategy development",
+    "training and development": "training and development",
+    "trade finance": "trade finance",
+    "pipeline management": "pipeline management",
+    "workshop facilitation": "workshop facilitation",
+    "design thinking": "design thinking",
+    "technical support": "technical support",
+    "foreign exchange": "foreign exchange",
+    "commercial skills": "commercial skills",
+    "quality assurance": "quality assurance",
+    "risk management": "risk management",
+    "trend analysis": "trend analysis",
+    "legal advice": "legal advice",
+    "consulting": "consulting",
+    "klantcontact": "klantcontact",
+    "consumer duty": "consumer duty",
+    "administrative tasks": "administrative tasks",
+    "client management": "client management",
+    "independent work": "independent work",
+    "kubernetes": "kubernetes",
+    "fraud prevention": "fraud prevention",
+    "oversight": "oversight",
+    "administrative experience": "administrative experience",
+    "proactive customer support": "proactive customer support",
+    "customer engagement": "customer engagement",
+    "contract management": "contract management",
+    "financial advisory": "financial advisory",
+    "resilience": "resilience",
+    "problem management": "problem management",
+    "reinsurance": "reinsurance",
+    "cloud computing": "cloud computing",
+    "application development": "application development",
+    "administrative support": "administrative support",
+    "customer relationship management": "customer relationship management",
+    "administrative work": "administrative work",
+    "case management": "case management",
+    "business planning": "business planning",
+    "esg": "esg",
+    "numerical analysis": "numerical analysis",
+    "tableau": "tableau",
+    "pricing": "pricing",
+    "business case development": "business case development",
+    "waterfall methodology": "waterfall methodology",
+    "resource management": "resource management",
+    "development": "development",
+    "problem solving": "problem solving",
+    "monitoring": "monitoring",
+    "terraform": "terraform",
+    "account management": "account management",
+    "event coordination": "event coordination",
+    "detail orientation": "detail orientation",
+    "account reconciliation": "account reconciliation",
+    "ms excel": "ms excel",
+    "code reviews": "code reviews",
+    "mentoring": "mentoring",
+    "risk mitigation": "risk mitigation",
+    "data warehousing": "data warehousing",
+    "kotlin": "kotlin",
+    "empathy": "empathy",
+    "customer service skills": "customer service",
+    "dutch language": "dutch language",
+    "data processing": "data processing",
+    "java": "java",
+    "financial markets": "financial markets",
+    "asset allocation": "asset allocation",
+    "process documentation": "process documentation",
+    "client due diligence": "client due diligence",
+    "network building": "network building",
+    "agile coaching": "agile coaching",
+    "process management": "process management",
+    "jira": "jira",
+    "microsoft office": "microsoft office",
+    "anti money laundering aml": "anti money laundering aml",
+    "data management": "data management",
+    "testing": "testing",
+    "data entry": "data entry",
+    "proactive conversations": "proactive conversations",
+    "english": "english",
+    "accountability": "accountability",
+    "video production": "video production",
+    "product knowledge": "product knowledge",
+    "multi tasking": "multi tasking",
+    "fund accounting": "fund accounting",
+    "asset management": "asset management",
+    "new business development": "new business development",
+    "data interpretation": "data interpretation",
+    "budget management": "budget management",
+    "coaching and mentoring": "coaching and mentoring",
+    "customer interaction": "customer interaction",
+    "client services": "client services",
+    "data integration": "data integration",
+    "hadoop": "hadoop",
+    "economic capital": "economic capital",
+    "written communication": "written communication",
+    "continuous integration": "continuous integration",
+    "accountancy": "accountancy",
+    "presentation": "presentation",
+    "software development lifecycle": "software development lifecycle",
+    "data quality management": "data quality management",
+    "financial statement preparation": "financial statement preparation",
+    "team leadership": "team leadership",
+    "pressure management": "pressure management",
+    "email marketing": "email marketing",
+    "private equity": "private equity",
+    "rest": "rest",
+    "project coordination": "project coordination",
+    "business continuity": "business continuity",
+    "internal audit": "internal audit",
+    "data modeling": "data modeling",
+    "technical architecture": "technical architecture",
+    "gdpr": "gdpr",
+    "big data": "big data",
+    "customer journey": "customer journey",
+    "diversity and inclusion": "diversity and inclusion",
+    "legal strategy": "legal strategy",
+    "customer experience": "customer experience",
+    "regulatory knowledge": "regulatory knowledge",
+    "data architecture": "data architecture",
+    "client experience": "client experience",
+    "customer insights": "customer insights",
+    "pega": "pega",
+    "agile": "agile",
+    "industry knowledge": "industry knowledge",
+    "forecasting": "forecasting",
+    "database management": "database management",
+    "sales": "sales",
+    "document management": "document management",
+    "legislation": "legislation",
+    "typescript": "typescript",
+    "product management": "product management",
+    "coaching": "coaching",
+    "insurance": "insurance",
+    "adaptability": "adaptability",
+    "internal communication": "internal communication",
+    "information security": "information security",
+    "data quality": "data quality",
+    "program management": "program management",
+    "valuation": "valuation",
+    "telephony experience": "telephony experience",
+    "azure devops": "azure devops",
+    "client interaction": "client interaction",
+    "insurance industry knowledge": "insurance industry knowledge",
+    "change control": "change control",
+    "regulatory requirements": "regulatory requirements",
+    "data science": "data science",
+    "leadership": "leadership",
+    "volunteering": "volunteering",
+    "gitlab": "gitlab",
+    "financial modelling": "financial modelling",
+    "market research": "market research",
+    "risk identification": "risk identification",
+    "security": "security",
+    "complex problem solving": "complex problem solving",
+    "telephone manner": "telephone manner",
+    "risk appetite": "risk appetite",
+    "automation": "automation",
+    "cross functional coordination": "cross functional coordination",
+    "kafka": "kafka",
+    "application support": "application support"
+  },
+  "job_types": [
+    "risk and compliance",
+    "legal",
+    "customer service and support",
+    "sales and marketing",
+    "technology",
+    "finance and accounting",
+    "product and project management",
+    "human resources",
+    "operations",
+    "other"
+  ]
+}
