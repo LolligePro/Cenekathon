@@ -46,21 +46,25 @@ def initialize(database) -> dict:
                 version INTEGER PRIMARY KEY, applied_at TIMESTAMPTZ NOT NULL DEFAULT current_timestamp)""")
             versions = [r[0] for r in conn.execute(
                 "SELECT version FROM skillmarket_ingest.schema_migrations ORDER BY version").fetchall()]
-            if versions not in ([], [1]):
+            if versions not in ([], [1], [1, 2]):
                 raise ContractError(f"Unsupported schema versions: {versions}")
             if not versions:
                 migration = files("skillmarket_staging").joinpath("sql", "001_initial.sql").read_text()
                 conn.execute(migration)
                 conn.execute("INSERT INTO skillmarket_ingest.schema_migrations (version) VALUES (1)")
-    return {"schema_version": 1, "status": "ready", "database": str(Path(database).resolve())}
+            if 2 not in versions:
+                migration = files("skillmarket_staging").joinpath("sql", "002_company_names.sql").read_text()
+                conn.execute(migration)
+                conn.execute("INSERT INTO skillmarket_ingest.schema_migrations (version) VALUES (2)")
+    return {"schema_version": 2, "status": "ready", "database": str(Path(database).resolve())}
 
 
 def _ready(conn):
     try:
-        versions = conn.execute("SELECT version FROM skillmarket_ingest.schema_migrations").fetchall()
+        versions = conn.execute("SELECT version FROM skillmarket_ingest.schema_migrations ORDER BY version").fetchall()
     except duckdb.CatalogException as exc:
         raise ContractError("Staging schema not found; run init first") from exc
-    if versions != [(1,)]:
+    if versions not in ([(1,)], [(1,), (2,)]):
         raise ContractError("Unsupported staging schema version")
 
 

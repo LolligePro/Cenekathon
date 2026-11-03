@@ -8,6 +8,7 @@ import sys
 import duckdb
 
 from .contracts import ContractError
+from .companies import normalize_companies
 from .db import initialize, inspect_database
 from .ingest import ImportFailure, load_skills, receive_batch
 
@@ -17,6 +18,10 @@ def main(argv=None) -> int:
     parser.add_argument("--database", default=os.environ.get("SKILLMARKET_DB", "data/skillmarket.duckdb"))
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("init", help="Create the versioned staging schemas")
+    companies = commands.add_parser("normalize-companies", help="Fast brand/group normalization of Parquet company names")
+    companies.add_argument("sources", nargs="+")
+    companies.add_argument("--output", default="data/company_map.parquet")
+    companies.add_argument("--write-postings", help="Also write a compact posting_id -> company mapping")
     skills = commands.add_parser("load-skills", help="Register the shared fixed skill IDs")
     skills.add_argument("path")
     skills.add_argument("--taxonomy-version", required=True)
@@ -33,6 +38,8 @@ def main(argv=None) -> int:
     try:
         if command == "init":
             result = initialize(database)
+        elif command == "normalize-companies":
+            result = normalize_companies(database, **args)
         elif command == "load-skills":
             result = load_skills(database, **args)
         elif command == "receive":

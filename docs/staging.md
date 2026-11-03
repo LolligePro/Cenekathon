@@ -175,3 +175,7 @@ De tests gebruiken eigen tijdelijke DuckDB-bestanden. Ze controleren onder ander
 Zodra de definitieve velden bekend zijn, volgt een aparte verwerking van staging naar het appmodel. Daar kunnen dan bronmetadata, relaties, telregels, trendaggregaties en profieladvies aan worden toegevoegd. De bestaande ontvangst en importhistorie blijven daarvoor bruikbaar.
 
 Officiële documentatie: [JSON in DuckDB](https://duckdb.org/docs/2.0/data/json/overview.html), [transacties](https://duckdb.org/docs/2.0/sql/statements/transactions.html), [concurrency](https://duckdb.org/docs/2.0/connect/concurrency.html).
+
+## Bedrijfsnamen
+
+Voor snelle bedrijfsnaamnormalisatie is er een aparte module met een lookup in dezelfde DuckDB-database. Zie [companies.md](companies.md). Voer `init` opnieuw uit voor schema-versie 2.

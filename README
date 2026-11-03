@@ -21,3 +21,7 @@ The parser receipt layer stores complete JSON records and an import audit log, w
 python -m pip install -e .
 python -m skillmarket_staging init
 ```
+
+## Company normalization
+
+Fast company-name normalization is available through `normalize-companies`. See [docs/companies.md](docs/companies.md).
