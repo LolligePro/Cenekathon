@@ -1,11 +1,14 @@
 # Cenekathon repo
 
-## question to solve
- 
+## goal
+Visualize demand for skills in the job market and provide advice for job seekers.
+
 
 ## steps
-1) pipeline normalization (company name & descriptions)
-2) data preprocessing
-3) load model
-4) advise for your company
+1) parser: extract job types & skills from job postings
+2) database: store skills per month and year and also store job type
+3) visualizer: visualize demand for skills over time
+4) advisor: provide advice for job seekers based on the skills demand
 
+extra: use competences from studies to create list of gathered skills
+use this to match with the skills extracted from job postings and provide advice for job seekers on which skills to learn or improve, or on which jobs apply to them, or on what study to pursue to improve their chances of getting a job in the future.
