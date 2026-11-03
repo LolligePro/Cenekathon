@@ -46,7 +46,7 @@ def initialize(database) -> dict:
                 version INTEGER PRIMARY KEY, applied_at TIMESTAMPTZ NOT NULL DEFAULT current_timestamp)""")
             versions = [r[0] for r in conn.execute(
                 "SELECT version FROM skillmarket_ingest.schema_migrations ORDER BY version").fetchall()]
-            if versions not in ([], [1], [1, 2], [1, 2, 3]):
+            if versions not in ([], [1], [1, 2], [1, 2, 3], [1, 2, 3, 4]):
                 raise ContractError(f"Unsupported schema versions: {versions}")
             if not versions:
                 migration = files("skillmarket_staging").joinpath("sql", "001_initial.sql").read_text()
@@ -60,7 +60,11 @@ def initialize(database) -> dict:
                 migration = files("skillmarket_staging").joinpath("sql", "003_application.sql").read_text()
                 conn.execute(migration)
                 conn.execute("INSERT INTO skillmarket_ingest.schema_migrations (version) VALUES (3)")
-    return {"schema_version": 3, "status": "ready", "database": str(Path(database).resolve())}
+            if 4 not in versions:
+                migration = files("skillmarket_staging").joinpath("sql", "004_large_skill_edges.sql").read_text()
+                conn.execute(migration)
+                conn.execute("INSERT INTO skillmarket_ingest.schema_migrations (version) VALUES (4)")
+    return {"schema_version": 4, "status": "ready", "database": str(Path(database).resolve())}
 
 
 def _ready(conn):
@@ -68,7 +72,7 @@ def _ready(conn):
         versions = conn.execute("SELECT version FROM skillmarket_ingest.schema_migrations ORDER BY version").fetchall()
     except duckdb.CatalogException as exc:
         raise ContractError("Staging schema not found; run init first") from exc
-    if versions not in ([(1,)], [(1,), (2,)], [(1,), (2,), (3,)]):
+    if versions not in ([(1,)], [(1,), (2,)], [(1,), (2,), (3,)], [(1,), (2,), (3,), (4,)]):
         raise ContractError("Unsupported staging schema version")
 
 

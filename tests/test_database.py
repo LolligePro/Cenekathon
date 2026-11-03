@@ -8,7 +8,7 @@ from unittest.mock import patch
 import duckdb
 
 from skillmarket_staging.contracts import ContractError
-from skillmarket_staging.database import database_status, export_database, import_labeled, import_parser, load_vacancies
+from skillmarket_staging.database import build_database, database_status, export_database, import_labeled, import_parser, load_vacancies, verify_database
 from skillmarket_staging.db import initialize
 
 
@@ -118,6 +118,51 @@ class ApplicationDatabaseTests(unittest.TestCase):
         self.assertEqual(len(result['exports']),5)
         with duckdb.connect() as c:
             self.assertEqual(c.execute('SELECT count(*) FROM read_parquet(?)',[str(self.root/'export'/'postings.parquet')]).fetchone()[0],4)
+
+    def test_complete_build_with_catalog_above_batches_and_failed_result(self):
+        rows=self.valid_rows()+[dict(posting_id='p4',parse_status='failed',normalized_title=None,
+                                   skill_ids=[],error={'code':'EMPTY_INPUT','message':'No text'})]
+        for row in rows:
+            row.pop('role_family',None)
+        directory=self.batch(rows)
+        (directory/'skills.jsonl').rename(self.root/'skills.jsonl')
+        progress=[]
+        result=build_database(self.db,sources=[str(self.raw)],parser_directory=directory,
+                              export_directory=self.root/'export',progress=progress.append)
+        self.assertTrue(result['verified'])
+        self.assertEqual((result['pending'],result['parsed'],result['failed']),(0,3,1))
+        self.assertEqual(self.query("SELECT DISTINCT job_type,role_family,normalized_title FROM skillmarket_app.postings WHERE parse_status='ok'"),[('technology',None,'Engineer')])
+        self.assertEqual(len(result['exports']),5)
+        self.assertTrue(any('Batch 1/1' in message for message in progress))
+
+    def test_verification_rejects_pending_and_detects_aggregate_corruption(self):
+        import_parser(self.db,self.batch(self.valid_rows()))
+        self.assertTrue(verify_database(self.db)['verified'])
+        with self.assertRaisesRegex(ContractError,'verification failed'):
+            verify_database(self.db,require_complete=True)
+        with duckdb.connect(str(self.db)) as conn:
+            conn.execute('UPDATE skillmarket_app.monthly_totals SET total_postings=99')
+        with self.assertRaisesRegex(ContractError,'monthly_total_difference'):
+            verify_database(self.db)
+
+    def test_broad_job_classification_priority_and_token_boundaries(self):
+        from skillmarket_staging.job_families import classification_sql
+        titles=['software engineer','risk data analyst','customer service engineer','legal counsel','recruiter',
+                'financial controller','project manager','claims officer','marketing specialist','digital specialist']
+        with duckdb.connect() as conn:
+            actual=conn.execute(f'SELECT {classification_sql()} FROM unnest(?) t(normalized_title)',[titles]).fetchall()
+        self.assertEqual([r[0] for r in actual],['technology','risk and compliance','customer service and support','legal',
+                         'human resources','finance and accounting','product and project management','operations','sales and marketing','other'])
+
+    def test_vectorized_skill_movers_match_individual_trends(self):
+        from visualization import analysis
+        from visualization.data_source import DatabaseSource
+        import_parser(self.db,self.batch(self.valid_rows()))
+        source=DatabaseSource(self.db)
+        result=analysis.rising_and_falling(source,'technology',window_months=2,n=10)
+        expected=analysis.trend(source,'technology','Python',window_months=2)
+        self.assertEqual(result['rising'],[expected])
+        self.assertEqual(result['falling'],[])
 
     def test_visualization_reads_database_and_serializes_gaps_as_null(self):
         from visualization.data_source import DatabaseSource

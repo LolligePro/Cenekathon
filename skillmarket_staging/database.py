@@ -14,8 +14,9 @@ import duckdb
 
 from .companies import normalize_companies
 from .contracts import ContractError, decode, validate_manifest
-from .db import WRITER_LOCK, as_dicts, connect, transaction
+from .db import WRITER_LOCK, as_dicts, connect, initialize, transaction
 from .ingest import load_skills, receive_batch
+from .job_families import classification_sql
 
 
 def _paths(patterns):
@@ -106,7 +107,7 @@ def _apply_labels(conn, format_name, parser_version, source_files):
     conn.execute("""DELETE FROM skillmarket_app.posting_skills ps USING incoming_labels l
         WHERE ps.posting_id=l.posting_id""")
     conn.execute("""INSERT INTO skillmarket_app.posting_skills
-        SELECT DISTINCT l.posting_id,unnest(l.skill_ids) FROM incoming_labels l WHERE l.parse_status='ok'""")
+        SELECT l.posting_id,unnest(list_distinct(l.skill_ids)) FROM incoming_labels l WHERE l.parse_status='ok'""")
     _refresh(conn)
     conn.execute("INSERT INTO skillmarket_app.parser_imports (import_id,format,parser_version,files,row_count) VALUES (?,?,?,?::JSON,?)",
                  [uuid.uuid4(),format_name,parser_version,json.dumps(source_files),count])
@@ -129,14 +130,20 @@ def publish_staged(database):
                 WHERE c.catalog_version IN (SELECT DISTINCT catalog_version FROM latest_records)
                 QUALIFY row_number() OVER (PARTITION BY c.item_id ORDER BY c.catalog_version DESC)=1
                 ON CONFLICT (skill_id) DO UPDATE SET name=excluded.name,category=excluded.category,synonyms=excluded.synonyms""")
-            conn.execute("""CREATE TEMP TABLE incoming_labels AS SELECT posting_id,
-                json_extract_string(payload,'$.normalized_title') AS normalized_title,
-                json_extract_string(payload,'$.role_family') AS role_family,
-                coalesce(json_extract_string(payload,'$.role_family'),
-                         json_extract_string(payload,'$.normalized_title')) AS job_type,
-                json_extract_string(payload,'$.parse_status') AS parse_status,
-                CAST(payload->'$.skill_ids' AS VARCHAR[]) AS skill_ids,
-                parser_version,catalog_version AS taxonomy_version FROM latest_records""")
+            conn.execute(f"""CREATE TEMP TABLE title_families AS
+                SELECT normalized_title,{classification_sql()} AS family FROM (
+                    SELECT DISTINCT json_extract_string(payload,'$.normalized_title') AS normalized_title
+                    FROM latest_records WHERE json_extract_string(payload,'$.parse_status')='ok')""")
+            conn.execute("""CREATE TEMP TABLE incoming_labels AS WITH base AS (
+                SELECT posting_id,json_extract_string(payload,'$.normalized_title') AS normalized_title,
+                    json_extract_string(payload,'$.role_family') AS role_family,
+                    json_extract_string(payload,'$.parse_status') AS parse_status,
+                    CAST(payload->'$.skill_ids' AS VARCHAR[]) AS skill_ids,
+                    parser_version,catalog_version AS taxonomy_version FROM latest_records)
+                SELECT b.posting_id,b.normalized_title,b.role_family,
+                    coalesce(b.role_family,f.family) AS job_type,b.parse_status,b.skill_ids,
+                    b.parser_version,b.taxonomy_version
+                FROM base b LEFT JOIN title_families f USING (normalized_title)""")
             imported = _apply_labels(conn,'jsonl','from-batch-manifests',[])
         return _status(conn) | {"published_records": imported}
 
@@ -173,20 +180,27 @@ def import_labeled(database, paths, *, parser_version='matching-v1'):
         return _status(conn) | {"published_records": imported}
 
 
-def import_parser(database, directory, *, parser_version='matching-v1'):
+def import_parser(database, directory, *, parser_version='matching-v1', progress=None):
     directory = Path(directory)
     if not directory.is_dir():
-        raise ContractError('Parser folder not found; provide the received Downloads folder')
+        raise ContractError('Parser folder not found; provide parser/ or the received output folder')
     manifests = sorted(p for p in directory.rglob('manifest.json') if (p.parent/'parsed.jsonl').exists())
     if manifests:
         receipts=[]
-        for path in manifests:
+        loaded_catalogs=set()
+        for index,path in enumerate(manifests,1):
             manifest=decode(path.read_bytes(),str(path))
             validate_manifest(manifest)
-            catalog=next((p for p in [path.parent/'skills.jsonl',directory/'skills.jsonl'] if p.exists()),None)
-            if catalog:
+            catalog=next((p for p in [path.parent/'skills.jsonl',directory/'skills.jsonl',directory.parent/'skills.jsonl'] if p.exists()),None)
+            version=manifest['skill_taxonomy_version']
+            if catalog and version not in loaded_catalogs:
                 load_skills(database,catalog,taxonomy_version=manifest['skill_taxonomy_version'])
+                loaded_catalogs.add(version)
             receipts.append(receive_batch(database,path.parent))
+            if progress:
+                progress(f"Batch {index}/{len(manifests)}: {manifest['batch_id']} ({receipts[-1]['status']})")
+        if progress:
+            progress('Publishing all staged records and refreshing monthly aggregates...')
         return publish_staged(database) | {"format":"jsonl","batches_received":len(receipts)}
     candidates=sorted(directory.rglob('labeled_*.parquet'))
     if not candidates:
@@ -220,3 +234,55 @@ def export_database(database, directory='data'):
         for name,query in queries.items():
             conn.execute(f'COPY ({query}) TO ? (FORMAT PARQUET,COMPRESSION ZSTD)',[str((directory/(name+'.parquet')).resolve())])
     return {"exports":[str((directory/(name+'.parquet')).resolve()) for name in queries]}
+
+
+def verify_database(database, *, require_complete=False):
+    """Check full-data coverage and relational/aggregate invariants."""
+    with WRITER_LOCK,connect(database) as conn:
+        _ready(conn)
+        result=_status(conn)
+        checks={
+            'successful_without_job_type':"""SELECT count(*) FROM skillmarket_app.postings
+                WHERE parse_status='ok' AND (job_type IS NULL OR trim(job_type)='')""",
+            'orphan_posting_skills':"""SELECT count(*) FROM skillmarket_app.posting_skills ps
+                LEFT JOIN skillmarket_app.postings p USING(posting_id) WHERE p.posting_id IS NULL""",
+            'unknown_skill_ids':"""SELECT count(*) FROM skillmarket_app.posting_skills ps
+                LEFT JOIN skillmarket_app.skills s USING(skill_id) WHERE s.skill_id IS NULL""",
+            'skills_on_failed_or_pending':"""SELECT count(*) FROM skillmarket_app.posting_skills ps
+                JOIN skillmarket_app.postings p USING(posting_id) WHERE p.parse_status<>'ok'""",
+            'invalid_monthly_skill_counts':"""SELECT count(*) FROM skillmarket_app.skill_demand d
+                JOIN skillmarket_app.monthly_totals t USING(job_type,month)
+                WHERE d.postings<0 OR d.postings>t.total_postings""",
+        }
+        result['checks']={name:conn.execute(sql).fetchone()[0] for name,sql in checks.items()}
+        expected=conn.execute("SELECT count(*) FROM skillmarket_app.postings WHERE parse_status='ok' AND date_posted IS NOT NULL").fetchone()[0]
+        actual=conn.execute('SELECT coalesce(sum(total_postings),0) FROM skillmarket_app.monthly_totals').fetchone()[0]
+        result['checks']['monthly_total_difference']=actual-expected
+        expected_edges=conn.execute("""SELECT count(*) FROM skillmarket_app.posting_skills ps
+            JOIN skillmarket_app.postings p USING(posting_id) WHERE p.parse_status='ok' AND p.date_posted IS NOT NULL""").fetchone()[0]
+        actual_edges=conn.execute('SELECT coalesce(sum(postings),0) FROM skillmarket_app.skill_demand').fetchone()[0]
+        result['checks']['monthly_skill_difference']=actual_edges-expected_edges
+        result['job_types']=conn.execute('SELECT count(DISTINCT job_type) FROM skillmarket_app.monthly_totals').fetchone()[0]
+        result['verified']=all(n==0 for n in result['checks'].values()) and (not require_complete or (result['pending']==0 and result['source_postings']>0))
+        if not result['verified']:
+            raise ContractError('Database verification failed: '+json.dumps(result))
+        return result
+
+
+def build_database(database, *, sources=None, parser_directory='parser', export_directory='data', progress=None):
+    started=time.perf_counter()
+    initialize(database)
+    if not sources:
+        repo=Path(__file__).resolve().parents[1]
+        local=sorted((repo/'data').glob('vacancies_*.parquet'))
+        sources=[str(p) for p in local or sorted((Path.home()/'Downloads').glob('vacancies_*.parquet'))]
+    if not sources:
+        raise ContractError('Original vacancy Parquet files are required in data/, Downloads, or via --sources')
+    if progress: progress('Loading original metadata and company names...')
+    load_vacancies(database,sources)
+    import_parser(database,parser_directory,progress=progress)
+    if progress: progress('Verifying the complete database...')
+    result=verify_database(database,require_complete=True)
+    if progress: progress('Exporting application tables...')
+    result.update(export_database(database,export_directory))
+    return result | {'seconds':round(time.perf_counter()-started,3)}

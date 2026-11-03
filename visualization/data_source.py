@@ -1,8 +1,8 @@
 """Data access for the visualization layer.
 
-This is the ONLY module that knows where data comes from. Today it reads the
-synthetic stub CSVs. When the database team is ready, implement DatabaseSource
-against their schema and change `get_source()`; nothing else needs to change.
+This module selects the local DuckDB database automatically after initialization.
+Set SKILLMARKET_SOURCE=stub to use synthetic demo CSVs explicitly. Both sources
+provide the same monthly DataFrame contract.
 
 Expected contract (what every source must return):
     skill_demand: DataFrame[job_type, month (datetime64), skill, postings (int)]

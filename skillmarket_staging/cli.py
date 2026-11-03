@@ -9,7 +9,7 @@ import duckdb
 
 from .contracts import ContractError
 from .companies import normalize_companies
-from .database import database_status, export_database, import_parser, load_vacancies, publish_staged
+from .database import build_database, database_status, export_database, import_parser, load_vacancies, publish_staged, verify_database
 from .db import initialize, inspect_database
 from .ingest import ImportFailure, load_skills, receive_batch
 
@@ -19,6 +19,12 @@ def main(argv=None) -> int:
     parser.add_argument("--database", default=os.environ.get("SKILLMARKET_DB", "data/skillmarket.duckdb"))
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("init", help="Create the versioned staging schemas")
+    build = commands.add_parser("build", help="Build, verify and export the full database")
+    build.add_argument("--sources", nargs="+", help="Original vacancies_*.parquet paths or quoted globs")
+    build.add_argument("--parser-directory", default="parser")
+    build.add_argument("--export-directory", default="data")
+    verify = commands.add_parser("verify", help="Check database integrity and monthly aggregates")
+    verify.add_argument("--require-complete", action="store_true", help="Also reject pending parser results")
     companies = commands.add_parser("normalize-companies", help="Fast brand/group normalization of Parquet company names")
     companies.add_argument("sources", nargs="+")
     companies.add_argument("--output", default="data/company_map.parquet")
@@ -48,6 +54,10 @@ def main(argv=None) -> int:
     try:
         if command == "init":
             result = initialize(database)
+        elif command == "build":
+            result = build_database(database, progress=lambda message: print(message, file=sys.stderr, flush=True), **args)
+        elif command == "verify":
+            result = verify_database(database, **args)
         elif command == "normalize-companies":
             result = normalize_companies(database, **args)
         elif command == "load-vacancies":
@@ -55,7 +65,7 @@ def main(argv=None) -> int:
         elif command == "publish":
             result = publish_staged(database)
         elif command == "import-parser":
-            result = import_parser(database, **args)
+            result = import_parser(database, progress=lambda message: print(message, file=sys.stderr, flush=True), **args)
         elif command == "export-database":
             result = export_database(database, **args)
         elif command == "status":

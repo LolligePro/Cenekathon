@@ -91,16 +91,25 @@ def rising_and_falling(
     Skills whose recent share is below `min_share` are ignored: a small base makes
     relative changes swing wildly and drowns out the meaningful movers.
     """
-    rows = []
-    for skill in source.skill_demand().query("job_type == @job_type")["skill"].unique():
-        try:
-            rows.append(trend(source, job_type, skill, window_months))
-        except ValueError:
-            continue
-    df = pd.DataFrame(rows)
-    if df.empty:
+    # Slice/merge once for all skills; real data has over a thousand skills.
+    try:
+        shares = skill_share_over_time(source, job_type)
+    except ValueError:
         return {"rising": [], "falling": []}
-    df = df.dropna(subset=["relative_change"])
+    shares = shares.sort_values(["skill", "month"])
+    grouped = shares.groupby("skill", sort=False)
+    recent = grouped.tail(window_months)
+    earlier = grouped.tail(2 * window_months).drop(recent.index)
+    before = earlier.groupby("skill")["share"].mean().rename("share_before")
+    after = recent.groupby("skill")["share"].mean().rename("share_after")
+    df = pd.concat([before, after], axis=1).dropna().reset_index()
+    df = df[df["share_before"] != 0].copy()
+    df["relative_change"] = (df["share_after"] - df["share_before"]) / df["share_before"]
+    df["direction"] = "flat"
+    df.loc[df["relative_change"] >= FLAT_BAND, "direction"] = "rising"
+    df.loc[df["relative_change"] <= -FLAT_BAND, "direction"] = "falling"
+    df["job_type"] = job_type
+    df["window_months"] = window_months
     df = df[df["share_after"] >= min_share]
     rising = df[df["direction"] == "rising"].sort_values("relative_change", ascending=False)
     falling = df[df["direction"] == "falling"].sort_values("relative_change")
