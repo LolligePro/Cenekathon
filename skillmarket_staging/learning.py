@@ -188,6 +188,7 @@ def format_courses(result):
     for missing in result.get('skills_without_courses',[]): remaining.pop(missing.get('skill_id'),None)
     if remaining: lines.append('Nog niet gedekt door dit cursusplan: '+', '.join(s['name'] for s in remaining.values())+'.')
     if not result.get('courses'): lines.append('Geen passend cursusadvies gevonden voor deze selectie.')
+    lines.append('De koppelingen komen uit de parser; niveau, prijs en leerresultaten zijn niet beoordeeld. Skilloverlap garandeert geen geschiktheid voor een baan.')
     return '\n\n'.join(lines)
 
 
