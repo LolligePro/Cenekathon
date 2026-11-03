@@ -33,7 +33,8 @@ def connect(database, *, create=False):
         path.parent.mkdir(parents=True, exist_ok=True)
     elif not path.is_file():
         raise ContractError("Database not found; run init first")
-    conn = duckdb.connect(str(path))
+    # Keep newly created files readable by the stable DuckDB on the team server.
+    conn = duckdb.connect(str(path), config={"storage_compatibility_version": "v1.4.0"})
     conn.execute("SET TimeZone = 'UTC'")
     return conn
 

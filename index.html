@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skill Market</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root { --bg:#0f1419; --panel:#182029; --text:#e6edf3; --muted:#8b98a5; --accent:#3fb950; --user:#1f6feb; --line:#26313c; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, sans-serif; background:var(--bg); color:var(--text);
+         display:flex; flex-direction:column; height:100vh; }
+  header { padding:14px 20px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; }
+  header h1 { margin:0; font-size:18px; }
+  header h1 span { color:var(--accent); }
+  #header-right { display:flex; gap:16px; align-items:center; }
+  #cost { color:var(--muted); font-size:13px; }
+  #reset { background:none; border:1px solid var(--line); color:var(--muted); border-radius:6px; padding:4px 10px; cursor:pointer; font-size:12px; }
+  #chat { flex:1; overflow-y:auto; padding:20px; max-width:900px; width:100%; margin:0 auto; }
+  .msg { margin:12px 0; padding:12px 16px; border-radius:10px; line-height:1.5; white-space:pre-wrap; }
+  .user { background:var(--user); margin-left:20%; }
+  .bot { background:var(--panel); margin-right:10%; }
+  .chart { background:var(--panel); border-radius:10px; padding:12px; margin:12px 10% 12px 0; }
+  .examples { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+  .examples button { background:var(--bg); color:var(--text); border:1px solid var(--line); border-radius:16px;
+                     padding:6px 12px; cursor:pointer; font-size:13px; }
+  form { display:flex; gap:8px; padding:16px 20px; border-top:1px solid var(--line); max-width:900px; width:100%; margin:0 auto; }
+  input { flex:1; padding:12px; border-radius:8px; border:1px solid var(--line); background:var(--panel); color:var(--text); font-size:15px; }
+  form button { padding:12px 18px; border:0; border-radius:8px; background:var(--accent); color:#000; font-weight:600; cursor:pointer; }
+  form button:disabled { opacity:.5; cursor:default; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Skill <span>Market</span></h1>
+  <div id="header-right">
+    <div id="cost">0 tokens used</div>
+    <button id="reset" type="button">New chat</button>
+  </div>
+</header>
+
+<div id="chat">
+  <div class="msg bot">Ask about skill demand in finance jobs (BE, NL, LU, UK), or tell me your skills and I'll tell you what to learn next.
+    <div class="examples">
+      <button type="button">Which AI skills are rising fastest?</button>
+      <button type="button">How did demand for Python change since 2021?</button>
+      <button type="button">My skills: Excel, risk management, SQL. What should I learn?</button>
+    </div>
+  </div>
+</div>
+
+<form id="form">
+  <input id="q" placeholder="Ask about a skill, a role, or your own profile…" autocomplete="off">
+  <button id="send" type="submit">Ask</button>
+</form>
+
+<script>
+let sessionId = null;
+let totalTokens = 0;
+const chat = document.getElementById("chat");
+const sendButton = document.getElementById("send");
+const COLORS = ["#3fb950", "#1f6feb", "#d29922", "#f85149", "#a371f7", "#39c5cf"];
+
+function addMessage(cls, text) {
+  const d = document.createElement("div");
+  d.className = "msg " + cls;
+  d.textContent = text;
+  chat.appendChild(d);
+  chat.scrollTop = chat.scrollHeight;
+  return d;
+}
+
+// Single place where charts are drawn. Person B's graph component can replace this function.
+function renderChart(spec) {
+  const box = document.createElement("div");
+  box.className = "chart";
+  const canvas = document.createElement("canvas");
+  box.appendChild(canvas);
+  chat.appendChild(box);
+
+  // Periods like 2025-Q1 sort correctly as plain strings.
+  const labels = [...new Set(spec.series.flatMap(s => s.points.map(p => p[0])))].sort();
+  new Chart(canvas, {
+    type: spec.type,
+    data: {
+      labels,
+      datasets: spec.series.map((s, i) => {
+        const valueAt = Object.fromEntries(s.points);
+        return {
+          label: s.name,
+          data: labels.map(l => valueAt[l] ?? null),
+          borderColor: COLORS[i % COLORS.length],
+          backgroundColor: COLORS[i % COLORS.length],
+          spanGaps: true,
+        };
+      }),
+    },
+    options: {
+      plugins: {
+        title: { display: true, text: spec.title, color: "#e6edf3" },
+        legend: { labels: { color: "#e6edf3" } },
+      },
+      scales: {
+        x: { ticks: { color: "#8b98a5" } },
+        y: {
+          ticks: { color: "#8b98a5" },
+          title: { display: !!spec.y_label, text: spec.y_label || "", color: "#8b98a5" },
+        },
+      },
+    },
+  });
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function setBusy(busy) {
+  sendButton.disabled = busy;
+}
+
+async function ask(question) {
+  if (!question.trim()) return;
+  addMessage("user", question);
+  const thinking = addMessage("bot", "Thinking…");
+  setBusy(true);
+  try {
+    const r = await fetch("/api/ask", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question, session_id: sessionId }),
+    });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.detail || "server returned " + r.status);
+    sessionId = data.session_id;
+    thinking.textContent = data.answer || "(no answer)";
+    (data.charts || []).forEach(renderChart);
+    totalTokens += data.usage.input_tokens + data.usage.output_tokens;
+    document.getElementById("cost").textContent = totalTokens.toLocaleString() + " tokens used";
+  } catch (e) {
+    thinking.textContent = "Error: " + e.message;
+  } finally {
+    setBusy(false);
+  }
+}
+
+async function resetChat() {
+  if (sessionId) {
+    await fetch("/api/reset", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ session_id: sessionId }),
+    });
+  }
+  location.reload();
+}
+
+document.getElementById("form").onsubmit = e => {
+  e.preventDefault();
+  const input = document.getElementById("q");
+  const question = input.value;
+  input.value = "";
+  ask(question);
+};
+document.querySelectorAll(".examples button").forEach(b => b.onclick = () => ask(b.textContent));
+document.getElementById("reset").onclick = resetChat;
+</script>
+</body>
+</html>

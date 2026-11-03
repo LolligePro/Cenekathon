@@ -128,10 +128,10 @@ def normalize_companies(database, sources, *, output="data/company_map.parquet",
         conn.execute("""COPY (
             SELECT c.company_raw, m.company_normalized, m.company_id,
                 coalesce(m.normalization_method,'unknown') AS normalization_method,
-                coalesce(m.normalizer_version,?) AS normalizer_version, c.occurrences
+                coalesce(m.normalizer_version,$normalizer) AS normalizer_version, c.occurrences
             FROM company_counts c LEFT JOIN skillmarket_staging.company_names m USING (company_raw)
             ORDER BY c.occurrences DESC, c.company_raw
-        ) TO ? (FORMAT PARQUET, COMPRESSION ZSTD)""", [NORMALIZER_VERSION, str(Path(output).resolve())])
+        ) TO $destination (FORMAT PARQUET, COMPRESSION ZSTD)""", {"normalizer":NORMALIZER_VERSION,"destination":str(Path(output).resolve())})
         if write_postings:
             columns = {r[0] for r in conn.execute("DESCRIBE SELECT * FROM read_parquet(?, union_by_name=true)", [inputs]).fetchall()}
             id_column = "vacancy_id" if "vacancy_id" in columns else "posting_id" if "posting_id" in columns else None
@@ -142,11 +142,11 @@ def normalize_companies(database, sources, *, output="data/company_map.parquet",
                 SELECT p.{id_column} AS posting_id, p.company AS company_raw,
                     m.company_normalized, m.company_id,
                     coalesce(m.normalization_method,'unknown') AS normalization_method,
-                    coalesce(m.normalizer_version,?) AS normalizer_version
-                FROM read_parquet(?, union_by_name=true) p
+                    coalesce(m.normalizer_version,$normalizer) AS normalizer_version
+                FROM read_parquet($sources, union_by_name=true) p
                 LEFT JOIN skillmarket_staging.company_names m ON m.company_raw=p.company
-            ) TO ? (FORMAT PARQUET, COMPRESSION ZSTD)""",
-                         [NORMALIZER_VERSION, inputs, str(Path(write_postings).resolve())])
+            ) TO $destination (FORMAT PARQUET, COMPRESSION ZSTD)""",
+                         {"normalizer":NORMALIZER_VERSION,"sources":inputs,"destination":str(Path(write_postings).resolve())})
         row_count = conn.execute("SELECT sum(occurrences) FROM company_counts").fetchone()[0] or 0
     return {"source_files": len(inputs), "postings": row_count, "raw_names": len(mappings),
             "normalized_companies": len({r["company_id"] for r in mappings if r["company_id"]}),
