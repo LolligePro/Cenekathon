@@ -16,16 +16,21 @@ from pathlib import Path
 import os
 from typing import Protocol
 
+import json
+
 import pandas as pd
 import duckdb
 
 STUB_DIR = Path(__file__).parent / "stub"
+COURSES_META = Path(__file__).resolve().parents[1] / "courses" / "courses.jsonl"
+COURSE_COLUMNS = ["posting_id", "title", "url", "skill"]
 
 
 class DataSource(Protocol):
     def skill_demand(self) -> pd.DataFrame: ...
     def monthly_totals(self) -> pd.DataFrame: ...
     def job_types(self) -> list[str]: ...
+    def courses(self) -> pd.DataFrame: ...
 
 
 class StubSource:
@@ -34,6 +39,7 @@ class StubSource:
     def __init__(self, stub_dir: Path = STUB_DIR):
         self._demand = self._load(stub_dir / "skill_demand.csv")
         self._totals = self._load(stub_dir / "monthly_totals.csv")
+        self._courses = pd.read_csv(stub_dir / "courses.csv")
 
     @staticmethod
     def _load(path: Path) -> pd.DataFrame:
@@ -48,6 +54,9 @@ class StubSource:
 
     def job_types(self) -> list[str]:
         return sorted(self._demand["job_type"].unique().tolist())
+
+    def courses(self) -> pd.DataFrame:
+        return self._courses.copy()
 
 
 class DatabaseSource:
@@ -81,6 +90,27 @@ class DatabaseSource:
     def job_types(self):
         self._load()
         return sorted(self._totals["job_type"].unique().tolist())
+
+    def courses(self):
+        """One row per (course, skill) for Coursera courses, which the DB keys 'coursera-NNNNN'.
+
+        Titles come from the DB when the course is in `postings`, else from
+        courses/courses.jsonl, which also supplies the URL.
+        """
+        with duckdb.connect(str(self.database), read_only=True) as conn:
+            df = conn.execute("""SELECT ps.posting_id, p.title, s.name AS skill
+                FROM skillmarket_app.posting_skills ps
+                JOIN skillmarket_app.skills s USING (skill_id)
+                LEFT JOIN skillmarket_app.postings p USING (posting_id)
+                WHERE ps.posting_id LIKE 'coursera-%'""").df()
+        meta = {}
+        if COURSES_META.exists():
+            with COURSES_META.open(encoding="utf-8") as f:
+                meta = {m["posting_id"]: m for m in map(json.loads, f)}
+        df["url"] = df["posting_id"].map(lambda i: meta.get(i, {}).get("url"))
+        df["title"] = df["title"].fillna(df["posting_id"].map(lambda i: meta.get(i, {}).get("title")))
+        df["title"] = df["title"].fillna(df["posting_id"])
+        return df[COURSE_COLUMNS]
 
 
 _source: DataSource | None = None

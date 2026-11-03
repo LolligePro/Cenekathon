@@ -257,3 +257,71 @@ def change_chart(rising_falling: dict, job_type: str, window_months: int = 6) ->
         "data": {"values": _records(df)},
         "layer": [zero_rule, bars, labels],
     }
+
+
+def skill_gap_chart(gap: pd.DataFrame, courses: pd.DataFrame, from_job: str, to_job: str) -> dict:
+    """Bars of the skill gap; the label names the course that covers each skill, if any."""
+    course_of = {sk: c["title"] for _, c in courses.iterrows() for sk in c["skills"]}
+    df = gap.assign(course=gap["skill"].map(course_of))
+    df["covered"] = df["course"].map(lambda c: "course available" if isinstance(c, str) else "no course found")
+    df["course"] = df["course"].fillna("")
+    skill_axis = {
+        "field": "skill", "type": "nominal", "sort": "-x", "title": None,
+        "axis": {"labelFontSize": 13, "labelColor": INK, "ticks": False, "domain": False},
+    }
+    x = {"field": "gap", "type": "quantitative", "title": "Extra share of postings in the target job",
+         "axis": {"format": ".0%", "grid": True, "tickCount": 6}}
+    bars = {
+        "mark": {"type": "bar", "cornerRadiusEnd": 4, "size": 20},
+        "encoding": {
+            "y": skill_axis, "x": x,
+            "color": {"field": "covered", "type": "nominal", "title": None,
+                      "scale": {"domain": ["course available", "no course found"], "range": [ACCENT, FLAT]},
+                      "legend": {"orient": "top"}},
+            "tooltip": [
+                {"field": "skill", "type": "nominal", "title": "Skill"},
+                {"field": "share_from", "type": "quantitative", "title": f"Share in {from_job}", "format": ".1%"},
+                {"field": "share_to", "type": "quantitative", "title": f"Share in {to_job}", "format": ".1%"},
+                {"field": "course", "type": "nominal", "title": "Course"},
+            ],
+        },
+    }
+    labels = {
+        "mark": {"type": "text", "align": "left", "dx": 6, "fontSize": 12, "color": INK},
+        "encoding": {"y": {"field": "skill", "type": "nominal", "sort": "-x"}, "x": {"field": "gap", "type": "quantitative"},
+                     "text": {"field": "gap", "type": "quantitative", "format": "+.1%"}},
+    }
+    return {
+        "$schema": VEGA_LITE_SCHEMA,
+        "title": _title(f"{from_job} \u2192 {to_job}: skills to learn",
+                        "Skills the target job asks for more often than the current job"),
+        "config": THEME, "width": 620, "height": {"step": 32},
+        "data": {"values": _records(df)},
+        "layer": [bars, labels],
+    }
+
+
+def course_plan_chart(courses: pd.DataFrame, from_job: str, to_job: str) -> dict:
+    """One bar per recommended course (in recommended order), sized by the gap it closes."""
+    df = courses.assign(skills=courses["skills"].map(", ".join), order=range(len(courses)))
+    return {
+        "$schema": VEGA_LITE_SCHEMA,
+        "title": _title(f"{from_job} \u2192 {to_job}: courses to take",
+                        "Recommended order; bar = gap in share points that the course newly covers"),
+        "config": THEME, "width": 620, "height": {"step": 32},
+        "data": {"values": _records(df)},
+        "mark": {"type": "bar", "cornerRadiusEnd": 4, "size": 20, "color": RISING},
+        "encoding": {
+            "y": {"field": "title", "type": "nominal", "sort": {"field": "order"}, "title": None,
+                  "axis": {"labelFontSize": 13, "labelColor": INK, "ticks": False, "domain": False, "labelLimit": 300}},
+            "x": {"field": "covered_gap", "type": "quantitative", "title": "Gap covered",
+                  "axis": {"format": ".0%", "grid": True}},
+            "href": {"field": "url", "type": "nominal"},
+            "tooltip": [
+                {"field": "title", "type": "nominal", "title": "Course"},
+                {"field": "skills", "type": "nominal", "title": "Covers"},
+                {"field": "covered_gap", "type": "quantitative", "title": "Gap covered", "format": ".1%"},
+                {"field": "url", "type": "nominal", "title": "Link"},
+            ],
+        },
+    }

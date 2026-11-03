@@ -120,3 +120,40 @@ def rising_and_falling_skills(
         "data": result,
         "chart": charts.change_chart(result, job_type, window_months),
     }
+
+
+def career_path(from_job: str, to_job: str, n_skills: int = 8, max_courses: int = 5) -> dict:
+    """Advice for moving from one job type to another: skills to learn and courses to take.
+
+    Both jobs must be in `list_job_types()`. `data` has `skills_to_learn` (the gap) and
+    `courses` (a short list covering the most gap, in recommended order, with links).
+    `chart` shows the skill gap; `courses_chart` shows the courses (None when none match).
+    """
+    _check_n(n_skills, MAX_TOP_N)
+    _check_n(max_courses, MAX_SKILLS)
+    known = list_job_types()
+    for job in (from_job, to_job):
+        if job not in known:
+            raise ValueError(f"Unknown job type {job!r}; see list_job_types()")
+    if from_job == to_job:
+        raise ValueError("from_job and to_job must differ")
+    source = get_source()
+    gap = analysis.skill_gap(source, from_job, to_job, n=n_skills)
+    plan = analysis.recommend_courses(gap, source.courses(), max_courses)
+    if gap.empty:
+        summary = f"{to_job} asks for no skills more often than {from_job}."
+    elif plan.empty:
+        summary = f"To move from {from_job} to {to_job}, learn {', '.join(gap['skill'])}. No matching courses found."
+    else:
+        left = sorted(set(gap["skill"]) - {s for sk in plan["skills"] for s in sk})
+        summary = (
+            f"To move from {from_job} to {to_job}, close {len(gap)} skill gaps; "
+            f"{len(plan)} course(s) cover {len(gap) - len(left)} of them, starting with {plan['title'][0]}."
+            + (f" No course found for: {', '.join(left)}." if left else "")
+        )
+    return {
+        "summary": summary,
+        "data": {"skills_to_learn": gap.to_dict("records"), "courses": plan.to_dict("records")},
+        "chart": charts.skill_gap_chart(gap, plan, from_job, to_job) if not gap.empty else None,
+        "courses_chart": charts.course_plan_chart(plan, from_job, to_job) if not plan.empty else None,
+    }
